@@ -3,7 +3,7 @@ import {
   Code, Braces, FileCode2, Palette,
   Database, Globe, Mic, Volume2,
   Terminal, GitBranch, Github as GithubIcon, Cloud, BookOpen, MessageSquare,
-  Brain, Languages, Plug,
+  Brain, Languages, Boxes, Server, Network, ListTree,
 } from "lucide-react";
 import { Section } from "./Section";
 
@@ -13,7 +13,7 @@ const groups: { title: string; items: Skill[] }[] = [
   {
     title: "Programming",
     items: [
-      { name: "Python", icon: Code, level: "Basic" },
+      { name: "Python", icon: Code, level: "Learning & Project Experience" },
       { name: "C", icon: Braces, level: "Basic" },
       { name: "HTML", icon: FileCode2 },
       { name: "CSS", icon: Palette },
@@ -22,10 +22,10 @@ const groups: { title: string; items: Skill[] }[] = [
   {
     title: "Libraries",
     items: [
-      { name: "Pandas", icon: Database, level: "Basic" },
-      { name: "Requests", icon: Globe },
       { name: "SpeechRecognition", icon: Mic },
       { name: "pyttsx3", icon: Volume2 },
+      { name: "Pandas", icon: Database, level: "Basic" },
+      { name: "Requests", icon: Globe },
     ],
   },
   {
@@ -40,11 +40,14 @@ const groups: { title: string; items: Skill[] }[] = [
     ],
   },
   {
-    title: "Currently Learning",
+    title: "Concepts",
     items: [
-      { name: "Machine Learning", icon: Brain },
-      { name: "NLP", icon: Languages },
-      { name: "APIs", icon: Plug },
+      { name: "ML Basics", icon: Brain },
+      { name: "NLP Basics", icon: Languages },
+      { name: "OOP", icon: Boxes },
+      { name: "DBMS Basics", icon: Server },
+      { name: "Computer Networks", icon: Network },
+      { name: "Data Structures", icon: ListTree },
     ],
   },
 ];
@@ -69,9 +72,7 @@ export function Skills() {
           >
             <div className="flex items-center justify-between">
               <h3 className="font-display text-lg font-semibold">{g.title}</h3>
-              <span className="text-xs text-muted-foreground">
-                {g.items.length} {g.items.length === 1 ? "item" : "items"}
-              </span>
+              <span className="text-xs text-muted-foreground">{g.items.length} items</span>
             </div>
             <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {g.items.map((s, i) => (
@@ -81,7 +82,7 @@ export function Skills() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: i * 0.04 }}
-                  whileHover={{ y: -3 }}
+                  whileHover={{ y: -3, scale: 1.02 }}
                   className="group rounded-xl border border-white/5 bg-white/[0.02] p-3 hover:border-accent-blue/40 hover:bg-white/[0.04] transition-colors"
                 >
                   <div className="flex items-center gap-2">
@@ -90,7 +91,7 @@ export function Skills() {
                     </span>
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{s.name}</p>
-                      {s.level && <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{s.level}</p>}
+                      {s.level && <p className="text-[10px] uppercase tracking-wider text-muted-foreground truncate">{s.level}</p>}
                     </div>
                   </div>
                 </motion.div>
