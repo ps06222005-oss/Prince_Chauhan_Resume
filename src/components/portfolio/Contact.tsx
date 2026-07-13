@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Github, Linkedin, Send, Loader2, CheckCircle2 } from "lucide-react";
+import { Mail, Phone, MapPin, Github, Linkedin, Send, Loader2, CheckCircle2, AlertCircle, Clock, Handshake, Briefcase } from "lucide-react";
 import { Section } from "./Section";
 import { z } from "zod";
+import { PROFILE } from "@/lib/portfolio-data";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -11,17 +12,29 @@ const schema = z.object({
 });
 
 const infos = [
-  { icon: Mail, label: "Email", value: "prince.chauhan@example.com", href: "mailto:prince.chauhan@example.com" },
-  { icon: Phone, label: "Phone", value: "+91 00000 00000", href: "tel:+910000000000" },
-  { icon: MapPin, label: "Location", value: "India", href: null },
-  { icon: Github, label: "GitHub", value: "github.com/princechauhan", href: "https://github.com/princechauhan" },
-  { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/princechauhan", href: "https://linkedin.com/in/princechauhan" },
+  { icon: Mail, label: "Email", value: PROFILE.email, href: `mailto:${PROFILE.email}` },
+  { icon: Phone, label: "Phone", value: PROFILE.phone, href: `tel:${PROFILE.phone.replace(/\s/g, "")}` },
+  { icon: MapPin, label: "Location", value: PROFILE.location, href: null },
+  { icon: Github, label: "GitHub", value: "github.com/ps06222005-oss", href: PROFILE.github },
+  { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/prince-chauhan-3418a3288", href: PROFILE.linkedin },
 ];
+
+const availability = [
+  { icon: Briefcase, label: "Open to Internships", tone: "text-green-400" },
+  { icon: Handshake, label: "Open to Collaboration", tone: "text-accent-cyan" },
+  { icon: Clock, label: "Responds within 24h", tone: "text-purple-400" },
+];
+
+// EmailJS env — populate later; falls back to mailto until then
+const EMAILJS_SERVICE = (import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined) ?? "";
+const EMAILJS_TEMPLATE = (import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined) ?? "";
+const EMAILJS_PUBLIC = (import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined) ?? "";
 
 export function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errMsg, setErrMsg] = useState("");
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,30 +47,65 @@ export function Contact() {
     }
     setErrors({});
     setStatus("sending");
-    // EmailJS placeholder — opens mail client as safe fallback
-    await new Promise((r) => setTimeout(r, 800));
+
+    // Try EmailJS if configured
+    if (EMAILJS_SERVICE && EMAILJS_TEMPLATE && EMAILJS_PUBLIC) {
+      try {
+        const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: EMAILJS_SERVICE,
+            template_id: EMAILJS_TEMPLATE,
+            user_id: EMAILJS_PUBLIC,
+            template_params: {
+              from_name: form.name,
+              from_email: form.email,
+              message: form.message,
+              to_email: PROFILE.email,
+            },
+          }),
+        });
+        if (!res.ok) throw new Error(await res.text());
+        setStatus("sent");
+        setForm({ name: "", email: "", message: "" });
+        setTimeout(() => setStatus("idle"), 3500);
+        return;
+      } catch (err) {
+        setStatus("error");
+        setErrMsg("Couldn't send via EmailJS — opening your mail app as a fallback.");
+      }
+    }
+
+    // Fallback mailto
     const subject = encodeURIComponent(`Portfolio inquiry from ${form.name}`);
     const body = encodeURIComponent(`${form.message}\n\n— ${form.name} (${form.email})`);
-    window.location.href = `mailto:prince.chauhan@example.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
     setStatus("sent");
-    setTimeout(() => setStatus("idle"), 3000);
+    setTimeout(() => setStatus("idle"), 3500);
   };
 
   return (
-    <Section
-      id="contact"
-      eyebrow="Contact"
-      title="Let's build something together"
-      subtitle="Open to internships, collaborations and a good conversation."
-    >
+    <Section id="contact" eyebrow="Contact" title="Let's build something together" subtitle="Open to internships, collaborations and a good conversation.">
       <div className="grid gap-8 lg:grid-cols-5">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
           className="lg:col-span-2 space-y-3"
         >
+          <div className="glass rounded-2xl p-5">
+            <p className="text-xs uppercase tracking-wider text-muted-foreground mb-3">Availability</p>
+            <div className="space-y-2.5">
+              {availability.map((a) => (
+                <div key={a.label} className="flex items-center gap-3">
+                  <span className={`grid h-8 w-8 place-items-center rounded-lg bg-white/5 ring-1 ring-white/10 ${a.tone}`}>
+                    <a.icon size={14} />
+                  </span>
+                  <span className="text-sm">{a.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {infos.map((i) => {
             const Inner = (
               <>
@@ -71,80 +119,62 @@ export function Contact() {
               </>
             );
             return i.href ? (
-              <a
-                key={i.label}
-                href={i.href}
-                target={i.href.startsWith("http") ? "_blank" : undefined}
-                rel="noreferrer"
-                className="glass flex items-center gap-4 rounded-xl p-4 hover:border-accent-blue/40 hover:-translate-y-0.5 transition-all"
-              >
+              <a key={i.label} href={i.href} target={i.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer"
+                className="glass flex items-center gap-4 rounded-xl p-4 hover:border-accent-blue/40 hover:-translate-y-0.5 transition-all">
                 {Inner}
               </a>
             ) : (
-              <div key={i.label} className="glass flex items-center gap-4 rounded-xl p-4">
-                {Inner}
-              </div>
+              <div key={i.label} className="glass flex items-center gap-4 rounded-xl p-4">{Inner}</div>
             );
           })}
         </motion.div>
 
         <motion.form
           onSubmit={submit}
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
           className="glass lg:col-span-3 rounded-2xl p-6 sm:p-8 space-y-4"
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground">Name</label>
-              <input
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="mt-1.5 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
-                placeholder="Your full name"
-                maxLength={100}
-              />
+                placeholder="Your full name" maxLength={100} />
               {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
             </div>
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground">Email</label>
-              <input
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+              <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="mt-1.5 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
-                placeholder="you@company.com"
-                maxLength={255}
-              />
+                placeholder="you@company.com" maxLength={255} />
               {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
             </div>
           </div>
           <div>
             <label className="text-xs uppercase tracking-wider text-muted-foreground">Message</label>
-            <textarea
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-              rows={5}
-              maxLength={1000}
+            <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
+              rows={5} maxLength={1000}
               className="mt-1.5 w-full resize-none rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
-              placeholder="Tell me about the role or project..."
-            />
+              placeholder="Tell me about the role or project..." />
             {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message}</p>}
           </div>
-          <button
-            type="submit"
-            disabled={status === "sending"}
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground glow-ring hover:scale-[1.02] transition-transform disabled:opacity-70"
-          >
-            {status === "sending" ? (
-              <><Loader2 size={16} className="animate-spin" /> Sending...</>
-            ) : status === "sent" ? (
-              <><CheckCircle2 size={16} /> Sent</>
-            ) : (
-              <><Send size={16} /> Send Message</>
-            )}
+
+          {status === "sent" && (
+            <div className="flex items-center gap-2 rounded-lg border border-green-500/30 bg-green-500/10 px-3 py-2 text-sm text-green-300">
+              <CheckCircle2 size={16} /> Message sent — I'll reply within 24 hours.
+            </div>
+          )}
+          {status === "error" && (
+            <div className="flex items-center gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-3 py-2 text-sm text-yellow-200">
+              <AlertCircle size={16} /> {errMsg}
+            </div>
+          )}
+
+          <button type="submit" disabled={status === "sending"}
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground glow-ring hover:scale-[1.02] transition-transform disabled:opacity-70">
+            {status === "sending" ? (<><Loader2 size={16} className="animate-spin" /> Sending...</>) :
+             status === "sent" ? (<><CheckCircle2 size={16} /> Sent</>) :
+             (<><Send size={16} /> Send Message</>)}
           </button>
         </motion.form>
       </div>
