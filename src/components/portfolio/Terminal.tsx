@@ -83,7 +83,16 @@ export function TerminalMode() {
     const cmd = raw.trim().toLowerCase();
     if (!cmd) return;
     if (cmd === "clear") { setLines([]); return; }
-    const out = COMMANDS[cmd] ?? `command not found: ${cmd} — try 'help'`;
+    // simple `cat <file>` support
+    let out: string;
+    if (cmd.startsWith("cat ")) {
+      const key = cmd.slice(4).trim();
+      const v = COMMANDS[key];
+      out = v == null ? `cat: ${key}: No such file` : typeof v === "function" ? v() : v;
+    } else {
+      const v = COMMANDS[cmd];
+      out = v == null ? `command not found: ${cmd} — try 'help'` : typeof v === "function" ? v() : v;
+    }
     setLines((prev) => [...prev, { kind: "in", text: raw }, { kind: "out", text: out }]);
     if (cmd === "resume") window.open(PROFILE.resume, "_blank");
     if (cmd === "github") window.open(PROFILE.github, "_blank");
