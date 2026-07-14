@@ -4,16 +4,27 @@ import { Terminal as TermIcon } from "lucide-react";
 import { Section } from "./Section";
 import { PROFILE } from "@/lib/portfolio-data";
 
-const COMMANDS: Record<string, string> = {
+const now = () => new Date().toString();
+
+const COMMANDS: Record<string, string | (() => string)> = {
   help: `Available commands:
-  about       — who I am
-  skills      — my toolkit
-  projects    — what I've built
-  education   — academic background
-  resume      — download my resume
-  contact     — how to reach me
-  github      — GitHub profile
-  clear       — clear the terminal`,
+  about        — who I am
+  skills       — my toolkit
+  projects     — what I've built
+  education    — academic background
+  certificates — certifications overview
+  experience   — current experience
+  resume       — download my resume
+  contact      — how to reach me
+  github       — GitHub profile
+  whoami       — quick identity
+  pwd          — current path
+  ls           — list sections
+  cat <file>   — read a section (e.g. cat about)
+  tree         — site structure
+  date         — current date & time
+  theme        — active theme
+  clear        — clear the terminal`,
   about: `${PROFILE.name} — ${PROFILE.role}
 ${PROFILE.headline}
 Based in ${PROFILE.location}. Currently learning by building projects and open to internships.`,
@@ -27,12 +38,34 @@ Concepts    : ML Basics, NLP Basics, OOP, DBMS, Networks, DSA`,
    ${PROFILE.github}`,
   education: `B.Tech, Computer Science Engineering (AI & ML)
 Sunderdeep Global University — Expected 2028`,
+  certificates: `Certifications are listed in the Certifications section — scroll down or use ⌘K → "Certifications".`,
+  experience: `Currently focused on project-based learning and building an open-source presence on GitHub.
+Actively seeking software development and AI/ML internships.`,
   resume: `Opening resume… → ${PROFILE.resume}`,
   contact: `Email    : ${PROFILE.email}
 Phone    : ${PROFILE.phone}
 LinkedIn : ${PROFILE.linkedin}
 GitHub   : ${PROFILE.github}`,
   github: `→ ${PROFILE.github}`,
+  whoami: `${PROFILE.name.toLowerCase().replace(/\s+/g, "-")}`,
+  pwd: `/home/prince/portfolio`,
+  ls: `about  skills  projects  why  journey  github  education  certifications  achievements  terminal  contact`,
+  tree: `portfolio
+├── about
+├── skills
+├── projects
+│   ├── jarvis
+│   └── ai-automation-scripts
+├── why-hire-me
+├── learning-journey
+├── github-stats
+├── education
+├── certifications
+├── achievements
+├── terminal
+└── contact`,
+  date: now,
+  theme: `dark · navy #050816 · blue gradient accents`,
 };
 
 type Line = { kind: "in" | "out"; text: string };
