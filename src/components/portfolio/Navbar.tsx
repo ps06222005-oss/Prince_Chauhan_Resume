@@ -66,6 +66,14 @@ export function Navbar() {
         </ul>
 
         <div className="hidden lg:flex items-center gap-2">
+          <button
+            onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
+            aria-label="Open command palette"
+            className="hidden xl:inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <span>Search</span>
+            <span className="rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px]">⌘K</span>
+          </button>
           <a href={PROFILE.github} target="_blank" rel="noreferrer" aria-label="GitHub"
             className="grid h-9 w-9 place-items-center rounded-full glass hover:text-accent-cyan transition-colors">
             <Github size={15} />

@@ -16,6 +16,7 @@ import { TerminalMode } from "@/components/portfolio/Terminal";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { AIAssistant } from "@/components/portfolio/AIAssistant";
+import { CommandPalette } from "@/components/portfolio/CommandPalette";
 
 const TITLE = "Prince Chauhan — Aspiring Software Developer & AI Enthusiast";
 const DESC =
@@ -79,6 +80,7 @@ function Portfolio() {
       <Footer />
       <BackToTop />
       <AIAssistant />
+      <CommandPalette />
     </main>
   );
 }
