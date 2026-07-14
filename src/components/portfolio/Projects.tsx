@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, X, Cpu, Bot, ExternalLink } from "lucide-react";
+import { Github, X, Cpu, Bot, ExternalLink, Search } from "lucide-react";
 import { Section } from "./Section";
 import { PROFILE } from "@/lib/portfolio-data";
 
@@ -55,13 +55,64 @@ const projects: Project[] = [
   },
 ];
 
+const ALL_TECH = Array.from(new Set(projects.flatMap((p) => p.tech)));
+
 export function Projects() {
   const [open, setOpen] = useState<Project | null>(null);
+  const [query, setQuery] = useState("");
+  const [tech, setTech] = useState<string | null>(null);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return projects.filter((p) => {
+      const matchesQ = !q || (p.title + " " + p.overview + " " + p.tech.join(" ")).toLowerCase().includes(q);
+      const matchesT = !tech || p.tech.includes(tech);
+      return matchesQ && matchesT;
+    });
+  }, [query, tech]);
 
   return (
     <Section id="projects" eyebrow="Projects" title="Things I've built" subtitle="Small, honest projects that helped me learn.">
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="glass flex items-center gap-2 rounded-full px-4 py-2 sm:max-w-sm">
+          <Search size={14} className="text-muted-foreground" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search projects…"
+            className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
+          />
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            onClick={() => setTech(null)}
+            className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+              tech === null ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-white/10 bg-white/[0.03] text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            All
+          </button>
+          {ALL_TECH.map((t) => (
+            <button
+              key={t}
+              onClick={() => setTech(t === tech ? null : t)}
+              className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                tech === t ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-white/10 bg-white/[0.03] text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {filtered.length === 0 && (
+        <p className="glass rounded-2xl p-10 text-center text-sm text-muted-foreground">
+          No projects match your filters.
+        </p>
+      )}
       <div className="grid gap-6 lg:grid-cols-2">
-        {projects.map((p, i) => (
+        {filtered.map((p, i) => (
           <motion.article
             key={p.title}
             initial={{ opacity: 0, y: 24 }}
