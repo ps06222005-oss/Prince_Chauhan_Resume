@@ -1,9 +1,30 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Github, Linkedin, Send, Loader2, CheckCircle2, AlertCircle, Clock, Handshake, Briefcase } from "lucide-react";
+import { Mail, Phone, MapPin, Github, Linkedin, Send, Loader2, CheckCircle2, AlertCircle, Clock, Handshake, Briefcase, Copy, Check } from "lucide-react";
 import { Section } from "./Section";
 import { z } from "zod";
 import { PROFILE } from "@/lib/portfolio-data";
+
+function CopyButton({ value, label }: { value: string; label: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      type="button"
+      aria-label={`Copy ${label}`}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        navigator.clipboard?.writeText(value).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1500);
+        });
+      }}
+      className="ml-auto grid h-8 w-8 shrink-0 place-items-center rounded-md text-muted-foreground hover:text-accent-cyan hover:bg-white/5 transition-colors"
+    >
+      {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+    </button>
+  );
+}
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -107,15 +128,17 @@ export function Contact() {
           </div>
 
           {infos.map((i) => {
+            const copyable = i.label === "Email" || i.label === "Phone";
             const Inner = (
               <>
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-gradient-primary/20 text-accent-cyan">
                   <i.icon size={16} />
                 </span>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-xs uppercase tracking-wider text-muted-foreground">{i.label}</p>
                   <p className="truncate text-sm font-medium">{i.value}</p>
                 </div>
+                {copyable && <CopyButton value={i.value} label={i.label} />}
               </>
             );
             return i.href ? (
