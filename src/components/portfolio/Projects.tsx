@@ -9,9 +9,12 @@ type Project = {
   title: string;
   overview: string;
   features: string[];
+  architecture?: string;
   tech: string[];
   challenges?: string;
+  solutions?: string;
   learned?: string;
+  future?: string[];
   github: string;
 };
 
@@ -28,11 +31,20 @@ const projects: Project[] = [
       "Play music from local folders",
       "Simple automation commands",
     ],
+    architecture:
+      "A modular Python app: a mic-input layer (SpeechRecognition) feeds a command router that maps intents to small handler modules (web, apps, media, time). Responses are spoken back through pyttsx3.",
     tech: ["Python", "SpeechRecognition", "pyttsx3", "Requests", "Wikipedia API"],
     challenges:
       "Handling noisy microphone input and mapping natural phrases to reliable actions without external LLMs.",
+    solutions:
+      "Added an ambient-noise calibration step, normalized transcripts to lowercase keywords, and used simple keyword matching with fallbacks so unknown commands fail gracefully.",
     learned:
       "Structuring a Python project into modules, working with system APIs, and shipping an end-to-end tool on GitHub.",
+    future: [
+      "Wake-word detection",
+      "LLM-powered intent parsing",
+      "Cross-platform packaging (Windows / Linux)",
+    ],
     github: PROFILE.jarvisRepo,
   },
   {
@@ -46,11 +58,20 @@ const projects: Project[] = [
       "Small automation utilities",
       "ChatGPT-assisted productivity workflows",
     ],
+    architecture:
+      "Each script is standalone and CLI-driven, sharing a small utils layer for file I/O and prompt templating so experiments stay isolated and easy to iterate on.",
     tech: ["Python", "Pandas", "Requests", "ChatGPT"],
     challenges:
       "Turning ad-hoc scripts into reusable, readable code and handling messy real-world data.",
+    solutions:
+      "Split scripts into small pure functions, added defensive parsing for CSV edge cases, and documented usage so I can re-run each script months later.",
     learned:
       "The value of clean data pipelines and how to prompt AI tools to accelerate development.",
+    future: [
+      "Unified CLI entry point",
+      "Config files instead of hardcoded paths",
+      "Basic test coverage",
+    ],
     github: PROFILE.github,
   },
 ];
@@ -179,10 +200,22 @@ export function Projects() {
               <ul className="mt-2 space-y-1.5 text-sm">
                 {open.features.map((f) => <li key={f} className="flex gap-2"><span className="text-accent-cyan">▹</span>{f}</li>)}
               </ul>
+              {open.architecture && (
+                <>
+                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Architecture</h4>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.architecture}</p>
+                </>
+              )}
               {open.challenges && (
                 <>
                   <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Challenges</h4>
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.challenges}</p>
+                </>
+              )}
+              {open.solutions && (
+                <>
+                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Solutions</h4>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.solutions}</p>
                 </>
               )}
               {open.learned && (
@@ -191,7 +224,16 @@ export function Projects() {
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.learned}</p>
                 </>
               )}
-              <div className="mt-6 flex flex-wrap gap-2">
+              {open.future && open.future.length > 0 && (
+                <>
+                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Future Improvements</h4>
+                  <ul className="mt-2 space-y-1.5 text-sm">
+                    {open.future.map((f) => <li key={f} className="flex gap-2 text-muted-foreground"><span className="text-accent-cyan">→</span>{f}</li>)}
+                  </ul>
+                </>
+              )}
+              <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Tech Stack</h4>
+              <div className="mt-2 flex flex-wrap gap-2">
                 {open.tech.map((t) => (
                   <span key={t} className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs">{t}</span>
                 ))}
