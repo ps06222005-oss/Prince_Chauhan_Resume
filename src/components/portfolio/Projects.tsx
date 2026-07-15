@@ -200,10 +200,22 @@ export function Projects() {
               <ul className="mt-2 space-y-1.5 text-sm">
                 {open.features.map((f) => <li key={f} className="flex gap-2"><span className="text-accent-cyan">▹</span>{f}</li>)}
               </ul>
+              {open.architecture && (
+                <>
+                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Architecture</h4>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.architecture}</p>
+                </>
+              )}
               {open.challenges && (
                 <>
                   <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Challenges</h4>
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.challenges}</p>
+                </>
+              )}
+              {open.solutions && (
+                <>
+                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Solutions</h4>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.solutions}</p>
                 </>
               )}
               {open.learned && (
@@ -212,7 +224,16 @@ export function Projects() {
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.learned}</p>
                 </>
               )}
-              <div className="mt-6 flex flex-wrap gap-2">
+              {open.future && open.future.length > 0 && (
+                <>
+                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Future Improvements</h4>
+                  <ul className="mt-2 space-y-1.5 text-sm">
+                    {open.future.map((f) => <li key={f} className="flex gap-2 text-muted-foreground"><span className="text-accent-cyan">→</span>{f}</li>)}
+                  </ul>
+                </>
+              )}
+              <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Tech Stack</h4>
+              <div className="mt-2 flex flex-wrap gap-2">
                 {open.tech.map((t) => (
                   <span key={t} className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs">{t}</span>
                 ))}
