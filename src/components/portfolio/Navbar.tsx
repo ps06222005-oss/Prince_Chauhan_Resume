@@ -93,7 +93,7 @@ export function Navbar() {
         {open && (
           <motion.div
             initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden overflow-hidden backdrop-blur-xl bg-[#050816]/95 border-b border-white/5"
+            className="lg:hidden overflow-hidden backdrop-blur-xl bg-background/95 border-b border-border"
           >
             <ul className="flex flex-col gap-1 px-6 py-4">
               {links.map((l) => (
