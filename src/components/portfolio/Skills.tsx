@@ -74,20 +74,20 @@ export function Skills() {
               <h3 className="font-display text-lg font-semibold">{g.title}</h3>
               <span className="text-xs text-muted-foreground">{g.items.length} items</span>
             </div>
-            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {g.items.map((s, i) => (
                 <motion.div
                   key={s.name}
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: i * 0.04 }}
-                  whileHover={{ y: -3, scale: 1.02 }}
-                  className="group rounded-xl border border-black/[0.06] bg-black/[0.02] p-3 hover:border-accent-blue/40 hover:bg-black/[0.04] transition-colors"
+                  whileHover={{ y: -3 }}
+                  className="group rounded-xl border border-border bg-background/60 p-3.5 hover:border-primary/40 hover:shadow-[0_8px_24px_-12px_rgba(59,130,246,0.35)] transition-all"
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-primary/15 text-accent-cyan">
-                      <s.icon size={14} />
+                  <div className="flex items-center gap-2.5">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15 group-hover:bg-primary/15 transition-colors">
+                      <s.icon size={16} />
                     </span>
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{s.name}</p>

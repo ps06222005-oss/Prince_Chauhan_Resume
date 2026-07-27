@@ -75,33 +75,47 @@ export function Certifications() {
         </p>
       )}
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((c, i) => (
           <motion.button
             key={c.title}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.08 }}
-            whileHover={{ y: -4 }}
+            transition={{ duration: 0.55, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ y: -6 }}
             onClick={() => setOpen(c)}
-            className="glass group relative overflow-hidden rounded-2xl p-6 text-left hover:border-accent-blue/40 transition-colors"
+            className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background/70 text-left shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:border-primary/30 transition-all"
           >
-            <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full opacity-20 blur-3xl transition-opacity group-hover:opacity-50"
-              style={{ background: "var(--gradient-primary)" }} />
-            <div className="absolute right-4 top-4 text-accent-cyan/70">
-              <BadgeCheck size={18} />
+            {/* Thumbnail */}
+            <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-primary/12 via-background to-primary/5">
+              <div className="pointer-events-none absolute inset-0"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 20% 25%, rgba(59,130,246,0.22), transparent 55%), radial-gradient(circle at 85% 80%, rgba(96,165,250,0.20), transparent 55%)",
+                }} />
+              <div className="absolute inset-6 rounded-xl border border-primary/15 bg-white/60 backdrop-blur-sm shadow-[var(--shadow-card)] p-5 flex flex-col justify-between transition-transform duration-500 group-hover:scale-[1.03]">
+                <div className="flex items-start justify-between">
+                  <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/15 text-primary">
+                    <Award size={16} />
+                  </span>
+                  <BadgeCheck size={16} className="text-primary/70" />
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Certificate</p>
+                  <p className="mt-1 text-sm font-semibold leading-snug line-clamp-2">{c.title}</p>
+                </div>
+              </div>
             </div>
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary/20 text-accent-cyan">
-              <Award size={20} />
-            </div>
-            <h3 className="mt-4 font-semibold leading-snug">{c.title}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">{c.issuer}</p>
-            <div className="mt-3 flex items-center justify-between text-xs uppercase tracking-wider text-muted-foreground">
-              <span>{c.year}</span>
-              <span className="rounded-full border border-black/[0.08] bg-black/[0.03] px-2 py-0.5 text-[10px] normal-case tracking-normal">
-                {c.category}
-              </span>
+            <div className="p-5">
+              <h3 className="font-semibold leading-snug">{c.title}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{c.issuer}</p>
+              <div className="mt-4 flex items-center justify-between text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                <span>{c.year}</span>
+                <span className="rounded-full border border-border bg-background px-2 py-0.5 text-[10px] normal-case tracking-normal font-medium text-foreground/70">
+                  {c.category}
+                </span>
+              </div>
             </div>
           </motion.button>
         ))}
@@ -111,7 +125,7 @@ export function Certifications() {
         {open && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[70] grid place-items-center bg-black/70 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-[70] grid place-items-center bg-foreground/40 backdrop-blur-md p-4"
             onClick={() => setOpen(null)}
           >
             <motion.div
