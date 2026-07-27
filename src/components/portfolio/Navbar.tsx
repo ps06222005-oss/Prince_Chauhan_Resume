@@ -43,7 +43,7 @@ export function Navbar() {
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-xl bg-[#050816]/70 border-b border-white/5" : ""}`}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-xl bg-background/75 border-b border-border" : ""}`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
         <button onClick={() => go("home")} className="font-display text-lg font-bold tracking-tight shrink-0">
