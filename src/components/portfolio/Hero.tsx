@@ -63,25 +63,25 @@ export function Hero() {
 
   return (
     <section ref={ref} id="home" className="relative min-h-screen overflow-hidden">
-      {/* Aurora */}
+      {/* Soft premium background */}
       <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
       <motion.div
         aria-hidden
-        className="absolute -z-10 inset-0 opacity-60"
+        className="absolute -z-10 inset-0 opacity-70"
         animate={{ backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 20% 30%, oklch(0.55 0.2 260 / 0.35), transparent 60%), radial-gradient(ellipse 55% 45% at 80% 70%, oklch(0.6 0.18 210 / 0.28), transparent 60%)",
+            "radial-gradient(ellipse 55% 45% at 15% 25%, oklch(0.55 0.19 258 / 0.10), transparent 60%), radial-gradient(ellipse 50% 40% at 85% 75%, oklch(0.62 0.17 250 / 0.08), transparent 60%)",
           backgroundSize: "200% 200%",
         }}
       />
       <div
-        className="absolute inset-0 -z-10 opacity-[0.12]"
+        className="absolute inset-0 -z-10 opacity-[0.5]"
         style={{
           backgroundImage:
-            "linear-gradient(oklch(0.68 0.19 258 / 0.4) 1px, transparent 1px), linear-gradient(90deg, oklch(0.68 0.19 258 / 0.4) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
+            "linear-gradient(oklch(0.18 0.02 265 / 0.06) 1px, transparent 1px), linear-gradient(90deg, oklch(0.18 0.02 265 / 0.06) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
           maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
         }}
       />
@@ -90,10 +90,10 @@ export function Hero() {
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 transition-opacity"
         style={{
-          background: `radial-gradient(400px circle at ${pos.x}% ${pos.y}%, oklch(0.68 0.19 258 / 0.15), transparent 70%)`,
+          background: `radial-gradient(500px circle at ${pos.x}% ${pos.y}%, oklch(0.55 0.19 258 / 0.08), transparent 70%)`,
         }}
       />
-      <Particles count={60} />
+      <Particles count={40} />
 
       {/* Floating tech icons */}
       {floatIcons.map(({ Icon, x, y, d }, i) => (
