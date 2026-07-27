@@ -54,9 +54,9 @@ export function Navbar() {
           {links.map((l) => (
             <li key={l.id}>
               <button onClick={() => go(l.id)}
-                className={`relative rounded-full px-3 py-1.5 text-sm transition-colors ${active === l.id ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+                className={`relative rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${active === l.id ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
                 {active === l.id && (
-                  <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-black/[0.04] ring-1 ring-black/[0.08]"
+                  <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-primary/[0.08] ring-1 ring-primary/20"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }} />
                 )}
                 <span className="relative">{l.label}</span>
