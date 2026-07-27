@@ -241,7 +241,7 @@ export function Hero() {
               animate={{ rotate: -360 }}
               transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
             />
-            <div className="relative h-full w-full overflow-hidden rounded-full ring-4 ring-[#050816]">
+            <div className="relative h-full w-full overflow-hidden rounded-full ring-4 ring-background">
               <img src={profileImg} alt={PROFILE.name} width={768} height={768} className="h-full w-full object-cover" />
             </div>
           </div>
