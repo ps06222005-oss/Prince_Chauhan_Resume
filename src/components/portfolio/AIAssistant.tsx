@@ -121,7 +121,7 @@ export function AIAssistant() {
             role="dialog"
             aria-label="Portfolio assistant"
           >
-            <div className="flex items-center gap-3 border-b border-white/10 bg-white/[0.03] px-4 py-3">
+            <div className="flex items-center gap-3 border-b border-black/[0.08] bg-black/[0.03] px-4 py-3">
               <span className="relative grid h-9 w-9 place-items-center rounded-full bg-gradient-primary text-primary-foreground">
                 <Bot size={16} />
                 <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-background bg-emerald-400" />
@@ -132,7 +132,7 @@ export function AIAssistant() {
               </div>
               <button
                 onClick={clear}
-                className="rounded-full p-1.5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                className="rounded-full p-1.5 text-muted-foreground hover:bg-black/[0.06] hover:text-foreground"
                 aria-label="Clear conversation"
                 title="Clear conversation"
               >
@@ -151,7 +151,7 @@ export function AIAssistant() {
                     className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-2 ${
                       m.role === "user"
                         ? "bg-gradient-primary text-primary-foreground"
-                        : "bg-white/5 border border-white/10"
+                        : "bg-black/[0.04] border border-black/[0.08]"
                     }`}
                   >
                     {m.text}
@@ -160,7 +160,7 @@ export function AIAssistant() {
               ))}
               {typing && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
-                  <div className="inline-flex items-center gap-1 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
+                  <div className="inline-flex items-center gap-1 rounded-2xl border border-black/[0.08] bg-black/[0.04] px-3 py-2.5">
                     <Dot delay={0} />
                     <Dot delay={0.15} />
                     <Dot delay={0.3} />
@@ -168,14 +168,14 @@ export function AIAssistant() {
                 </motion.div>
               )}
             </div>
-            <div className="border-t border-white/10 p-3">
+            <div className="border-t border-black/[0.08] p-3">
               <div className="mb-2 flex flex-wrap gap-1.5">
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s}
                     onClick={() => send(s)}
                     disabled={typing}
-                    className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-0.5 text-[11px] hover:bg-white/10 disabled:opacity-50"
+                    className="rounded-full border border-black/[0.08] bg-black/[0.03] px-2.5 py-0.5 text-[11px] hover:bg-black/[0.06] disabled:opacity-50"
                   >
                     {s}
                   </button>
@@ -194,7 +194,7 @@ export function AIAssistant() {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask about skills, projects…"
                   aria-label="Ask the assistant"
-                  className="flex-1 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-sm outline-none focus:border-accent-blue/60"
+                  className="flex-1 rounded-full border border-black/[0.08] bg-black/[0.03] px-3 py-2 text-sm outline-none focus:border-accent-blue/60"
                 />
                 <button
                   type="submit"

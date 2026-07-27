@@ -60,7 +60,7 @@ export function Certifications() {
               className={`rounded-full border px-3 py-1 text-xs transition-colors ${
                 cat === c
                   ? "border-accent-blue/60 bg-accent-blue/20 text-foreground"
-                  : "border-white/10 bg-white/[0.03] text-muted-foreground hover:text-foreground"
+                  : "border-black/[0.08] bg-black/[0.03] text-muted-foreground hover:text-foreground"
               }`}
             >
               {c}
@@ -99,7 +99,7 @@ export function Certifications() {
             <p className="mt-1 text-sm text-muted-foreground">{c.issuer}</p>
             <div className="mt-3 flex items-center justify-between text-xs uppercase tracking-wider text-muted-foreground">
               <span>{c.year}</span>
-              <span className="rounded-full border border-white/10 bg-white/[0.03] px-2 py-0.5 text-[10px] normal-case tracking-normal">
+              <span className="rounded-full border border-black/[0.08] bg-black/[0.03] px-2 py-0.5 text-[10px] normal-case tracking-normal">
                 {c.category}
               </span>
             </div>
@@ -132,12 +132,12 @@ export function Certifications() {
                     <p className="text-sm text-muted-foreground">{open.issuer} · {open.year}</p>
                   </div>
                 </div>
-                <button onClick={() => setOpen(null)} className="rounded-full p-1.5 hover:bg-white/10" aria-label="Close">
+                <button onClick={() => setOpen(null)} className="rounded-full p-1.5 hover:bg-black/[0.06]" aria-label="Close">
                   <X size={18} />
                 </button>
               </div>
 
-              <div className="mt-6 grid aspect-video place-items-center overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-accent-blue/10 to-accent-cyan/5">
+              <div className="mt-6 grid aspect-video place-items-center overflow-hidden rounded-xl border border-black/[0.08] bg-gradient-to-br from-accent-blue/10 to-accent-cyan/5">
                 <div className="text-center">
                   <Award className="mx-auto text-accent-cyan" size={48} />
                   <p className="mt-3 text-sm text-muted-foreground">Certificate preview coming soon</p>
@@ -148,14 +148,14 @@ export function Certifications() {
                 <button
                   disabled
                   title="Verification link coming soon"
-                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm opacity-60"
+                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-black/[0.04] px-4 py-2 text-sm opacity-60"
                 >
                   <ExternalLink size={14} /> Verify
                 </button>
                 <button
                   disabled
                   title="Certificate file coming soon"
-                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm opacity-60"
+                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-black/[0.04] px-4 py-2 text-sm opacity-60"
                 >
                   <Download size={14} /> Download
                 </button>

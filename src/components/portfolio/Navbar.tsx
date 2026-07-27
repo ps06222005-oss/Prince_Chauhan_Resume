@@ -56,7 +56,7 @@ export function Navbar() {
               <button onClick={() => go(l.id)}
                 className={`relative rounded-full px-3 py-1.5 text-sm transition-colors ${active === l.id ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
                 {active === l.id && (
-                  <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-white/5 ring-1 ring-white/10"
+                  <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-black/[0.04] ring-1 ring-black/[0.08]"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }} />
                 )}
                 <span className="relative">{l.label}</span>
@@ -72,7 +72,7 @@ export function Navbar() {
             className="hidden xl:inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
           >
             <span>Search</span>
-            <span className="rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px]">⌘K</span>
+            <span className="rounded-md border border-black/[0.08] bg-black/[0.04] px-1.5 py-0.5 text-[10px]">⌘K</span>
           </button>
           <a href={PROFILE.github} target="_blank" rel="noreferrer" aria-label="GitHub"
             className="grid h-9 w-9 place-items-center rounded-full glass hover:text-accent-cyan transition-colors">
@@ -84,7 +84,7 @@ export function Navbar() {
           </a>
         </div>
 
-        <button onClick={() => setOpen((v) => !v)} className="lg:hidden rounded-lg p-2 hover:bg-white/5" aria-label="Toggle menu">
+        <button onClick={() => setOpen((v) => !v)} className="lg:hidden rounded-lg p-2 hover:bg-black/[0.04]" aria-label="Toggle menu">
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </nav>
@@ -99,7 +99,7 @@ export function Navbar() {
               {links.map((l) => (
                 <li key={l.id}>
                   <button onClick={() => go(l.id)}
-                    className={`w-full rounded-lg px-3 py-2 text-left text-sm ${active === l.id ? "bg-white/5 text-foreground" : "text-muted-foreground"}`}>
+                    className={`w-full rounded-lg px-3 py-2 text-left text-sm ${active === l.id ? "bg-black/[0.04] text-foreground" : "text-muted-foreground"}`}>
                     {l.label}
                   </button>
                 </li>

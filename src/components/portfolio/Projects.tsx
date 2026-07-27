@@ -108,7 +108,7 @@ export function Projects() {
           <button
             onClick={() => setTech(null)}
             className={`rounded-full border px-3 py-1 text-xs transition-colors ${
-              tech === null ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-white/10 bg-white/[0.03] text-muted-foreground hover:text-foreground"
+              tech === null ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-black/[0.08] bg-black/[0.03] text-muted-foreground hover:text-foreground"
             }`}
           >
             All
@@ -118,7 +118,7 @@ export function Projects() {
               key={t}
               onClick={() => setTech(t === tech ? null : t)}
               className={`rounded-full border px-3 py-1 text-xs transition-colors ${
-                tech === t ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-white/10 bg-white/[0.03] text-muted-foreground hover:text-foreground"
+                tech === t ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-black/[0.08] bg-black/[0.03] text-muted-foreground hover:text-foreground"
               }`}
             >
               {t}
@@ -146,7 +146,7 @@ export function Projects() {
             <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full opacity-30 blur-3xl transition-opacity group-hover:opacity-60"
               style={{ background: "var(--gradient-primary)" }} />
             <div className="relative flex items-start justify-between gap-4">
-              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-primary/20 text-accent-cyan ring-1 ring-white/10">
+              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-primary/20 text-accent-cyan ring-1 ring-black/[0.08]">
                 <p.icon size={26} />
               </div>
               <span className="text-xs uppercase tracking-widest text-muted-foreground">0{i + 1} / 0{projects.length}</span>
@@ -155,12 +155,12 @@ export function Projects() {
             <p className="relative mt-3 text-muted-foreground leading-relaxed">{p.overview}</p>
             <div className="relative mt-5 flex flex-wrap gap-2">
               {p.tech.map((t) => (
-                <span key={t} className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs text-foreground/80">{t}</span>
+                <span key={t} className="rounded-full border border-black/[0.08] bg-black/[0.03] px-2.5 py-1 text-xs text-foreground/80">{t}</span>
               ))}
             </div>
             <div className="relative mt-6 flex items-center gap-3">
               <a href={p.github} target="_blank" rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition-colors">
+                className="inline-flex items-center gap-2 rounded-full bg-black/[0.04] px-4 py-2 text-sm hover:bg-black/[0.06] transition-colors">
                 <Github size={14} /> GitHub
               </a>
               <button onClick={() => setOpen(p)}
@@ -191,7 +191,7 @@ export function Projects() {
                   </span>
                   <h3 className="text-2xl font-bold">{open.title}</h3>
                 </div>
-                <button onClick={() => setOpen(null)} className="rounded-full p-1.5 hover:bg-white/10" aria-label="Close">
+                <button onClick={() => setOpen(null)} className="rounded-full p-1.5 hover:bg-black/[0.06]" aria-label="Close">
                   <X size={18} />
                 </button>
               </div>
@@ -235,7 +235,7 @@ export function Projects() {
               <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Tech Stack</h4>
               <div className="mt-2 flex flex-wrap gap-2">
                 {open.tech.map((t) => (
-                  <span key={t} className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs">{t}</span>
+                  <span key={t} className="rounded-full border border-black/[0.08] bg-black/[0.03] px-2.5 py-1 text-xs">{t}</span>
                 ))}
               </div>
               <div className="mt-6 flex gap-3">
