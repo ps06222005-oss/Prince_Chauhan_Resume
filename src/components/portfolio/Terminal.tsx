@@ -65,7 +65,7 @@ GitHub   : ${PROFILE.github}`,
 ├── terminal
 └── contact`,
   date: now,
-  theme: `dark · navy #050816 · blue gradient accents`,
+  theme: `light · minimal · premium blue accents (#2563eb → #60a5fa)`,
 };
 
 type Line = { kind: "in" | "out"; text: string };

@@ -124,7 +124,7 @@ export function AIAssistant() {
             <div className="flex items-center gap-3 border-b border-white/10 bg-white/[0.03] px-4 py-3">
               <span className="relative grid h-9 w-9 place-items-center rounded-full bg-gradient-primary text-primary-foreground">
                 <Bot size={16} />
-                <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#050816] bg-emerald-400" />
+                <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-background bg-emerald-400" />
               </span>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold">Portfolio Assistant</p>

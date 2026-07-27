@@ -4,7 +4,7 @@ import { PROFILE } from "@/lib/portfolio-data";
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-white/5 bg-[#050816]">
+    <footer className="border-t border-border bg-background">
       <div className="mx-auto grid max-w-7xl gap-6 px-6 py-10 sm:grid-cols-3">
         <div>
           <p className="font-display text-lg font-bold">

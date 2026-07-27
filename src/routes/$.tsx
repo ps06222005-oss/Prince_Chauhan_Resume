@@ -14,7 +14,7 @@ export const Route = createFileRoute("/$")({
 
 function NotFound() {
   return (
-    <main className="relative grid min-h-screen place-items-center bg-[#050816] px-6 text-foreground">
+    <main className="relative grid min-h-screen place-items-center bg-background px-6 text-foreground">
       <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
       <div className="text-center">
         <p className="font-display text-[8rem] leading-none font-bold text-gradient">404</p>
