@@ -62,7 +62,7 @@ export const Route = createFileRoute("/")({
 
 function Portfolio() {
   return (
-    <main className="relative min-h-screen bg-[#050816] text-foreground">
+    <main className="relative min-h-screen bg-background text-foreground">
       <ScrollProgress />
       <Navbar />
       <Hero />
