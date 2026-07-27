@@ -108,7 +108,7 @@ export function Projects() {
           <button
             onClick={() => setTech(null)}
             className={`rounded-full border px-3 py-1 text-xs transition-colors ${
-              tech === null ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-white/10 bg-white/[0.03] text-muted-foreground hover:text-foreground"
+              tech === null ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-black/[0.08] bg-black/[0.03] text-muted-foreground hover:text-foreground"
             }`}
           >
             All
@@ -118,7 +118,7 @@ export function Projects() {
               key={t}
               onClick={() => setTech(t === tech ? null : t)}
               className={`rounded-full border px-3 py-1 text-xs transition-colors ${
-                tech === t ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-white/10 bg-white/[0.03] text-muted-foreground hover:text-foreground"
+                tech === t ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-black/[0.08] bg-black/[0.03] text-muted-foreground hover:text-foreground"
               }`}
             >
               {t}
@@ -132,41 +132,51 @@ export function Projects() {
           No projects match your filters.
         </p>
       )}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-2">
         {filtered.map((p, i) => (
           <motion.article
             key={p.title}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.55, delay: i * 0.1 }}
+            transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{ y: -6 }}
-            className="group relative glass overflow-hidden rounded-2xl p-8 hover:border-accent-blue/40 transition-colors"
+            className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-background/70 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:border-primary/30 transition-all"
           >
-            <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full opacity-30 blur-3xl transition-opacity group-hover:opacity-60"
-              style={{ background: "var(--gradient-primary)" }} />
-            <div className="relative flex items-start justify-between gap-4">
-              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-primary/20 text-accent-cyan ring-1 ring-white/10">
-                <p.icon size={26} />
+            {/* Preview / cover */}
+            <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5">
+              <div className="pointer-events-none absolute inset-0 opacity-70"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 25% 30%, rgba(59,130,246,0.25), transparent 55%), radial-gradient(circle at 80% 70%, rgba(96,165,250,0.22), transparent 55%)",
+                }} />
+              <div className="absolute inset-0 grid place-items-center">
+                <div className="grid h-20 w-20 place-items-center rounded-2xl bg-white/70 backdrop-blur-md text-primary ring-1 ring-primary/20 shadow-[var(--shadow-card)] transition-transform duration-500 group-hover:scale-110">
+                  <p.icon size={36} />
+                </div>
               </div>
-              <span className="text-xs uppercase tracking-widest text-muted-foreground">0{i + 1} / 0{projects.length}</span>
+              <span className="absolute right-4 top-4 rounded-full bg-background/80 backdrop-blur px-2.5 py-1 text-[10px] font-medium tracking-[0.14em] uppercase text-muted-foreground ring-1 ring-border">
+                0{i + 1} / 0{projects.length}
+              </span>
             </div>
-            <h3 className="relative mt-6 text-2xl font-bold">{p.title}</h3>
-            <p className="relative mt-3 text-muted-foreground leading-relaxed">{p.overview}</p>
-            <div className="relative mt-5 flex flex-wrap gap-2">
-              {p.tech.map((t) => (
-                <span key={t} className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs text-foreground/80">{t}</span>
-              ))}
-            </div>
-            <div className="relative mt-6 flex items-center gap-3">
-              <a href={p.github} target="_blank" rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition-colors">
-                <Github size={14} /> GitHub
-              </a>
-              <button onClick={() => setOpen(p)}
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm text-primary-foreground hover:scale-[1.03] transition-transform">
-                <ExternalLink size={14} /> Details
-              </button>
+            <div className="flex flex-1 flex-col p-8">
+              <h3 className="text-2xl font-semibold tracking-tight">{p.title}</h3>
+              <p className="mt-3 text-muted-foreground leading-relaxed">{p.overview}</p>
+              <div className="mt-5 flex flex-wrap gap-1.5">
+                {p.tech.map((t) => (
+                  <span key={t} className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground/75">{t}</span>
+                ))}
+              </div>
+              <div className="mt-auto pt-6 flex items-center gap-3">
+                <a href={p.github} target="_blank" rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium hover:bg-muted transition-colors">
+                  <Github size={14} /> GitHub
+                </a>
+                <button onClick={() => setOpen(p)}
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_-10px_rgba(59,130,246,0.6)] hover:scale-[1.03] transition-transform">
+                  <ExternalLink size={14} /> Details
+                </button>
+              </div>
             </div>
           </motion.article>
         ))}
@@ -176,7 +186,7 @@ export function Projects() {
         {open && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[70] grid place-items-center bg-black/70 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-[70] grid place-items-center bg-foreground/40 backdrop-blur-md p-4"
             onClick={() => setOpen(null)}
           >
             <motion.div
@@ -191,7 +201,7 @@ export function Projects() {
                   </span>
                   <h3 className="text-2xl font-bold">{open.title}</h3>
                 </div>
-                <button onClick={() => setOpen(null)} className="rounded-full p-1.5 hover:bg-white/10" aria-label="Close">
+                <button onClick={() => setOpen(null)} className="rounded-full p-1.5 hover:bg-black/[0.06]" aria-label="Close">
                   <X size={18} />
                 </button>
               </div>
@@ -235,7 +245,7 @@ export function Projects() {
               <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Tech Stack</h4>
               <div className="mt-2 flex flex-wrap gap-2">
                 {open.tech.map((t) => (
-                  <span key={t} className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs">{t}</span>
+                  <span key={t} className="rounded-full border border-black/[0.08] bg-black/[0.03] px-2.5 py-1 text-xs">{t}</span>
                 ))}
               </div>
               <div className="mt-6 flex gap-3">

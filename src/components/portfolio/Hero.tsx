@@ -178,7 +178,7 @@ export function Hero() {
             </a>
             <button
               onClick={() => scrollTo("projects")}
-              className="group inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold hover:bg-white/10 transition-colors"
+              className="group inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold hover:bg-black/[0.06] transition-colors"
             >
               <FolderGit2 size={16} /> View Projects
               <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
@@ -228,20 +228,26 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative mx-auto"
         >
-          <div className="relative h-64 w-64 sm:h-80 sm:w-80">
+          <div className="relative h-72 w-72 sm:h-96 sm:w-96">
+            {/* Soft blue glow */}
+            <div
+              aria-hidden
+              className="absolute -inset-8 rounded-full opacity-70 blur-3xl"
+              style={{ background: "radial-gradient(circle, #60a5fa 0%, transparent 65%)" }}
+            />
             <motion.div
-              className="absolute -inset-2 rounded-full opacity-70 blur-xl"
-              style={{ background: "conic-gradient(from 0deg, oklch(0.68 0.19 258), oklch(0.78 0.14 210), oklch(0.55 0.2 300), oklch(0.68 0.19 258))" }}
+              className="absolute -inset-2 rounded-full opacity-60 blur-xl"
+              style={{ background: "conic-gradient(from 0deg, #3b82f6, #60a5fa, #93c5fd, #3b82f6)" }}
               animate={{ rotate: 360 }}
-              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
             />
             <motion.div
               className="absolute -inset-1 rounded-full"
-              style={{ background: "conic-gradient(from 0deg, oklch(0.68 0.19 258), oklch(0.78 0.14 210), oklch(0.68 0.19 258))" }}
+              style={{ background: "conic-gradient(from 0deg, #3b82f6, #93c5fd, #3b82f6)" }}
               animate={{ rotate: -360 }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             />
-            <div className="relative h-full w-full overflow-hidden rounded-full ring-4 ring-background">
+            <div className="relative h-full w-full overflow-hidden rounded-full ring-[6px] ring-background shadow-[0_30px_80px_-20px_rgba(59,130,246,0.35)]">
               <img src={profileImg} alt={PROFILE.name} width={768} height={768} className="h-full w-full object-cover" />
             </div>
           </div>

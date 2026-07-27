@@ -78,7 +78,7 @@ export function GitHubStats() {
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {repos.slice(0, 6).map((r) => (
               <a key={r.id} href={r.html_url} target="_blank" rel="noreferrer"
-                className="group rounded-xl border border-white/5 bg-white/[0.02] p-4 hover:border-accent-blue/40 hover:bg-white/[0.04] transition-colors">
+                className="group rounded-xl border border-black/[0.06] bg-black/[0.02] p-4 hover:border-accent-blue/40 hover:bg-black/[0.04] transition-colors">
                 <div className="flex items-center justify-between gap-2">
                   <p className="truncate text-sm font-semibold">{r.name}</p>
                   <ExternalLink size={12} className="opacity-40 group-hover:opacity-100" />
@@ -95,7 +95,7 @@ export function GitHubStats() {
           {langs.length > 0 && (
             <div className="mt-5 flex flex-wrap gap-2">
               <span className="text-xs uppercase tracking-wider text-muted-foreground">Top Languages:</span>
-              {langs.map((l) => <span key={l} className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-0.5 text-xs">{l}</span>)}
+              {langs.map((l) => <span key={l} className="rounded-full border border-black/[0.08] bg-black/[0.03] px-2.5 py-0.5 text-xs">{l}</span>)}
             </div>
           )}
         </motion.div>
@@ -106,7 +106,7 @@ export function GitHubStats() {
 
 function Stat({ icon: Icon, label, value }: { icon: React.ComponentType<{ size?: number }>; label: string; value: number }) {
   return (
-    <div className="rounded-lg border border-white/5 bg-white/[0.02] p-2.5">
+    <div className="rounded-lg border border-black/[0.06] bg-black/[0.02] p-2.5">
       <Icon size={12} />
       <p className="mt-1 text-lg font-bold text-gradient">{value}</p>
       <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
