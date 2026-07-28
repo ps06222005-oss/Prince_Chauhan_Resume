@@ -17,6 +17,11 @@ function AuthPage() {
   const search = useSearch({ from: "/auth" });
   const next = search.next ?? "/";
   const navigate = useNavigate();
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const safeNext = isSameOriginPath(next) ? next : "/";
 
   async function submit(e: React.FormEvent) {
