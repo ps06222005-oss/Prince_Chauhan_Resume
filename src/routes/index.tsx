@@ -17,6 +17,7 @@ import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { AIAssistant } from "@/components/portfolio/AIAssistant";
 import { CommandPalette } from "@/components/portfolio/CommandPalette";
+import { LoadingScreen } from "@/components/portfolio/LoadingScreen";
 
 const SITE = "https://princechauhan.lovable.app";
 const OG_IMAGE = `${SITE}/og-image.png`;
@@ -75,6 +76,7 @@ export const Route = createFileRoute("/")({
 function Portfolio() {
   return (
     <main className="relative min-h-screen bg-background text-foreground">
+      <LoadingScreen />
       <ScrollProgress />
       <Navbar />
       <Hero />
