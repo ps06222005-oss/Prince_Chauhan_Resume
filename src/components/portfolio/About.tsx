@@ -28,9 +28,10 @@ export function About() {
             especially building small Python projects that solve real problems.
           </p>
           <p className="mt-4 text-muted-foreground leading-relaxed">
-            I'm still early in my journey. I spend most of my time learning the fundamentals of
-            programming, exploring machine learning concepts, and shipping simple automation
-            scripts and voice-based tools. I'm actively looking for{" "}
+            I'm early in my journey and intentionally learning in public. Most of my time goes into
+            the fundamentals of programming, learning React and JavaScript for modern web
+            development, exploring machine learning concepts, and shipping small Python
+            automation scripts and voice-based tools. I'm actively looking for{" "}
             <span className="text-foreground">internship opportunities</span> where I can
             contribute, learn from experienced engineers, and grow into a well-rounded
             developer.
