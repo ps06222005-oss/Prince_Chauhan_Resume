@@ -1,7 +1,11 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 
 export function Particles({ count = 40 }: { count?: number }) {
+  // Client-only: random positions would mismatch the SSR markup during hydration.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const particles = useMemo(
     () =>
       Array.from({ length: count }, (_, i) => ({
@@ -15,8 +19,11 @@ export function Particles({ count = 40 }: { count?: number }) {
     [count],
   );
 
+  if (!mounted) return null;
+
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+
       {particles.map((p) => (
         <motion.span
           key={p.id}

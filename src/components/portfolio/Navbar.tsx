@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Download, Github } from "lucide-react";
 import { PROFILE } from "@/lib/portfolio-data";
+import logo from "@/assets/logo-pc.png";
+
 
 const links = [
   { id: "home", label: "Home" },
@@ -45,15 +47,20 @@ export function Navbar() {
       initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-xl bg-background/70 border-b border-border shadow-[0_1px_20px_-8px_rgba(15,23,42,0.08)]" : ""}`}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
-        <button onClick={() => go("home")} className="font-display text-lg font-bold tracking-tight shrink-0">
-          <span className="text-gradient">Prince</span><span className="text-foreground/80">.dev</span>
+      <nav aria-label="Primary" className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
+        <button onClick={() => go("home")} aria-label="Prince Chauhan — back to top"
+          className="group flex shrink-0 items-center gap-2.5">
+          <img src={logo} alt="" width={32} height={32} className="h-8 w-8 transition-transform duration-300 group-hover:scale-105" />
+          <span className="font-display text-base font-bold tracking-tight leading-none">
+            <span className="text-foreground">Prince</span>
+            <span className="text-primary"> Chauhan</span>
+          </span>
         </button>
 
         <ul className="hidden lg:flex items-center gap-1">
           {links.map((l) => (
             <li key={l.id}>
-              <button onClick={() => go(l.id)}
+              <button onClick={() => go(l.id)} aria-current={active === l.id ? "true" : undefined}
                 className={`relative rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${active === l.id ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
                 {active === l.id && (
                   <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-primary/[0.08] ring-1 ring-primary/20"
@@ -64,6 +71,7 @@ export function Navbar() {
             </li>
           ))}
         </ul>
+
 
         <div className="hidden lg:flex items-center gap-2">
           <button
