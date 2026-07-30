@@ -18,9 +18,11 @@ import { Footer } from "@/components/portfolio/Footer";
 import { AIAssistant } from "@/components/portfolio/AIAssistant";
 import { CommandPalette } from "@/components/portfolio/CommandPalette";
 
-const TITLE = "Prince Chauhan — Aspiring Software Developer & AI Enthusiast";
+const SITE = "https://princechauhan.lovable.app";
+const OG_IMAGE = `${SITE}/og-image.png`;
+const TITLE = "Prince Chauhan | B.Tech AI & ML Student & Aspiring Developer";
 const DESC =
-  "Portfolio of Prince Chauhan, B.Tech CSE (AI & ML) student from Ghaziabad, India. Python projects, JARVIS voice assistant, and open to software development & AI internships.";
+  "Portfolio of Prince Chauhan — B.Tech CSE (AI & ML) student from Ghaziabad, India, learning React, JavaScript and Python. Explore projects, skills, certificates and contact. Open to internships.";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -28,17 +30,22 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: TITLE },
       { name: "description", content: DESC },
-      { name: "keywords", content: "Prince Chauhan, portfolio, software developer, AI enthusiast, Python, machine learning, B.Tech CSE, internship, JARVIS" },
+      { name: "keywords", content: "Prince Chauhan, Prince Chauhan Portfolio, Prince Chauhan Website, Prince Chauhan Developer, B.Tech AI & ML Student, Aspiring Software Developer, React Portfolio, Python Projects, Portfolio Website, Student Developer" },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-      { property: "og:site_name", content: "Prince Chauhan Portfolio" },
+      { property: "og:url", content: `${SITE}/` },
+      { property: "og:site_name", content: "Prince Chauhan" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Prince Chauhan — B.Tech CSE (AI & ML) student and aspiring software developer" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESC },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: `${SITE}/` }],
     scripts: [
       {
         type: "application/ld+json",
@@ -46,10 +53,14 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "Person",
           name: "Prince Chauhan",
+          url: `${SITE}/`,
+          image: OG_IMAGE,
           jobTitle: "B.Tech CSE (AI & ML) Student",
-          description: "Aspiring Software Developer & AI Enthusiast",
+          description: "Aspiring software developer learning React, JavaScript and Python. Open to internship opportunities.",
           address: { "@type": "PostalAddress", addressLocality: "Ghaziabad", addressRegion: "Uttar Pradesh", addressCountry: "IN" },
           email: "ps06222005@gmail.com",
+          knowsAbout: ["Python", "JavaScript", "React", "Artificial Intelligence", "Machine Learning", "Web Development"],
+          seeks: { "@type": "Demand", name: "Software development and AI/ML internship opportunities" },
           sameAs: [
             "https://github.com/ps06222005-oss",
             "https://www.linkedin.com/in/prince-chauhan-3418a3288",
@@ -59,6 +70,7 @@ export const Route = createFileRoute("/")({
     ],
   }),
 });
+
 
 function Portfolio() {
   return (
