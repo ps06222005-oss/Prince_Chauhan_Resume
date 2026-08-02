@@ -221,7 +221,7 @@ export function Certifications() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[70] flex flex-col bg-foreground/50 p-4 backdrop-blur-md sm:p-8"
+            className="fixed inset-0 z-[70] flex items-center justify-center bg-foreground/50 p-4 backdrop-blur-md sm:p-8"
             onClick={close}
           >
             <motion.div
