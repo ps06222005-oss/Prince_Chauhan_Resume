@@ -124,7 +124,26 @@
     font-weight: 600;
   }
   ::selection { background: oklch(0.55 0.19 258 / 0.18); }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  img { content-visibility: auto; }
 }
+
+/* Respect reduced-motion preferences globally */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 
 @utility glass {
   background: color-mix(in oklab, white 70%, transparent);
