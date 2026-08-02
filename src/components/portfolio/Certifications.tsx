@@ -230,7 +230,7 @@ export function Certifications() {
               exit={reduce ? undefined : { scale: 0.96, y: 16 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="mx-auto flex h-full w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-[var(--shadow-elevated)]"
+              className="mx-auto flex max-h-full w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-[var(--shadow-elevated)]"
               role="dialog"
               aria-modal="true"
               aria-label={`${open.title} certificate`}
@@ -278,8 +278,9 @@ export function Certifications() {
                 </div>
               </header>
 
-              <div className="relative flex-1 overflow-auto bg-secondary p-4 sm:p-8">
+              <div className="relative flex flex-1 items-center justify-center overflow-auto bg-secondary p-4 sm:p-8">
                 <div className="mx-auto w-full max-w-3xl">
+
                   <div
                     className="origin-top overflow-hidden rounded-2xl border border-border bg-background shadow-[var(--shadow-card)] transition-transform duration-300 ease-out"
                     style={{ transform: `scale(${zoom})` }}
