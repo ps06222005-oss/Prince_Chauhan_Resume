@@ -248,7 +248,7 @@ export function Hero() {
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             />
             <div className="relative h-full w-full overflow-hidden rounded-full ring-[6px] ring-background shadow-[0_30px_80px_-20px_rgba(59,130,246,0.35)]">
-              <img src={profileImg} alt={`Portrait of ${PROFILE.name}, B.Tech CSE (AI & ML) student and aspiring software developer`} width={768} height={768} className="h-full w-full object-cover" />
+              <img src={profileImg} alt={`Portrait of ${PROFILE.name}, B.Tech CSE (AI & ML) student and aspiring software developer`} width={768} height={768} fetchPriority="high" decoding="async" className="h-full w-full object-cover" />
             </div>
           </div>
         </motion.div>
