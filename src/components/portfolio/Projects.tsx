@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, X, Cpu, Bot, ExternalLink, Search } from "lucide-react";
+import { Github, X, Cpu, Bot, ExternalLink, Search, Star } from "lucide-react";
 import { Section } from "./Section";
+import { TiltCard } from "./TiltCard";
+
 import { PROFILE } from "@/lib/portfolio-data";
 
 type Project = {
