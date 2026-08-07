@@ -177,8 +177,14 @@ export function Projects() {
               <h3 className="text-2xl font-semibold tracking-tight">{p.title}</h3>
               <p className="mt-3 text-muted-foreground leading-relaxed">{p.overview}</p>
               <div className="mt-5 flex flex-wrap gap-1.5">
-                {p.tech.map((t) => (
-                  <span key={t} className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground/75">{t}</span>
+                {p.tech.map((t, ti) => (
+                  <span
+                    key={t}
+                    style={{ transitionDelay: `${ti * 40}ms` }}
+                    className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground/75 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-primary/30 group-hover:text-foreground"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
               <div className="mt-auto pt-6 flex items-center gap-3">
@@ -187,13 +193,16 @@ export function Projects() {
                   <Github size={14} /> GitHub
                 </a>
                 <button onClick={() => setOpen(p)}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_-10px_rgba(59,130,246,0.6)] hover:scale-[1.03] transition-transform">
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_-10px_rgba(59,130,246,0.6)] hover:scale-[1.03] active:scale-95 transition-transform">
                   <ExternalLink size={14} /> Details
                 </button>
               </div>
             </div>
-          </motion.article>
+          </article>
+          </TiltCard>
+          </motion.div>
         ))}
+
       </div>
 
       <AnimatePresence>
