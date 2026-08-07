@@ -27,8 +27,10 @@ const sectionActions: { id: string; label: string; icon: Action["icon"] }[] = [
   { id: "education", label: "Education", icon: GraduationCap },
   { id: "certifications", label: "Certifications", icon: Award },
   { id: "achievements", label: "Achievements", icon: Trophy },
+  { id: "beyond", label: "Beyond Coding", icon: Sparkles },
   { id: "terminal", label: "Terminal", icon: TermIcon },
   { id: "contact", label: "Contact", icon: Mail },
+
 ];
 
 export function CommandPalette() {
