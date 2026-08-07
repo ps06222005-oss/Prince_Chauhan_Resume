@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, X, Cpu, Bot, ExternalLink, Search } from "lucide-react";
+import { Github, X, Cpu, Bot, ExternalLink, Search, Star } from "lucide-react";
 import { Section } from "./Section";
+import { TiltCard } from "./TiltCard";
+
 import { PROFILE } from "@/lib/portfolio-data";
 
 type Project = {
@@ -134,37 +136,57 @@ export function Projects() {
       )}
       <div className="grid gap-8 lg:grid-cols-2">
         {filtered.map((p, i) => (
-          <motion.article
+          <motion.div
             key={p.title}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ y: -6 }}
-            className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-background/70 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:border-primary/30 transition-all"
           >
-            {/* Preview / cover */}
+          <TiltCard className="h-full rounded-3xl">
+          <article
+            className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-background/70 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:border-primary/30 transition-all"
+          >
+            {/* Browser-chrome mockup preview */}
             <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5">
               <div className="pointer-events-none absolute inset-0 opacity-70"
                 style={{
                   backgroundImage:
                     "radial-gradient(circle at 25% 30%, rgba(59,130,246,0.25), transparent 55%), radial-gradient(circle at 80% 70%, rgba(96,165,250,0.22), transparent 55%)",
                 }} />
-              <div className="absolute inset-0 grid place-items-center">
-                <div className="grid h-20 w-20 place-items-center rounded-2xl bg-white/70 backdrop-blur-md text-primary ring-1 ring-primary/20 shadow-[var(--shadow-card)] transition-transform duration-500 group-hover:scale-110">
+              <div className="absolute inset-x-4 top-4 flex items-center gap-1.5 rounded-t-xl border border-border bg-background/70 px-3 py-2 backdrop-blur">
+                <span className="h-2 w-2 rounded-full bg-destructive/50" />
+                <span className="h-2 w-2 rounded-full bg-primary/40" />
+                <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
+                <span className="ml-2 truncate text-[10px] text-muted-foreground">{p.title}</span>
+              </div>
+              <div className="absolute inset-0 grid place-items-center pt-8">
+                <div className="grid h-20 w-20 place-items-center rounded-2xl bg-white/70 backdrop-blur-md text-primary ring-1 ring-primary/20 shadow-[var(--shadow-card)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3">
                   <p.icon size={36} />
                 </div>
               </div>
-              <span className="absolute right-4 top-4 rounded-full bg-background/80 backdrop-blur px-2.5 py-1 text-[10px] font-medium tracking-[0.14em] uppercase text-muted-foreground ring-1 ring-border">
+              {i === 0 && (
+                <span className="absolute left-4 bottom-4 inline-flex items-center gap-1 rounded-full bg-gradient-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-foreground shadow-[0_8px_24px_-8px_rgba(59,130,246,0.7)]">
+                  <Star size={10} /> Featured
+                </span>
+              )}
+              <span className="absolute right-4 bottom-4 rounded-full bg-background/80 backdrop-blur px-2.5 py-1 text-[10px] font-medium tracking-[0.14em] uppercase text-muted-foreground ring-1 ring-border">
                 0{i + 1} / 0{projects.length}
               </span>
             </div>
+
             <div className="flex flex-1 flex-col p-8">
               <h3 className="text-2xl font-semibold tracking-tight">{p.title}</h3>
               <p className="mt-3 text-muted-foreground leading-relaxed">{p.overview}</p>
               <div className="mt-5 flex flex-wrap gap-1.5">
-                {p.tech.map((t) => (
-                  <span key={t} className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground/75">{t}</span>
+                {p.tech.map((t, ti) => (
+                  <span
+                    key={t}
+                    style={{ transitionDelay: `${ti * 40}ms` }}
+                    className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground/75 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-primary/30 group-hover:text-foreground"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
               <div className="mt-auto pt-6 flex items-center gap-3">
@@ -173,13 +195,16 @@ export function Projects() {
                   <Github size={14} /> GitHub
                 </a>
                 <button onClick={() => setOpen(p)}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_-10px_rgba(59,130,246,0.6)] hover:scale-[1.03] transition-transform">
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_-10px_rgba(59,130,246,0.6)] hover:scale-[1.03] active:scale-95 transition-transform">
                   <ExternalLink size={14} /> Details
                 </button>
               </div>
             </div>
-          </motion.article>
+          </article>
+          </TiltCard>
+          </motion.div>
         ))}
+
       </div>
 
       <AnimatePresence>

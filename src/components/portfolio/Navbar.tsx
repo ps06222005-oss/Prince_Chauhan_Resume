@@ -14,13 +14,17 @@ const links = [
   { id: "journey", label: "Journey" },
   { id: "github", label: "GitHub" },
   { id: "education", label: "Education" },
+  { id: "beyond", label: "Beyond" },
   { id: "contact", label: "Contact" },
+
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
+  const [spin, setSpin] = useState(0);
+
 
   useEffect(() => {
     const onScroll = () => {
@@ -48,9 +52,17 @@ export function Navbar() {
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-xl bg-background/70 border-b border-border shadow-[0_1px_20px_-8px_rgba(15,23,42,0.08)]" : ""}`}
     >
       <nav aria-label="Primary" className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
-        <button onClick={() => go("home")} aria-label="Prince Chauhan — back to top"
+        <button
+          onClick={() => { setSpin((s) => s + 1); go("home"); }}
+          aria-label="Prince Chauhan — back to top"
           className="group flex shrink-0 items-center gap-2.5">
-          <img src={logo} alt="" width={32} height={32} className="h-8 w-8 transition-transform duration-300 group-hover:scale-105" />
+          <motion.img
+            src={logo} alt="" width={32} height={32}
+            animate={{ rotate: spin * 360 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="h-8 w-8 transition-transform duration-300 group-hover:scale-105"
+          />
+
           <span className="font-display text-base font-bold tracking-tight leading-none">
             <span className="text-foreground">Prince</span>
             <span className="text-primary"> Chauhan</span>
