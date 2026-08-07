@@ -72,6 +72,31 @@ export const Route = createFileRoute("/")({
           ],
         }),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ProfilePage",
+          "@id": `${SITE}/#profilepage`,
+          url: `${SITE}/`,
+          name: TITLE,
+          description: DESC,
+          inLanguage: "en",
+          isPartOf: { "@type": "WebSite", name: "Prince Chauhan Portfolio", url: `${SITE}/` },
+          primaryImageOfPage: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630 },
+          mainEntity: { "@type": "Person", name: "Prince Chauhan", url: `${SITE}/` },
+          about: { "@type": "Person", name: "Prince Chauhan" },
+          breadcrumb: {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: `${SITE}/` },
+              { "@type": "ListItem", position: 2, name: "Projects", item: `${SITE}/#projects` },
+              { "@type": "ListItem", position: 3, name: "Certifications", item: `${SITE}/#certifications` },
+              { "@type": "ListItem", position: 4, name: "Contact", item: `${SITE}/#contact` },
+            ],
+          },
+        }),
+      },
     ],
   }),
 });
@@ -80,8 +105,10 @@ export const Route = createFileRoute("/")({
 function Portfolio() {
   return (
     <main className="relative min-h-screen bg-background text-foreground">
+      <div aria-hidden className="noise-overlay" />
       <LoadingScreen />
       <ScrollProgress />
+      <CustomCursor />
       <Navbar />
       <Hero />
       <About />
@@ -93,12 +120,15 @@ function Portfolio() {
       <Education />
       <Certifications />
       <Achievements />
+      <BeyondCoding />
       <TerminalMode />
       <Contact />
       <Footer />
       <BackToTop />
       <AIAssistant />
       <CommandPalette />
+      <EasterEggs />
     </main>
   );
+
 }
