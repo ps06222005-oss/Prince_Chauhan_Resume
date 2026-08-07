@@ -14,7 +14,9 @@ const links = [
   { id: "journey", label: "Journey" },
   { id: "github", label: "GitHub" },
   { id: "education", label: "Education" },
+  { id: "beyond", label: "Beyond" },
   { id: "contact", label: "Contact" },
+
 ];
 
 export function Navbar() {
