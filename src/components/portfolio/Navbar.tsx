@@ -21,6 +21,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
+  const [spin, setSpin] = useState(0);
+
 
   useEffect(() => {
     const onScroll = () => {
