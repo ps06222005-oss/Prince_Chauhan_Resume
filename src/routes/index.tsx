@@ -18,6 +18,10 @@ import { Footer } from "@/components/portfolio/Footer";
 import { AIAssistant } from "@/components/portfolio/AIAssistant";
 import { CommandPalette } from "@/components/portfolio/CommandPalette";
 import { LoadingScreen } from "@/components/portfolio/LoadingScreen";
+import { BeyondCoding } from "@/components/portfolio/BeyondCoding";
+import { CustomCursor } from "@/components/portfolio/CustomCursor";
+import { EasterEggs } from "@/components/portfolio/EasterEggs";
+
 
 const SITE = "https://princechauhan.lovable.app";
 const OG_IMAGE = `${SITE}/og-image.png`;
