@@ -111,7 +111,7 @@ export function Contact() {
       <div className="grid gap-8 lg:grid-cols-5">
         <motion.div
           initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="lg:col-span-2 space-y-3"
+          className="min-w-0 lg:col-span-2 space-y-3"
         >
           <div className="glass rounded-2xl p-5">
             <p className="text-xs uppercase tracking-wider text-muted-foreground mb-3">Availability</p>
@@ -155,20 +155,20 @@ export function Contact() {
         <motion.form
           onSubmit={submit}
           initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="glass lg:col-span-3 rounded-2xl p-6 sm:p-8 space-y-4"
+          className="glass min-w-0 lg:col-span-3 rounded-2xl p-6 sm:p-8 space-y-4"
         >
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid min-w-0 gap-4 sm:grid-cols-2">
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground">Name</label>
               <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="mt-1.5 w-full rounded-lg border border-black/[0.08] bg-black/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
+                className="mt-1.5 w-full min-w-0 rounded-lg border border-black/[0.08] bg-black/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
                 placeholder="Your full name" maxLength={100} />
               {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
             </div>
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground">Email</label>
               <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="mt-1.5 w-full rounded-lg border border-black/[0.08] bg-black/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
+                className="mt-1.5 w-full min-w-0 rounded-lg border border-black/[0.08] bg-black/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
                 placeholder="you@company.com" maxLength={255} />
               {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
             </div>
@@ -177,7 +177,7 @@ export function Contact() {
             <label className="text-xs uppercase tracking-wider text-muted-foreground">Message</label>
             <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
               rows={5} maxLength={1000}
-              className="mt-1.5 w-full resize-none rounded-lg border border-black/[0.08] bg-black/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
+              className="mt-1.5 w-full min-w-0 resize-none rounded-lg border border-black/[0.08] bg-black/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
               placeholder="Tell me about the role or project..." />
             {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message}</p>}
           </div>

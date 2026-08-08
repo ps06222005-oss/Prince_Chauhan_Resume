@@ -15,12 +15,42 @@ import { Achievements } from "@/components/portfolio/Achievements";
 import { TerminalMode } from "@/components/portfolio/Terminal";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
-import { AIAssistant } from "@/components/portfolio/AIAssistant";
-import { CommandPalette } from "@/components/portfolio/CommandPalette";
 import { LoadingScreen } from "@/components/portfolio/LoadingScreen";
 import { BeyondCoding } from "@/components/portfolio/BeyondCoding";
 import { CustomCursor } from "@/components/portfolio/CustomCursor";
-import { EasterEggs } from "@/components/portfolio/EasterEggs";
+import { lazy, Suspense, useEffect, useState } from "react";
+
+// Overlay widgets are interaction-only: split them out of the first payload and
+// mount after the page is idle so they never compete with LCP.
+const AIAssistant = lazy(() =>
+  import("@/components/portfolio/AIAssistant").then((m) => ({ default: m.AIAssistant })),
+);
+const CommandPalette = lazy(() =>
+  import("@/components/portfolio/CommandPalette").then((m) => ({ default: m.CommandPalette })),
+);
+const EasterEggs = lazy(() =>
+  import("@/components/portfolio/EasterEggs").then((m) => ({ default: m.EasterEggs })),
+);
+
+function DeferredOverlays() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
+      .requestIdleCallback;
+    if (idle) {
+      const id = idle(() => setReady(true));
+      return () => (window as unknown as { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(id);
+    }
+    const t = setTimeout(() => setReady(true), 1200);
+    return () => clearTimeout(t);
+  }, []);
+  if (!ready) return null;
+  return (
+    <Suspense fallback={null}>
+      <DeferredOverlays />
+    </Suspense>
+  );
+}
 
 
 const SITE = "https://princechauhan.lovable.app";
@@ -110,7 +140,7 @@ export const Route = createFileRoute("/")({
 
 function Portfolio() {
   return (
-    <main className="relative min-h-screen bg-background text-foreground">
+    <main className="relative min-h-dvh bg-background text-foreground">
       <div aria-hidden className="noise-overlay" />
       <LoadingScreen />
       <ScrollProgress />
@@ -131,9 +161,7 @@ function Portfolio() {
       <Contact />
       <Footer />
       <BackToTop />
-      <AIAssistant />
-      <CommandPalette />
-      <EasterEggs />
+      <DeferredOverlays />
     </main>
   );
 

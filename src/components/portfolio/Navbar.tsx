@@ -26,19 +26,48 @@ export function Navbar() {
   const [spin, setSpin] = useState(0);
 
 
+  // Scroll state is rAF-throttled and the active section comes from an
+  // IntersectionObserver, so scrolling never forces a layout read per event.
   useEffect(() => {
+    let raf = 0;
     const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-      const sections = links.map((l) => document.getElementById(l.id));
-      const y = window.scrollY + 120;
-      for (const s of sections) {
-        if (!s) continue;
-        if (s.offsetTop <= y && s.offsetTop + s.offsetHeight > y) { setActive(s.id); break; }
-      }
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        setScrolled(window.scrollY > 20);
+      });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  useEffect(() => {
+    const sections = links
+      .map((l) => document.getElementById(l.id))
+      .filter((el): el is HTMLElement => !!el);
+    if (!sections.length) return;
+    const visible = new Map<string, number>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) visible.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
+        let best = "";
+        let bestRatio = 0;
+        for (const [id, ratio] of visible) {
+          if (ratio > bestRatio) {
+            best = id;
+            bestRatio = ratio;
+          }
+        }
+        if (best) setActive(best);
+      },
+      { rootMargin: "-96px 0px -55% 0px", threshold: [0, 0.15, 0.35, 0.6, 1] },
+    );
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
   }, []);
 
   const go = (id: string) => {
