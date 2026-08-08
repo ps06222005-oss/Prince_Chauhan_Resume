@@ -62,10 +62,11 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Person",
+          "@id": `${SITE}/#person`,
           name: "Prince Chauhan",
           url: `${SITE}/`,
           image: OG_IMAGE,
-          jobTitle: "B.Tech CSE (AI & ML) Student",
+          jobTitle: "B.Tech CSE (AI & ML) Student | Aspiring Software Developer",
           description: "Aspiring software developer learning React, JavaScript and Python. Open to internship opportunities.",
           address: { "@type": "PostalAddress", addressLocality: "Ghaziabad", addressRegion: "Uttar Pradesh", addressCountry: "IN" },
           email: "ps06222005@gmail.com",
