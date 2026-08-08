@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, X, Cpu, Bot, ExternalLink, Search, Star } from "lucide-react";
 import { Section } from "./Section";
@@ -94,6 +94,21 @@ export function Projects() {
     });
   }, [query, tech]);
 
+  // Escape closes the detail dialog and body scroll is locked while open.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(null);
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   return (
     <Section id="projects" eyebrow="Projects" title="Things I've built" subtitle="Small, honest projects that helped me learn.">
       <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -103,13 +118,14 @@ export function Projects() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search projects…"
+            aria-label="Search projects"
             className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
           />
         </div>
         <div className="flex flex-wrap gap-1.5">
           <button
             onClick={() => setTech(null)}
-            className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+            className={`rounded-full border px-3 py-1.5 text-xs transition-colors sm:py-1 ${
               tech === null ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-black/[0.08] bg-black/[0.03] text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -119,7 +135,7 @@ export function Projects() {
             <button
               key={t}
               onClick={() => setTech(t === tech ? null : t)}
-              className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+              className={`rounded-full border px-3 py-1.5 text-xs transition-colors sm:py-1 ${
                 tech === t ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-black/[0.08] bg-black/[0.03] text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -217,7 +233,10 @@ export function Projects() {
             <motion.div
               initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="glass max-h-[85vh] w-full max-w-2xl overflow-auto rounded-2xl p-8"
+              role="dialog"
+              aria-modal="true"
+              aria-label={`${open.title} project details`}
+              className="glass max-h-[85vh] w-full max-w-2xl overflow-auto rounded-2xl p-5 sm:p-8"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">

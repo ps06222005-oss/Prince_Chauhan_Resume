@@ -9,19 +9,25 @@ type P = { x: number; y: number; size: number; sx: number; sy: number };
  */
 export function Particles({ count = 40 }: { count?: number }) {
   const [mounted, setMounted] = useState(false);
+  const [budget, setBudget] = useState(count);
   const wrap = useRef<HTMLDivElement | null>(null);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    // Fewer particles on phones / coarse pointers: same look, far less work.
+    const small = window.matchMedia("(max-width: 640px), (pointer: coarse)").matches;
+    setBudget(small ? Math.min(count, 14) : count);
+    setMounted(true);
+  }, [count]);
 
   const particles = useMemo<P[]>(
     () =>
-      Array.from({ length: count }, () => ({
+      Array.from({ length: budget }, () => ({
         x: Math.random() * 100,
         y: Math.random() * 100,
         size: Math.random() * 3 + 1,
         sx: (Math.random() - 0.5) * 0.02,
         sy: (Math.random() - 0.5) * 0.02,
       })),
-    [count],
+    [budget],
   );
 
   useEffect(() => {
@@ -69,9 +75,31 @@ export function Particles({ count = 40 }: { count?: number }) {
       cancelAnimationFrame(raf);
       return;
     }
+    // Only animate while the hero is on screen and the tab is visible.
+    let onScreen = true;
+    const start = () => {
+      if (!raf && onScreen && !document.hidden) raf = requestAnimationFrame(tick);
+    };
+    const stop = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+    };
+    const io = new IntersectionObserver(([entry]) => {
+      onScreen = !!entry?.isIntersecting;
+      if (onScreen) start();
+      else stop();
+    });
+    io.observe(el);
+    const onVisibility = () => {
+      if (document.hidden) stop();
+      else start();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => {
-      cancelAnimationFrame(raf);
+      stop();
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("mousemove", onMove);
     };
   }, [mounted, particles]);

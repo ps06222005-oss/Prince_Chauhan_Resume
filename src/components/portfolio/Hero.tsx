@@ -12,7 +12,8 @@ const roles = [
   "Problem Solver",
 ];
 
-function useTyping() {
+/** Isolated so the typing tick re-renders only this line, not the whole hero. */
+function TypedRole() {
   const [text, setText] = useState("");
   const [i, setI] = useState(0);
   const [del, setDel] = useState(false);
@@ -30,7 +31,7 @@ function useTyping() {
     }, speed);
     return () => clearTimeout(t);
   }, [text, del, i]);
-  return text;
+  return <span className="text-foreground">{text}</span>;
 }
 
 const floatIcons = [
@@ -43,19 +44,37 @@ const floatIcons = [
 ];
 
 export function Hero() {
-  const typed = useTyping();
   const ref = useRef<HTMLElement>(null);
-  const [pos, setPos] = useState({ x: 50, y: 30 });
+  const spotlight = useRef<HTMLDivElement>(null);
 
+  // Spotlight follows the pointer via CSS variables inside a rAF frame, so it
+  // never triggers a React re-render on mousemove.
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    let raf = 0;
+    let x = 50;
+    let y = 30;
+    const paint = () => {
+      raf = 0;
+      const node = spotlight.current;
+      if (node) {
+        node.style.setProperty("--mx", `${x}%`);
+        node.style.setProperty("--my", `${y}%`);
+      }
+    };
     const onMove = (e: MouseEvent) => {
       const r = el.getBoundingClientRect();
-      setPos({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
+      x = ((e.clientX - r.left) / r.width) * 100;
+      y = ((e.clientY - r.top) / r.height) * 100;
+      if (!raf) raf = requestAnimationFrame(paint);
     };
-    el.addEventListener("mousemove", onMove);
-    return () => el.removeEventListener("mousemove", onMove);
+    el.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      el.removeEventListener("mousemove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   const scrollTo = (id: string) =>
@@ -87,10 +106,14 @@ export function Hero() {
       />
       {/* Mouse spotlight */}
       <div
+        ref={spotlight}
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 transition-opacity"
         style={{
-          background: `radial-gradient(500px circle at ${pos.x}% ${pos.y}%, oklch(0.55 0.19 258 / 0.08), transparent 70%)`,
+          ["--mx" as string]: "50%",
+          ["--my" as string]: "30%",
+          background:
+            "radial-gradient(500px circle at var(--mx) var(--my), oklch(0.55 0.19 258 / 0.08), transparent 70%)",
         }}
       />
       <Particles count={40} />
@@ -150,7 +173,7 @@ export function Hero() {
             className="mt-4 flex items-center gap-2 text-xl sm:text-2xl font-display font-medium min-h-[2.5rem]"
           >
             <span className="text-accent-cyan">{"//"}</span>
-            <span className="text-foreground">{typed}</span>
+            <TypedRole />
             <span className="inline-block h-6 w-[3px] bg-accent-blue animate-pulse" />
           </motion.div>
 
