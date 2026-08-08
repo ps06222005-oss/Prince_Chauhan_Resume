@@ -25,9 +25,9 @@ import { EasterEggs } from "@/components/portfolio/EasterEggs";
 
 const SITE = "https://princechauhan.lovable.app";
 const OG_IMAGE = `${SITE}/og-image.png`;
-const TITLE = "Prince Chauhan | B.Tech AI & ML Student & Aspiring Developer";
+const TITLE = "Prince Chauhan | AI & ML Student | Aspiring Software Developer";
 const DESC =
-  "Portfolio of Prince Chauhan — B.Tech CSE (AI & ML) student from Ghaziabad, India, learning React, JavaScript and Python. Explore projects, skills, certificates and contact. Open to internships.";
+  "B.Tech CSE (AI & ML) student specializing in Python, React and machine learning. Building real projects and open to software and AI internships.";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -35,13 +35,17 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: TITLE },
       { name: "description", content: DESC },
-      { name: "keywords", content: "Prince Chauhan, Prince Chauhan Portfolio, Prince Chauhan Website, Prince Chauhan Developer, B.Tech AI & ML Student, Aspiring Software Developer, React Portfolio, Python Projects, Portfolio Website, Student Developer" },
+      { name: "author", content: "Prince Chauhan" },
+      { name: "robots", content: "index, follow" },
+      { name: "language", content: "en" },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE}/` },
-      { property: "og:site_name", content: "Prince Chauhan" },
+      { property: "og:site_name", content: "Prince Chauhan Portfolio" },
       { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:secure_url", content: OG_IMAGE },
+      { property: "og:image:type", content: "image/png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Prince Chauhan — B.Tech CSE (AI & ML) student and aspiring software developer" },
@@ -49,6 +53,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESC },
       { name: "twitter:image", content: OG_IMAGE },
+      { name: "twitter:image:alt", content: "Prince Chauhan portfolio preview" },
     ],
     links: [{ rel: "canonical", href: `${SITE}/` }],
     scripts: [
