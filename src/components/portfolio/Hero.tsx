@@ -86,25 +86,24 @@ export function Hero() {
       <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
       <motion.div
         aria-hidden
-        className="absolute -z-10 inset-0 opacity-70"
+        className="absolute -z-10 inset-0 opacity-80"
         animate={{ backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"] }}
         transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
         style={{
           background:
-            "radial-gradient(ellipse 55% 45% at 15% 25%, oklch(0.55 0.19 258 / 0.10), transparent 60%), radial-gradient(ellipse 50% 40% at 85% 75%, oklch(0.62 0.17 250 / 0.08), transparent 60%)",
+            "radial-gradient(ellipse 55% 45% at 15% 25%, oklch(0.58 0.21 22 / 0.20), transparent 62%), radial-gradient(ellipse 50% 40% at 85% 75%, oklch(0.52 0.18 18 / 0.14), transparent 60%)",
           backgroundSize: "200% 200%",
         }}
       />
+      {/* Thin web-like lattice */}
       <div
-        className="absolute inset-0 -z-10 opacity-[0.5]"
+        aria-hidden
+        className="web-pattern absolute inset-0 -z-10 opacity-60"
         style={{
-          backgroundImage:
-            "linear-gradient(oklch(0.18 0.02 265 / 0.06) 1px, transparent 1px), linear-gradient(90deg, oklch(0.18 0.02 265 / 0.06) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-          maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+          maskImage: "radial-gradient(ellipse at center, black 25%, transparent 72%)",
         }}
       />
-      {/* Mouse spotlight */}
+      {/* Spider-sense spotlight */}
       <div
         ref={spotlight}
         aria-hidden
@@ -113,7 +112,7 @@ export function Hero() {
           ["--mx" as string]: "50%",
           ["--my" as string]: "30%",
           background:
-            "radial-gradient(500px circle at var(--mx) var(--my), oklch(0.55 0.19 258 / 0.08), transparent 70%)",
+            "radial-gradient(520px circle at var(--mx) var(--my), oklch(0.58 0.21 22 / 0.14), transparent 70%)",
         }}
       />
       <Particles count={40} />
