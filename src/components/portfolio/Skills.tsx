@@ -83,7 +83,7 @@ export function Skills() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: i * 0.04 }}
                   whileHover={{ y: -3 }}
-                  className="group rounded-xl border border-border bg-background/60 p-3.5 hover:border-primary/40 hover:shadow-[0_8px_24px_-12px_rgba(59,130,246,0.35)] transition-all"
+                  className="group rounded-xl border border-border bg-background/60 p-3.5 hover:border-primary/40 hover:shadow-[0_8px_24px_-12px_rgba(225,29,63,0.40)] transition-all"
                 >
                   <div className="flex items-center gap-2.5">
                     <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15 group-hover:bg-primary/15 transition-colors">

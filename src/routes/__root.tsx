@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "sfkMJj9uSqAkgufz7UyiQxF6VXsPQ6lphA-VOJF0nSE",
       },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#0F172A" },
+      { name: "theme-color", content: "#07070a" },
       { name: "author", content: "Prince Chauhan" },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Prince Chauhan Portfolio" },
