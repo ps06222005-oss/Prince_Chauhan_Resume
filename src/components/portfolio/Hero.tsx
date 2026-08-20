@@ -251,25 +251,25 @@ export function Hero() {
           className="relative mx-auto"
         >
           <div className="relative h-72 w-72 sm:h-96 sm:w-96">
-            {/* Soft blue glow */}
+            {/* Crimson atmospheric glow */}
             <div
               aria-hidden
-              className="absolute -inset-8 rounded-full opacity-70 blur-3xl"
-              style={{ background: "radial-gradient(circle, #60a5fa 0%, transparent 65%)" }}
+              className="absolute -inset-8 rounded-full opacity-60 blur-3xl"
+              style={{ background: "radial-gradient(circle, #e11d3f 0%, transparent 65%)" }}
             />
             <motion.div
-              className="absolute -inset-2 rounded-full opacity-60 blur-xl"
-              style={{ background: "conic-gradient(from 0deg, #3b82f6, #60a5fa, #93c5fd, #3b82f6)" }}
+              className="absolute -inset-2 rounded-full opacity-55 blur-xl"
+              style={{ background: "conic-gradient(from 0deg, #e11d3f, #ff5c6e, #7f1d2b, #e11d3f)" }}
               animate={{ rotate: 360 }}
               transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
             />
             <motion.div
               className="absolute -inset-1 rounded-full"
-              style={{ background: "conic-gradient(from 0deg, #3b82f6, #93c5fd, #3b82f6)" }}
+              style={{ background: "conic-gradient(from 0deg, #e11d3f, #ff8a95, #e11d3f)" }}
               animate={{ rotate: -360 }}
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             />
-            <div className="relative h-full w-full overflow-hidden rounded-full ring-[6px] ring-background shadow-[0_30px_80px_-20px_rgba(59,130,246,0.35)]">
+            <div className="relative h-full w-full overflow-hidden rounded-full ring-[6px] ring-background shadow-[0_30px_80px_-20px_rgba(225,29,63,0.45)]">
               <img src={profileImg} alt={`Portrait of ${PROFILE.name}, B.Tech CSE (AI & ML) student and aspiring software developer`} width={768} height={768} fetchPriority="high" decoding="async" className="h-full w-full object-cover" />
             </div>
           </div>
