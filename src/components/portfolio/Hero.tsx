@@ -86,25 +86,24 @@ export function Hero() {
       <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
       <motion.div
         aria-hidden
-        className="absolute -z-10 inset-0 opacity-70"
+        className="absolute -z-10 inset-0 opacity-80"
         animate={{ backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"] }}
         transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
         style={{
           background:
-            "radial-gradient(ellipse 55% 45% at 15% 25%, oklch(0.55 0.19 258 / 0.10), transparent 60%), radial-gradient(ellipse 50% 40% at 85% 75%, oklch(0.62 0.17 250 / 0.08), transparent 60%)",
+            "radial-gradient(ellipse 55% 45% at 15% 25%, oklch(0.58 0.21 22 / 0.20), transparent 62%), radial-gradient(ellipse 50% 40% at 85% 75%, oklch(0.52 0.18 18 / 0.14), transparent 60%)",
           backgroundSize: "200% 200%",
         }}
       />
+      {/* Thin web-like lattice */}
       <div
-        className="absolute inset-0 -z-10 opacity-[0.5]"
+        aria-hidden
+        className="web-pattern absolute inset-0 -z-10 opacity-60"
         style={{
-          backgroundImage:
-            "linear-gradient(oklch(0.18 0.02 265 / 0.06) 1px, transparent 1px), linear-gradient(90deg, oklch(0.18 0.02 265 / 0.06) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-          maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+          maskImage: "radial-gradient(ellipse at center, black 25%, transparent 72%)",
         }}
       />
-      {/* Mouse spotlight */}
+      {/* Spider-sense spotlight */}
       <div
         ref={spotlight}
         aria-hidden
@@ -113,7 +112,7 @@ export function Hero() {
           ["--mx" as string]: "50%",
           ["--my" as string]: "30%",
           background:
-            "radial-gradient(500px circle at var(--mx) var(--my), oklch(0.55 0.19 258 / 0.08), transparent 70%)",
+            "radial-gradient(520px circle at var(--mx) var(--my), oklch(0.58 0.21 22 / 0.14), transparent 70%)",
         }}
       />
       <Particles count={40} />
@@ -192,20 +191,20 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <a
-              href={PROFILE.resume}
-              download
-              className="group inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground glow-ring transition-transform hover:scale-[1.03]"
-            >
-              <Download size={16} /> Download Resume
-            </a>
             <button
               onClick={() => scrollTo("projects")}
-              className="group inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold hover:bg-black/[0.06] transition-colors"
+              className="group inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground glow-ring transition-transform hover:scale-[1.03]"
             >
               <FolderGit2 size={16} /> View Projects
               <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
             </button>
+            <a
+              href={PROFILE.resume}
+              download
+              className="group inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold transition-all hover:border-primary/40 hover:shadow-[0_0_30px_-8px_oklch(0.58_0.21_22/0.6)]"
+            >
+              <Download size={16} /> Download Resume
+            </a>
           </motion.div>
 
           <motion.div
@@ -252,25 +251,25 @@ export function Hero() {
           className="relative mx-auto"
         >
           <div className="relative h-72 w-72 sm:h-96 sm:w-96">
-            {/* Soft blue glow */}
+            {/* Crimson atmospheric glow */}
             <div
               aria-hidden
-              className="absolute -inset-8 rounded-full opacity-70 blur-3xl"
-              style={{ background: "radial-gradient(circle, #60a5fa 0%, transparent 65%)" }}
+              className="absolute -inset-8 rounded-full opacity-60 blur-3xl"
+              style={{ background: "radial-gradient(circle, #e11d3f 0%, transparent 65%)" }}
             />
             <motion.div
-              className="absolute -inset-2 rounded-full opacity-60 blur-xl"
-              style={{ background: "conic-gradient(from 0deg, #3b82f6, #60a5fa, #93c5fd, #3b82f6)" }}
+              className="absolute -inset-2 rounded-full opacity-55 blur-xl"
+              style={{ background: "conic-gradient(from 0deg, #e11d3f, #ff5c6e, #7f1d2b, #e11d3f)" }}
               animate={{ rotate: 360 }}
               transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
             />
             <motion.div
               className="absolute -inset-1 rounded-full"
-              style={{ background: "conic-gradient(from 0deg, #3b82f6, #93c5fd, #3b82f6)" }}
+              style={{ background: "conic-gradient(from 0deg, #e11d3f, #ff8a95, #e11d3f)" }}
               animate={{ rotate: -360 }}
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             />
-            <div className="relative h-full w-full overflow-hidden rounded-full ring-[6px] ring-background shadow-[0_30px_80px_-20px_rgba(59,130,246,0.35)]">
+            <div className="relative h-full w-full overflow-hidden rounded-full ring-[6px] ring-background shadow-[0_30px_80px_-20px_rgba(225,29,63,0.45)]">
               <img src={profileImg} alt={`Portrait of ${PROFILE.name}, B.Tech CSE (AI & ML) student and aspiring software developer`} width={768} height={768} fetchPriority="high" decoding="async" className="h-full w-full object-cover" />
             </div>
           </div>

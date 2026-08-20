@@ -86,7 +86,7 @@ export function EasterEggs() {
               <button
                 onClick={() => setUnlocked(false)}
                 aria-label="Dismiss easter egg"
-                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-black/[0.06] hover:text-foreground"
+                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/[0.06] hover:text-foreground"
               >
                 <X size={16} />
               </button>

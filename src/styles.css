@@ -39,51 +39,51 @@
 :root {
   --radius: 0.9rem;
 
-  /* Premium light theme — Apple / Linear / Vercel inspired */
-  --page-bg: #ffffff;
-  --page-bg-soft: #f7f8fa;
+  /* Cinematic dark theme — near-black surfaces, crimson accents */
+  --page-bg: #07070a;
+  --page-bg-soft: #0c0c11;
 
-  --navy: oklch(0.22 0.03 265);
-  --navy-deep: oklch(0.16 0.03 265);
-  --accent-blue: oklch(0.55 0.19 258);   /* ~#2563eb */
-  --accent-cyan: oklch(0.62 0.17 250);   /* ~#3b82f6 */
+  --navy: oklch(0.20 0.02 20);
+  --navy-deep: oklch(0.14 0.02 20);
+  --accent-blue: oklch(0.58 0.21 22);    /* crimson */
+  --accent-cyan: oklch(0.68 0.19 20);    /* lighter red */
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.18 0.02 265);    /* near #0f172a */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.02 265);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 265);
-  --primary: oklch(0.55 0.19 258);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.97 0.005 260);
-  --secondary-foreground: oklch(0.22 0.02 265);
-  --muted: oklch(0.97 0.005 260);
-  --muted-foreground: oklch(0.48 0.015 265);
-  --accent: oklch(0.96 0.01 260);
-  --accent-foreground: oklch(0.22 0.02 265);
+  --background: oklch(0.12 0.008 285);
+  --foreground: oklch(0.96 0.004 285);
+  --card: oklch(0.15 0.008 285);
+  --card-foreground: oklch(0.96 0.004 285);
+  --popover: oklch(0.15 0.008 285);
+  --popover-foreground: oklch(0.96 0.004 285);
+  --primary: oklch(0.58 0.21 22);
+  --primary-foreground: oklch(0.98 0.005 20);
+  --secondary: oklch(0.20 0.008 285);
+  --secondary-foreground: oklch(0.96 0.004 285);
+  --muted: oklch(0.20 0.008 285);
+  --muted-foreground: oklch(0.70 0.012 285);
+  --accent: oklch(0.22 0.02 22);
+  --accent-foreground: oklch(0.96 0.004 285);
   --destructive: oklch(0.62 0.22 25);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.18 0.02 265 / 0.08);
-  --input: oklch(0.18 0.02 265 / 0.08);
-  --ring: oklch(0.55 0.19 258);
+  --border: oklch(1 0 0 / 0.10);
+  --input: oklch(1 0 0 / 0.12);
+  --ring: oklch(0.62 0.21 22);
 
-  --gradient-primary: linear-gradient(135deg, #3b82f6, #60a5fa);
-  --gradient-hero: radial-gradient(ellipse at top, oklch(0.55 0.19 258 / 0.08), transparent 60%),
-                   radial-gradient(ellipse at bottom right, oklch(0.62 0.17 250 / 0.06), transparent 55%);
-  --shadow-glow: 0 30px 80px -30px oklch(0.55 0.19 258 / 0.45);
-  --shadow-card: 0 1px 2px oklch(0.18 0.02 265 / 0.04), 0 12px 32px -12px oklch(0.18 0.02 265 / 0.08);
-  --shadow-elevated: 0 2px 4px oklch(0.18 0.02 265 / 0.04), 0 24px 60px -16px oklch(0.18 0.02 265 / 0.14);
+  --gradient-primary: linear-gradient(135deg, #e11d3f, #ff5c6e);
+  --gradient-hero: radial-gradient(ellipse at top, oklch(0.58 0.21 22 / 0.16), transparent 62%),
+                   radial-gradient(ellipse at bottom right, oklch(0.58 0.21 22 / 0.10), transparent 58%);
+  --shadow-glow: 0 30px 90px -30px oklch(0.58 0.21 22 / 0.55);
+  --shadow-card: 0 1px 2px oklch(0 0 0 / 0.5), 0 16px 40px -18px oklch(0 0 0 / 0.7);
+  --shadow-elevated: 0 2px 6px oklch(0 0 0 / 0.5), 0 30px 70px -20px oklch(0 0 0 / 0.85);
 }
 
 .dark {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.18 0.02 265);
+  --background: oklch(0.12 0.008 285);
+  --foreground: oklch(0.96 0.004 285);
 }
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; background-color: var(--page-bg); }
   body {
     background-color: var(--page-bg);
     color: var(--color-foreground);
@@ -92,7 +92,7 @@
     text-rendering: optimizeLegibility;
     position: relative;
   }
-  /* Subtle premium blue gradient blobs */
+  /* Atmospheric crimson glow */
   body::before,
   body::after {
     content: "";
@@ -101,29 +101,29 @@
     pointer-events: none;
     z-index: 0;
     border-radius: 9999px;
-    filter: blur(120px);
-    opacity: 0.55;
+    filter: blur(130px);
+    opacity: 0.5;
   }
   body::before {
-    top: -10%;
+    top: -12%;
     left: -8%;
-    width: 40vw;
-    height: 40vw;
-    background: radial-gradient(circle, oklch(0.62 0.17 250 / 0.18), transparent 70%);
+    width: 42vw;
+    height: 42vw;
+    background: radial-gradient(circle, oklch(0.58 0.21 22 / 0.30), transparent 70%);
   }
   body::after {
-    bottom: -15%;
+    bottom: -18%;
     right: -10%;
-    width: 45vw;
-    height: 45vw;
-    background: radial-gradient(circle, oklch(0.55 0.19 258 / 0.14), transparent 70%);
+    width: 46vw;
+    height: 46vw;
+    background: radial-gradient(circle, oklch(0.52 0.18 18 / 0.22), transparent 70%);
   }
   h1, h2, h3, h4, h5 {
     font-family: var(--font-display);
     letter-spacing: -0.03em;
     font-weight: 600;
   }
-  ::selection { background: oklch(0.55 0.19 258 / 0.18); }
+  ::selection { background: oklch(0.58 0.21 22 / 0.35); }
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
@@ -146,16 +146,16 @@
 
 
 @utility glass {
-  background: color-mix(in oklab, white 70%, transparent);
-  backdrop-filter: blur(18px) saturate(140%);
-  border: 1px solid oklch(0.18 0.02 265 / 0.06);
+  background: color-mix(in oklab, oklch(0.18 0.01 285) 62%, transparent);
+  backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid oklch(1 0 0 / 0.08);
   box-shadow: var(--shadow-card);
 }
 
 @utility glass-strong {
-  background: color-mix(in oklab, white 88%, transparent);
-  backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid oklch(0.18 0.02 265 / 0.08);
+  background: color-mix(in oklab, oklch(0.16 0.01 285) 88%, transparent);
+  backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid oklch(1 0 0 / 0.12);
   box-shadow: var(--shadow-elevated);
 }
 
@@ -182,13 +182,22 @@
   }
 }
 
+/* Thin web-like diagonal lattice, used sparingly behind sections */
+@utility web-pattern {
+  background-image:
+    linear-gradient(60deg, oklch(0.58 0.21 22 / 0.10) 1px, transparent 1px),
+    linear-gradient(-60deg, oklch(0.58 0.21 22 / 0.10) 1px, transparent 1px),
+    linear-gradient(oklch(1 0 0 / 0.04) 1px, transparent 1px);
+  background-size: 68px 68px, 68px 68px, 68px 68px;
+}
+
 /* Fine film-grain texture layered over the page background */
 @utility noise-overlay {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.045;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 

@@ -31,7 +31,7 @@ export function LearningJourney() {
             className="glass relative rounded-2xl p-6"
           >
             <div className="flex items-center gap-3">
-              <span className={`grid h-11 w-11 place-items-center rounded-xl bg-black/[0.04] ring-1 ring-black/[0.08] ${p.color}`}>
+              <span className={`grid h-11 w-11 place-items-center rounded-xl bg-white/[0.04] ring-1 ring-white/[0.08] ${p.color}`}>
                 <p.icon size={20} />
               </span>
               <h3 className="font-display text-lg font-semibold">{p.title}</h3>
@@ -44,7 +44,7 @@ export function LearningJourney() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: i * 0.12 + k * 0.06 }}
-                  className="flex items-center gap-3 rounded-lg border border-black/[0.06] bg-black/[0.02] px-3 py-2 text-sm"
+                  className="flex items-center gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-sm"
                 >
                   <span className={`h-1.5 w-1.5 rounded-full ${p.color.replace("text", "bg")}`} />
                   {it}

@@ -116,7 +116,7 @@ export function CommandPalette() {
             onClick={(e) => e.stopPropagation()}
             className="glass w-full max-w-xl overflow-hidden rounded-2xl"
           >
-            <div className="flex items-center gap-3 border-b border-black/[0.08] px-4 py-3">
+            <div className="flex items-center gap-3 border-b border-white/[0.08] px-4 py-3">
               <Search size={16} className="text-muted-foreground" />
               <input
                 autoFocus
@@ -126,7 +126,7 @@ export function CommandPalette() {
                 placeholder="Search sections, actions, links…"
                 className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
               />
-              <span className="hidden sm:inline-flex items-center gap-1 rounded-md border border-black/[0.08] bg-black/[0.04] px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+              <span className="hidden sm:inline-flex items-center gap-1 rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
                 <Command size={10} /> K
               </span>
             </div>
@@ -149,10 +149,10 @@ export function CommandPalette() {
                           onMouseEnter={() => setCursor(filtered.indexOf(a))}
                           onClick={a.run}
                           className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
-                            active ? "bg-black/[0.06] text-foreground" : "text-foreground/90 hover:bg-black/[0.04]"
+                            active ? "bg-white/[0.06] text-foreground" : "text-foreground/90 hover:bg-white/[0.04]"
                           }`}
                         >
-                          <span className="grid h-7 w-7 place-items-center rounded-md bg-black/[0.04] text-accent-cyan ring-1 ring-black/[0.08]">
+                          <span className="grid h-7 w-7 place-items-center rounded-md bg-white/[0.04] text-accent-cyan ring-1 ring-white/[0.08]">
                             <a.icon size={13} />
                           </span>
                           <span className="flex-1 truncate">{a.label}</span>
@@ -164,7 +164,7 @@ export function CommandPalette() {
                 );
               })}
             </div>
-            <div className="flex items-center justify-between gap-4 border-t border-black/[0.08] bg-black/[0.02] px-4 py-2 text-[11px] text-muted-foreground">
+            <div className="flex items-center justify-between gap-4 border-t border-white/[0.08] bg-white/[0.02] px-4 py-2 text-[11px] text-muted-foreground">
               <span>↑↓ navigate · ↵ select · esc close</span>
               <span>{filtered.length} results</span>
             </div>

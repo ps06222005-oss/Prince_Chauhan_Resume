@@ -126,7 +126,7 @@ export function Projects() {
           <button
             onClick={() => setTech(null)}
             className={`rounded-full border px-3 py-1.5 text-xs transition-colors sm:py-1 ${
-              tech === null ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-black/[0.08] bg-black/[0.03] text-muted-foreground hover:text-foreground"
+              tech === null ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-white/[0.08] bg-white/[0.03] text-muted-foreground hover:text-foreground"
             }`}
           >
             All
@@ -136,7 +136,7 @@ export function Projects() {
               key={t}
               onClick={() => setTech(t === tech ? null : t)}
               className={`rounded-full border px-3 py-1.5 text-xs transition-colors sm:py-1 ${
-                tech === t ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-black/[0.08] bg-black/[0.03] text-muted-foreground hover:text-foreground"
+                tech === t ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-white/[0.08] bg-white/[0.03] text-muted-foreground hover:text-foreground"
               }`}
             >
               {t}
@@ -168,7 +168,7 @@ export function Projects() {
               <div className="pointer-events-none absolute inset-0 opacity-70"
                 style={{
                   backgroundImage:
-                    "radial-gradient(circle at 25% 30%, rgba(59,130,246,0.25), transparent 55%), radial-gradient(circle at 80% 70%, rgba(96,165,250,0.22), transparent 55%)",
+                    "radial-gradient(circle at 25% 30%, rgba(225,29,63,0.28), transparent 55%), radial-gradient(circle at 80% 70%, rgba(127,29,43,0.30), transparent 55%)",
                 }} />
               <div className="absolute inset-x-4 top-4 flex items-center gap-1.5 rounded-t-xl border border-border bg-background/70 px-3 py-2 backdrop-blur">
                 <span className="h-2 w-2 rounded-full bg-destructive/50" />
@@ -177,12 +177,12 @@ export function Projects() {
                 <span className="ml-2 truncate text-[10px] text-muted-foreground">{p.title}</span>
               </div>
               <div className="absolute inset-0 grid place-items-center pt-8">
-                <div className="grid h-20 w-20 place-items-center rounded-2xl bg-white/70 backdrop-blur-md text-primary ring-1 ring-primary/20 shadow-[var(--shadow-card)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3">
+                <div className="grid h-20 w-20 place-items-center rounded-2xl bg-card/80 backdrop-blur-md text-primary ring-1 ring-primary/20 shadow-[var(--shadow-card)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3">
                   <p.icon size={36} />
                 </div>
               </div>
               {i === 0 && (
-                <span className="absolute left-4 bottom-4 inline-flex items-center gap-1 rounded-full bg-gradient-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-foreground shadow-[0_8px_24px_-8px_rgba(59,130,246,0.7)]">
+                <span className="absolute left-4 bottom-4 inline-flex items-center gap-1 rounded-full bg-gradient-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-foreground shadow-[0_8px_24px_-8px_rgba(225,29,63,0.7)]">
                   <Star size={10} /> Featured
                 </span>
               )}
@@ -211,7 +211,7 @@ export function Projects() {
                   <Github size={14} /> GitHub
                 </a>
                 <button onClick={() => setOpen(p)}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_-10px_rgba(59,130,246,0.6)] hover:scale-[1.03] active:scale-95 transition-transform">
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_-10px_rgba(225,29,63,0.6)] hover:scale-[1.03] active:scale-95 transition-transform">
                   <ExternalLink size={14} /> Details
                 </button>
               </div>
@@ -245,7 +245,7 @@ export function Projects() {
                   </span>
                   <h3 className="text-2xl font-bold">{open.title}</h3>
                 </div>
-                <button onClick={() => setOpen(null)} className="rounded-full p-1.5 hover:bg-black/[0.06]" aria-label="Close">
+                <button onClick={() => setOpen(null)} className="rounded-full p-1.5 hover:bg-white/[0.06]" aria-label="Close">
                   <X size={18} />
                 </button>
               </div>
@@ -289,7 +289,7 @@ export function Projects() {
               <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Tech Stack</h4>
               <div className="mt-2 flex flex-wrap gap-2">
                 {open.tech.map((t) => (
-                  <span key={t} className="rounded-full border border-black/[0.08] bg-black/[0.03] px-2.5 py-1 text-xs">{t}</span>
+                  <span key={t} className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-xs">{t}</span>
                 ))}
               </div>
               <div className="mt-6 flex gap-3">
