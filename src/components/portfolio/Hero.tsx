@@ -191,20 +191,20 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <a
-              href={PROFILE.resume}
-              download
-              className="group inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground glow-ring transition-transform hover:scale-[1.03]"
-            >
-              <Download size={16} /> Download Resume
-            </a>
             <button
               onClick={() => scrollTo("projects")}
-              className="group inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold hover:bg-white/[0.06] transition-colors"
+              className="group inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground glow-ring transition-transform hover:scale-[1.03]"
             >
               <FolderGit2 size={16} /> View Projects
               <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
             </button>
+            <a
+              href={PROFILE.resume}
+              download
+              className="group inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold transition-all hover:border-primary/40 hover:shadow-[0_0_30px_-8px_oklch(0.58_0.21_22/0.6)]"
+            >
+              <Download size={16} /> Download Resume
+            </a>
           </motion.div>
 
           <motion.div
