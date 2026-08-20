@@ -168,7 +168,7 @@ export function Projects() {
               <div className="pointer-events-none absolute inset-0 opacity-70"
                 style={{
                   backgroundImage:
-                    "radial-gradient(circle at 25% 30%, rgba(59,130,246,0.25), transparent 55%), radial-gradient(circle at 80% 70%, rgba(96,165,250,0.22), transparent 55%)",
+                    "radial-gradient(circle at 25% 30%, rgba(225,29,63,0.28), transparent 55%), radial-gradient(circle at 80% 70%, rgba(127,29,43,0.30), transparent 55%)",
                 }} />
               <div className="absolute inset-x-4 top-4 flex items-center gap-1.5 rounded-t-xl border border-border bg-background/70 px-3 py-2 backdrop-blur">
                 <span className="h-2 w-2 rounded-full bg-destructive/50" />
@@ -182,7 +182,7 @@ export function Projects() {
                 </div>
               </div>
               {i === 0 && (
-                <span className="absolute left-4 bottom-4 inline-flex items-center gap-1 rounded-full bg-gradient-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-foreground shadow-[0_8px_24px_-8px_rgba(59,130,246,0.7)]">
+                <span className="absolute left-4 bottom-4 inline-flex items-center gap-1 rounded-full bg-gradient-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-foreground shadow-[0_8px_24px_-8px_rgba(225,29,63,0.7)]">
                   <Star size={10} /> Featured
                 </span>
               )}
@@ -211,7 +211,7 @@ export function Projects() {
                   <Github size={14} /> GitHub
                 </a>
                 <button onClick={() => setOpen(p)}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_-10px_rgba(59,130,246,0.6)] hover:scale-[1.03] active:scale-95 transition-transform">
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_-10px_rgba(225,29,63,0.6)] hover:scale-[1.03] active:scale-95 transition-transform">
                   <ExternalLink size={14} /> Details
                 </button>
               </div>

@@ -58,7 +58,7 @@ function AuthPage() {
 
   return (
     <main className="min-h-screen grid place-items-center bg-background px-4 py-16">
-      <div className="w-full max-w-sm rounded-2xl border border-white/[0.08] bg-white/70 backdrop-blur p-6 shadow-[0_20px_60px_-20px_rgba(59,130,246,0.25)]">
+      <div className="w-full max-w-sm rounded-2xl border border-white/[0.08] bg-card/80 backdrop-blur p-6 shadow-[0_20px_60px_-20px_rgba(225,29,63,0.28)]">
         <h1 className="text-xl font-semibold tracking-tight">
           {mode === "signin" ? "Sign in" : "Create account"}
         </h1>
