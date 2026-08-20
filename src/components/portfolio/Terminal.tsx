@@ -104,7 +104,7 @@ export function TerminalMode() {
         initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
         className="glass overflow-hidden rounded-2xl"
       >
-        <div className="flex items-center gap-2 border-b border-black/[0.08] bg-black/[0.03] px-4 py-2.5">
+        <div className="flex items-center gap-2 border-b border-white/[0.08] bg-white/[0.03] px-4 py-2.5">
           <span className="h-3 w-3 rounded-full bg-red-500/70" />
           <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
           <span className="h-3 w-3 rounded-full bg-green-500/70" />

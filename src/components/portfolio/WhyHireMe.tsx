@@ -24,7 +24,7 @@ export function WhyHireMe() {
             className="glass group relative overflow-hidden rounded-2xl p-6 hover:border-accent-blue/40 transition-colors"
           >
             <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full opacity-0 blur-2xl transition-opacity group-hover:opacity-40" style={{ background: "var(--gradient-primary)" }} />
-            <span className="relative grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary/20 text-accent-cyan ring-1 ring-black/[0.08]">
+            <span className="relative grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary/20 text-accent-cyan ring-1 ring-white/[0.08]">
               <c.icon size={20} />
             </span>
             <h3 className="relative mt-4 font-semibold">{c.title}</h3>

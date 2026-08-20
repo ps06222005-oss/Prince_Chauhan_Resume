@@ -201,7 +201,7 @@ export function Hero() {
             </a>
             <button
               onClick={() => scrollTo("projects")}
-              className="group inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold hover:bg-black/[0.06] transition-colors"
+              className="group inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold hover:bg-white/[0.06] transition-colors"
             >
               <FolderGit2 size={16} /> View Projects
               <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />

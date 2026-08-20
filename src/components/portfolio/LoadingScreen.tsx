@@ -33,7 +33,7 @@ export function LoadingScreen() {
               />
               <img src={logo} alt="" width={56} height={56} className="relative h-14 w-14" />
             </motion.div>
-            <div className="h-[2px] w-40 overflow-hidden rounded-full bg-black/[0.06]">
+            <div className="h-[2px] w-40 overflow-hidden rounded-full bg-white/[0.06]">
               <motion.div
                 className="h-full w-1/3 rounded-full bg-gradient-primary"
                 animate={{ x: ["-120%", "320%"] }}

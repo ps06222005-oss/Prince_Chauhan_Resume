@@ -19,7 +19,7 @@ function CopyButton({ value, label }: { value: string; label: string }) {
           setTimeout(() => setCopied(false), 1500);
         });
       }}
-      className="ml-auto grid h-8 w-8 shrink-0 place-items-center rounded-md text-muted-foreground hover:text-accent-cyan hover:bg-black/[0.04] transition-colors"
+      className="ml-auto grid h-8 w-8 shrink-0 place-items-center rounded-md text-muted-foreground hover:text-accent-cyan hover:bg-white/[0.04] transition-colors"
     >
       {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
     </button>
@@ -118,7 +118,7 @@ export function Contact() {
             <div className="space-y-2.5">
               {availability.map((a) => (
                 <div key={a.label} className="flex items-center gap-3">
-                  <span className={`grid h-8 w-8 place-items-center rounded-lg bg-black/[0.04] ring-1 ring-black/[0.08] ${a.tone}`}>
+                  <span className={`grid h-8 w-8 place-items-center rounded-lg bg-white/[0.04] ring-1 ring-white/[0.08] ${a.tone}`}>
                     <a.icon size={14} />
                   </span>
                   <span className="text-sm">{a.label}</span>
@@ -161,14 +161,14 @@ export function Contact() {
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground">Name</label>
               <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="mt-1.5 w-full min-w-0 rounded-lg border border-black/[0.08] bg-black/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
+                className="mt-1.5 w-full min-w-0 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
                 placeholder="Your full name" maxLength={100} />
               {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
             </div>
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground">Email</label>
               <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="mt-1.5 w-full min-w-0 rounded-lg border border-black/[0.08] bg-black/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
+                className="mt-1.5 w-full min-w-0 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
                 placeholder="you@company.com" maxLength={255} />
               {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
             </div>
@@ -177,7 +177,7 @@ export function Contact() {
             <label className="text-xs uppercase tracking-wider text-muted-foreground">Message</label>
             <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
               rows={5} maxLength={1000}
-              className="mt-1.5 w-full min-w-0 resize-none rounded-lg border border-black/[0.08] bg-black/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
+              className="mt-1.5 w-full min-w-0 resize-none rounded-lg border border-white/[0.08] bg-white/[0.03] px-3.5 py-2.5 text-sm outline-none focus:border-accent-blue/60"
               placeholder="Tell me about the role or project..." />
             {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message}</p>}
           </div>
