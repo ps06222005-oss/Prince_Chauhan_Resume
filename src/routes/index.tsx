@@ -47,7 +47,9 @@ function DeferredOverlays() {
   if (!ready) return null;
   return (
     <Suspense fallback={null}>
-      <DeferredOverlays />
+      <AIAssistant />
+      <CommandPalette />
+      <EasterEggs />
     </Suspense>
   );
 }
