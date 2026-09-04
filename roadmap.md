@@ -1,0 +1,6 @@
+- [ ] Fix the deferred overlay recursion causing runtime stack overflow.
+- [ ] Consolidate profile, projects, skills, education, experience, certificates, and LinkedIn config into reusable data modules without changing visible content.
+- [ ] Upgrade GitHub integration with cached public API data, ranking, real-only metrics, graceful states, and fallback projects.
+- [ ] Wire sections, assistant, terminal, MCP tools, SEO, and navigation to the centralized data layer.
+- [ ] Polish responsive interaction, accessibility, reduced motion, and semantic controls.
+- [ ] Run lint/build and browser QA for desktop/mobile, GitHub states, resume, links, assistant, terminal, and command palette.
