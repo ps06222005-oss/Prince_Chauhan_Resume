@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SITE_CONFIG, getCanonicalUrl } from "@/data/site";
 
 function NotFoundComponent() {
   return (
@@ -79,18 +80,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       {
         name: "google-site-verification",
-        content: "sfkMJj9uSqAkgufz7UyiQxF6VXsPQ6lphA-VOJF0nSE",
+        content: SITE_CONFIG.googleSiteVerification,
       },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#07070a" },
-      { name: "author", content: "Prince Chauhan" },
-      { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Prince Chauhan Portfolio" },
-      { property: "og:locale", content: "en_IN" },
+      { name: "theme-color", content: SITE_CONFIG.themeColor },
+      { name: "author", content: SITE_CONFIG.author },
+      {
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
+      { property: "og:site_name", content: SITE_CONFIG.title },
+      { property: "og:locale", content: SITE_CONFIG.locale },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
+      { rel: "canonical", href: getCanonicalUrl() },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
@@ -99,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@600;700;800&display=swap",
       },
     ],
     scripts: [
@@ -108,11 +113,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
-          name: "Prince Chauhan Portfolio",
-          alternateName: "Prince Chauhan",
-          url: "https://princechauhan.lovable.app/",
-          inLanguage: "en",
-          author: { "@type": "Person", name: "Prince Chauhan" },
+          "@id": `${getCanonicalUrl()}#website`,
+          name: SITE_CONFIG.title,
+          alternateName: [
+            "Prince Chauhan Portfolio",
+            "Prince Chauhan",
+            "Prince Chauhan AI/ML Developer",
+            "Prince Chauhan Creative Technologist",
+          ],
+          url: getCanonicalUrl(),
+          inLanguage: SITE_CONFIG.language,
+          description: SITE_CONFIG.description,
+          publisher: {
+            "@type": "Person",
+            name: SITE_CONFIG.author,
+            url: getCanonicalUrl(),
+          },
         }),
       },
     ],

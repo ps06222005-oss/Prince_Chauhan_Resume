@@ -1,302 +1,364 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, X, Cpu, Bot, ExternalLink, Search, Star } from "lucide-react";
+import { Github, ExternalLink, ArrowUpRight, Terminal, X, CheckCircle2 } from "lucide-react";
 import { Section } from "./Section";
-import { TiltCard } from "./TiltCard";
-
-import { PROFILE } from "@/lib/portfolio-data";
-
-type Project = {
-  icon: React.ComponentType<{ size?: number }>;
-  title: string;
-  overview: string;
-  features: string[];
-  architecture?: string;
-  tech: string[];
-  challenges?: string;
-  solutions?: string;
-  learned?: string;
-  future?: string[];
-  github: string;
-};
-
-const projects: Project[] = [
-  {
-    icon: Bot,
-    title: "JARVIS — Python Voice Assistant",
-    overview:
-      "A voice-controlled desktop assistant built in Python. Listens to spoken commands, converts speech to text, and responds with speech while performing simple tasks.",
-    features: [
-      "Open applications by voice",
-      "Web searches and Wikipedia lookups",
-      "Speak current time and date",
-      "Play music from local folders",
-      "Simple automation commands",
-    ],
-    architecture:
-      "A modular Python app: a mic-input layer (SpeechRecognition) feeds a command router that maps intents to small handler modules (web, apps, media, time). Responses are spoken back through pyttsx3.",
-    tech: ["Python", "SpeechRecognition", "pyttsx3", "Requests", "Wikipedia API"],
-    challenges:
-      "Handling noisy microphone input and mapping natural phrases to reliable actions without external LLMs.",
-    solutions:
-      "Added an ambient-noise calibration step, normalized transcripts to lowercase keywords, and used simple keyword matching with fallbacks so unknown commands fail gracefully.",
-    learned:
-      "Structuring a Python project into modules, working with system APIs, and shipping an end-to-end tool on GitHub.",
-    future: [
-      "Wake-word detection",
-      "LLM-powered intent parsing",
-      "Cross-platform packaging (Windows / Linux)",
-    ],
-    github: PROFILE.jarvisRepo,
-  },
-  {
-    icon: Cpu,
-    title: "AI Automation Scripts",
-    overview:
-      "A collection of small Python scripts I built while learning — focused on saving time on repetitive tasks with a little help from AI.",
-    features: [
-      "CSV analysis with Pandas",
-      "Presentation generation from prompts",
-      "Small automation utilities",
-      "ChatGPT-assisted productivity workflows",
-    ],
-    architecture:
-      "Each script is standalone and CLI-driven, sharing a small utils layer for file I/O and prompt templating so experiments stay isolated and easy to iterate on.",
-    tech: ["Python", "Pandas", "Requests", "ChatGPT"],
-    challenges:
-      "Turning ad-hoc scripts into reusable, readable code and handling messy real-world data.",
-    solutions:
-      "Split scripts into small pure functions, added defensive parsing for CSV edge cases, and documented usage so I can re-run each script months later.",
-    learned:
-      "The value of clean data pipelines and how to prompt AI tools to accelerate development.",
-    future: [
-      "Unified CLI entry point",
-      "Config files instead of hardcoded paths",
-      "Basic test coverage",
-    ],
-    github: PROFILE.github,
-  },
-];
-
-const ALL_TECH = Array.from(new Set(projects.flatMap((p) => p.tech)));
+import { ProjectArchitectureDiagram } from "./ProjectArchitectureDiagram";
+import { ProjectWaveformCanvas } from "./ProjectWaveformCanvas";
+import { ProjectConduitTransition } from "./ProjectConduitTransition";
+import { fetchGithubEcosystem, type GithubEcosystemData } from "@/services/github";
+import type { EngineeringProject } from "@/types/portfolio";
+import { FALLBACK_PROJECTS } from "@/data/projects";
+import { useEffect } from "react";
 
 export function Projects() {
-  const [open, setOpen] = useState<Project | null>(null);
-  const [query, setQuery] = useState("");
-  const [tech, setTech] = useState<string | null>(null);
+  const [data, setData] = useState<GithubEcosystemData>({
+    user: null,
+    projects: FALLBACK_PROJECTS,
+    allLanguages: ["Python", "TypeScript"],
+    allCategories: ["AI/ML", "Web", "Engineering"],
+    totalStars: 0,
+    totalForks: 0,
+    totalRepos: 18,
+    activeSince: "2024",
+    lastPushed: null,
+  });
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return projects.filter((p) => {
-      const matchesQ = !q || (p.title + " " + p.overview + " " + p.tech.join(" ")).toLowerCase().includes(q);
-      const matchesT = !tech || p.tech.includes(tech);
-      return matchesQ && matchesT;
-    });
-  }, [query, tech]);
+  const [activeDossier, setActiveDossier] = useState<EngineeringProject | null>(null);
+  const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
 
-  // Escape closes the detail dialog and body scroll is locked while open.
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(null);
-    };
-    document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [open]);
+    fetchGithubEcosystem().then(setData);
+  }, []);
+
+  const curatedProjects = useMemo(() => {
+    const candidates = data.projects.filter(
+      (p) => p.isPriority || p.isFeatured || p.score >= 50 || p.architecture || p.what,
+    );
+    return candidates.sort((a, b) => b.score - a.score);
+  }, [data.projects]);
 
   return (
-    <Section id="projects" eyebrow="Projects" title="Things I've built" subtitle="Small, honest projects that helped me learn.">
-      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="glass flex items-center gap-2 rounded-full px-4 py-2 sm:max-w-sm">
-          <Search size={14} className="text-muted-foreground" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search projects…"
-            aria-label="Search projects"
-            className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
-          />
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          <button
-            onClick={() => setTech(null)}
-            className={`rounded-full border px-3 py-1.5 text-xs transition-colors sm:py-1 ${
-              tech === null ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-white/[0.08] bg-white/[0.03] text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            All
-          </button>
-          {ALL_TECH.map((t) => (
-            <button
-              key={t}
-              onClick={() => setTech(t === tech ? null : t)}
-              className={`rounded-full border px-3 py-1.5 text-xs transition-colors sm:py-1 ${
-                tech === t ? "border-accent-blue/60 bg-accent-blue/20 text-foreground" : "border-white/[0.08] bg-white/[0.03] text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-      </div>
+    <Section
+      id="projects"
+      index="02"
+      eyebrow="Engineered Artifacts"
+      title="Autonomous systems & verified software architectures."
+      subtitle="Large-stage visual case studies examining real-world computational problem formulation, pipeline topologies, and verified repository source."
+      accent="amber"
+    >
+      {/* Editorial Stages */}
+      <div className="space-y-32 sm:space-y-48">
+        {curatedProjects.map((project, idx) => {
+          const indexNum = String(idx + 1).padStart(2, "0");
+          const hasDemo = Boolean(project.demoUrl);
+          const isJarvis = project.name.toLowerCase().includes("jarvis");
+          const isStream = project.name.toLowerCase().includes("stream");
+          const isDecode = project.name.toLowerCase().includes("decode");
 
-      {filtered.length === 0 && (
-        <p className="glass rounded-2xl p-10 text-center text-sm text-muted-foreground">
-          No projects match your filters.
-        </p>
-      )}
-      <div className="grid gap-8 lg:grid-cols-2">
-        {filtered.map((p, i) => (
-          <motion.div
-            key={p.title}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-          >
-          <TiltCard className="h-full rounded-3xl">
-          <article
-            className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-background/70 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] hover:border-primary/30 transition-all"
-          >
-            {/* Browser-chrome mockup preview */}
-            <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5">
-              <div className="pointer-events-none absolute inset-0 opacity-70"
-                style={{
-                  backgroundImage:
-                    "radial-gradient(circle at 25% 30%, rgba(225,29,63,0.28), transparent 55%), radial-gradient(circle at 80% 70%, rgba(127,29,43,0.30), transparent 55%)",
-                }} />
-              <div className="absolute inset-x-4 top-4 flex items-center gap-1.5 rounded-t-xl border border-border bg-background/70 px-3 py-2 backdrop-blur">
-                <span className="h-2 w-2 rounded-full bg-destructive/50" />
-                <span className="h-2 w-2 rounded-full bg-primary/40" />
-                <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
-                <span className="ml-2 truncate text-[10px] text-muted-foreground">{p.title}</span>
-              </div>
-              <div className="absolute inset-0 grid place-items-center pt-8">
-                <div className="grid h-20 w-20 place-items-center rounded-2xl bg-card/80 backdrop-blur-md text-primary ring-1 ring-primary/20 shadow-[var(--shadow-card)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3">
-                  <p.icon size={36} />
+          const canvasMode = isJarvis ? "waveform" : isStream ? "streaming" : "lattice";
+
+          // Distinctive Project Sub-heading (Item 6)
+          const subHeading = isJarvis
+            ? "AUTONOMOUS VOICE SYSTEM"
+            : isStream
+              ? "HIGH-THROUGHPUT MEDIA NETWORK"
+              : isDecode
+                ? "ALGORITHMIC MATRIX PLATFORM"
+                : "DISTRIBUTED SOFTWARE ARCHITECTURE";
+
+          const whatText =
+            project.what || project.overview || "Autonomous software system built on GitHub.";
+          const whyText =
+            project.why ||
+            "Built to solve latency bottlenecks, hands-free OS accessibility, and high-performance workflows.";
+          const howText =
+            project.how ||
+            project.architecture ||
+            `Built with ${project.technologies.join(", ")} utilizing modular software principles.`;
+          const engineeringText =
+            project.engineering ||
+            project.challenges ||
+            "Optimized for minimal execution latency, robust error boundaries, and defensive API handling.";
+
+          return (
+            <div key={project.id}>
+              <article
+                data-cursor="view"
+                onMouseEnter={() => setHoveredProjectId(project.id)}
+                onMouseLeave={() => setHoveredProjectId(null)}
+                className="project-artifact group relative border-b border-white/[0.08] pb-24 sm:pb-36 transition-colors"
+              >
+                {/* Visual Stage Environment: Canvas Surrounding the Massive Typography (Section 5 & 6) */}
+                <div className="relative mb-12 sm:mb-16 min-h-[44vh] sm:min-h-[52vh] w-full overflow-hidden rounded-3xl border border-white/[0.08] bg-[#08090d] flex flex-col justify-between p-6 sm:p-12">
+                  {/* Procedural Visualizer Canvas Spanning the Stage */}
+                  <div className="absolute inset-0 pointer-events-none opacity-85">
+                    <ProjectWaveformCanvas
+                      mode={canvasMode}
+                      isHovered={hoveredProjectId === project.id}
+                    />
+                  </div>
+
+                  {/* Atmospheric Environmental Vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#08090d] via-transparent to-[#08090d]/60 pointer-events-none" />
+
+                  {/* Stage Top Header Metadata */}
+                  <div className="relative z-10 flex items-center justify-between font-mono text-xs text-muted-foreground/80">
+                    <div className="flex items-center gap-3">
+                      <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+                      <span className="uppercase tracking-widest text-foreground/90 font-semibold">
+                        {isJarvis
+                          ? "ACOUSTIC SIGNAL HARVESTING & SPEECH SYNTHESIS"
+                          : isStream
+                            ? "LOW-LATENCY STREAM BUFFERING & DEMUX"
+                            : "ALGORITHMIC COMPLEXITY & MEMORY SAFETY"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3 text-xs">
+                      {hasDemo && (
+                        <span className="inline-flex items-center gap-1.5 text-emerald-400 font-mono text-[11px]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                          LIVE ACTIVE
+                        </span>
+                      )}
+                      <span className="text-white/40 hidden sm:inline">VERIFIED ARTIFACT</span>
+                    </div>
+                  </div>
+
+                  {/* Massive Title Artwork (Section 6) */}
+                  <div className="relative z-10 my-auto py-8">
+                    <div className="font-mono text-sm sm:text-base font-bold text-amber-400 tracking-wider mb-2">
+                      {indexNum}
+                    </div>
+
+                    <h3 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10.5rem] font-black tracking-[-0.05em] text-[#f4f4f2] leading-[0.82] select-none group-hover:text-amber-200 transition-colors duration-500">
+                      {project.name.toUpperCase()}
+                    </h3>
+
+                    <div className="mt-3 font-mono text-xs sm:text-sm tracking-[0.25em] text-muted-foreground/80 uppercase font-semibold">
+                      {subHeading}
+                    </div>
+                  </div>
+
+                  {/* Bottom Stage Anchor Coordinates */}
+                  <div className="relative z-10 flex items-center justify-between font-mono text-[11px] text-muted-foreground/60 border-t border-white/[0.06] pt-4">
+                    <span>SOURCE: GITHUB // {project.name}</span>
+                    <span className="hidden sm:inline">
+                      STACK: {project.technologies.slice(0, 3).join(" · ")}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              {i === 0 && (
-                <span className="absolute left-4 bottom-4 inline-flex items-center gap-1 rounded-full bg-gradient-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-foreground shadow-[0_8px_24px_-8px_rgba(225,29,63,0.7)]">
-                  <Star size={10} /> Featured
-                </span>
+
+                {/* Progressive Technical Reveal (Section 6) */}
+                <div className="space-y-12 max-w-5xl">
+                  {/* High-Contrast Positioning Statement */}
+                  <p className="font-display text-2xl sm:text-3xl md:text-4xl text-[#f4f4f2] font-normal leading-[1.18] tracking-[-0.03em]">
+                    {project.positioning || project.overview}
+                  </p>
+
+                  {/* Embedded Verified System Architecture Pipeline */}
+                  <div className="mt-8">
+                    <ProjectArchitectureDiagram projectName={project.name} interactive={true} />
+                  </div>
+
+                  {/* Rhythmic Architectural Breakdown (No Generic 4-Card Grid) */}
+                  <div className="grid grid-cols-1 gap-10 md:grid-cols-12 border-t border-white/[0.08] pt-10 font-sans">
+                    <div className="md:col-span-4 font-mono text-xs text-amber-400 uppercase tracking-wider space-y-1">
+                      <div>01 // FORMULATION &amp; MOTIVATION</div>
+                      <div className="text-muted-foreground/60 font-mono text-[11px]">
+                        PROBLEM SOLVED
+                      </div>
+                    </div>
+                    <div className="md:col-span-8 text-base sm:text-lg text-muted-foreground leading-relaxed font-light">
+                      {whyText}
+                    </div>
+
+                    <div className="md:col-span-4 font-mono text-xs text-accent-cyan uppercase tracking-wider space-y-1 border-t border-white/[0.06] pt-8 md:border-t-0 md:pt-0">
+                      <div>02 // PIPELINE &amp; TOPOLOGY</div>
+                      <div className="text-muted-foreground/60 font-mono text-[11px]">
+                        IMPLEMENTATION
+                      </div>
+                    </div>
+                    <div className="md:col-span-8 text-base sm:text-lg text-muted-foreground leading-relaxed font-light border-t border-white/[0.06] pt-8 md:border-t-0 md:pt-0">
+                      {howText}
+                    </div>
+
+                    <div className="md:col-span-4 font-mono text-xs text-[#f4f4f2] uppercase tracking-wider space-y-1 border-t border-white/[0.06] pt-8 md:border-t-0 md:pt-0">
+                      <div>03 // VERIFIED ENGINEERING RESULT</div>
+                      <div className="text-muted-foreground/60 font-mono text-[11px]">
+                        PERFORMANCE &amp; RELIABILITY
+                      </div>
+                    </div>
+                    <div className="md:col-span-8 text-base sm:text-lg text-muted-foreground leading-relaxed font-light border-t border-white/[0.06] pt-8 md:border-t-0 md:pt-0">
+                      {engineeringText}
+                    </div>
+                  </div>
+
+                  {/* Technologies & Direct Action Links */}
+                  <div className="flex flex-wrap items-center justify-between gap-6 border-t border-white/[0.06] pt-8">
+                    <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
+                      <span className="text-muted-foreground/60 mr-2 uppercase">
+                        VERIFIED STACK:
+                      </span>
+                      {project.technologies.map((t) => (
+                        <span
+                          key={t}
+                          className="rounded border border-white/[0.08] bg-white/[0.02] px-2.5 py-1 text-foreground/80"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setActiveDossier(project)}
+                        className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-5 py-2.5 font-mono text-xs font-semibold text-amber-300 hover:bg-amber-400/20 active:scale-[0.98] transition-all"
+                      >
+                        <span>INSPECT FULL DOSSIER</span>
+                        <ArrowUpRight size={13} />
+                      </button>
+
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.02] px-5 py-2.5 font-mono text-xs text-foreground hover:bg-white/[0.08] active:scale-[0.98] transition-colors"
+                      >
+                        <Github size={13} />
+                        <span>GITHUB SOURCE</span>
+                      </a>
+
+                      {project.demoUrl && (
+                        <a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 rounded-full bg-emerald-400 px-5 py-2.5 font-mono text-xs font-bold text-black hover:brightness-110 active:scale-[0.98] transition-all"
+                        >
+                          <ExternalLink size={13} />
+                          <span>LIVE SYSTEM</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* Visual Transformation Continuum Between Projects (Item 7) */}
+              {idx === 0 && (
+                <ProjectConduitTransition
+                  type="jarvis-to-stream"
+                  fromLabel="01 // JARVIS ACOUSTIC CORE"
+                  toLabel="02 // ONLINESTREAM MEDIA PIPELINE"
+                />
               )}
-              <span className="absolute right-4 bottom-4 rounded-full bg-background/80 backdrop-blur px-2.5 py-1 text-[10px] font-medium tracking-[0.14em] uppercase text-muted-foreground ring-1 ring-border">
-                0{i + 1} / 0{projects.length}
-              </span>
+              {idx === 1 && (
+                <ProjectConduitTransition
+                  type="stream-to-decode"
+                  fromLabel="02 // ONLINESTREAM NETWORK"
+                  toLabel="03 // DECODELABS ALGORITHMIC LATTICE"
+                />
+              )}
             </div>
-
-            <div className="flex flex-1 flex-col p-8">
-              <h3 className="text-2xl font-semibold tracking-tight">{p.title}</h3>
-              <p className="mt-3 text-muted-foreground leading-relaxed">{p.overview}</p>
-              <div className="mt-5 flex flex-wrap gap-1.5">
-                {p.tech.map((t, ti) => (
-                  <span
-                    key={t}
-                    style={{ transitionDelay: `${ti * 40}ms` }}
-                    className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground/75 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-primary/30 group-hover:text-foreground"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-auto pt-6 flex items-center gap-3">
-                <a href={p.github} target="_blank" rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium hover:bg-muted transition-colors">
-                  <Github size={14} /> GitHub
-                </a>
-                <button onClick={() => setOpen(p)}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_-10px_rgba(225,29,63,0.6)] hover:scale-[1.03] active:scale-95 transition-transform">
-                  <ExternalLink size={14} /> Details
-                </button>
-              </div>
-            </div>
-          </article>
-          </TiltCard>
-          </motion.div>
-        ))}
-
+          );
+        })}
       </div>
 
+      {/* Technical Dossier Modal */}
       <AnimatePresence>
-        {open && (
+        {activeDossier && (
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[70] grid place-items-center bg-foreground/40 backdrop-blur-md p-4"
-            onClick={() => setOpen(null)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[90] grid place-items-center bg-black/90 backdrop-blur-xl p-4 sm:p-6"
+            onClick={() => setActiveDossier(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.96, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.96, opacity: 0, y: 20 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
-              role="dialog"
-              aria-modal="true"
-              aria-label={`${open.title} project details`}
-              className="glass max-h-[85vh] w-full max-w-2xl overflow-auto rounded-2xl p-5 sm:p-8"
+              className="relative max-h-[85vh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-white/[0.16] bg-[#0c0e14] p-6 sm:p-10 shadow-2xl"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary/20 text-accent-cyan">
-                    <open.icon size={20} />
-                  </span>
-                  <h3 className="text-2xl font-bold">{open.title}</h3>
+              <button
+                type="button"
+                onClick={() => setActiveDossier(null)}
+                className="absolute right-6 top-6 grid h-9 w-9 place-items-center rounded-full border border-white/[0.12] bg-white/[0.04] text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X size={16} />
+              </button>
+
+              <div className="font-mono text-xs uppercase tracking-widest text-amber-400">
+                TECHNICAL DOSSIER // {activeDossier.name}
+              </div>
+
+              <h2 className="mt-2 font-display text-3xl sm:text-4xl font-bold text-foreground">
+                {activeDossier.displayName}
+              </h2>
+
+              <p className="mt-2 font-sans text-base text-muted-foreground">
+                {activeDossier.positioning || activeDossier.overview}
+              </p>
+
+              <div className="mt-6">
+                <ProjectArchitectureDiagram projectName={activeDossier.name} interactive={true} />
+              </div>
+
+              <div className="mt-8 space-y-6 font-sans text-sm text-muted-foreground leading-relaxed">
+                <div>
+                  <h4 className="font-mono text-xs font-semibold text-amber-400 uppercase">
+                    Architectural Problem Formulation
+                  </h4>
+                  <p className="mt-1">{activeDossier.why}</p>
                 </div>
-                <button onClick={() => setOpen(null)} className="rounded-full p-1.5 hover:bg-white/[0.06]" aria-label="Close">
-                  <X size={18} />
-                </button>
+
+                <div>
+                  <h4 className="font-mono text-xs font-semibold text-accent-cyan uppercase">
+                    System Architecture & Data Flow
+                  </h4>
+                  <p className="mt-1">{activeDossier.how}</p>
+                </div>
+
+                <div>
+                  <h4 className="font-mono text-xs font-semibold text-foreground uppercase">
+                    Implementation Decisions & Tradeoffs
+                  </h4>
+                  <p className="mt-1">{activeDossier.what}</p>
+                </div>
+
+                <div>
+                  <h4 className="font-mono text-xs font-semibold text-amber-300 uppercase">
+                    Observed Performance & Verification
+                  </h4>
+                  <p className="mt-1">{activeDossier.engineering}</p>
+                </div>
               </div>
-              <p className="mt-5 text-muted-foreground leading-relaxed">{open.overview}</p>
-              <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Features</h4>
-              <ul className="mt-2 space-y-1.5 text-sm">
-                {open.features.map((f) => <li key={f} className="flex gap-2"><span className="text-accent-cyan">▹</span>{f}</li>)}
-              </ul>
-              {open.architecture && (
-                <>
-                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Architecture</h4>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.architecture}</p>
-                </>
-              )}
-              {open.challenges && (
-                <>
-                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Challenges</h4>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.challenges}</p>
-                </>
-              )}
-              {open.solutions && (
-                <>
-                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Solutions</h4>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.solutions}</p>
-                </>
-              )}
-              {open.learned && (
-                <>
-                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">What I Learned</h4>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{open.learned}</p>
-                </>
-              )}
-              {open.future && open.future.length > 0 && (
-                <>
-                  <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Future Improvements</h4>
-                  <ul className="mt-2 space-y-1.5 text-sm">
-                    {open.future.map((f) => <li key={f} className="flex gap-2 text-muted-foreground"><span className="text-accent-cyan">→</span>{f}</li>)}
-                  </ul>
-                </>
-              )}
-              <h4 className="mt-6 text-sm font-semibold text-accent-cyan uppercase tracking-wider">Tech Stack</h4>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {open.tech.map((t) => (
-                  <span key={t} className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-xs">{t}</span>
-                ))}
-              </div>
-              <div className="mt-6 flex gap-3">
-                <a href={open.github} target="_blank" rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
-                  <Github size={14} /> View on GitHub
+
+              <div className="mt-8 flex flex-wrap items-center gap-4 border-t border-white/[0.08] pt-6 font-mono text-xs">
+                <a
+                  href={activeDossier.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-background font-bold hover:bg-amber-300 transition-colors"
+                >
+                  <Github size={14} />
+                  <span>VIEW SOURCE REPOSITORY</span>
                 </a>
+                {activeDossier.demoUrl && (
+                  <a
+                    href={activeDossier.demoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-5 py-2.5 text-emerald-300 font-bold hover:bg-emerald-400/20 transition-colors"
+                  >
+                    <ExternalLink size={14} />
+                    <span>LAUNCH LIVE SYSTEM</span>
+                  </a>
+                )}
               </div>
             </motion.div>
           </motion.div>

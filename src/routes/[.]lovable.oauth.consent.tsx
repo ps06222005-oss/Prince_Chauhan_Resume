@@ -72,9 +72,17 @@ function Consent() {
     const { data, error } = approve
       ? await oauthApi().approveAuthorization(authorization_id)
       : await oauthApi().denyAuthorization(authorization_id);
-    if (error) { setBusy(false); setError(error.message); return; }
+    if (error) {
+      setBusy(false);
+      setError(error.message);
+      return;
+    }
     const target = data?.redirect_url ?? data?.redirect_to;
-    if (!target) { setBusy(false); setError("No redirect returned by the authorization server."); return; }
+    if (!target) {
+      setBusy(false);
+      setError("No redirect returned by the authorization server.");
+      return;
+    }
     window.location.href = target;
   }
 
@@ -97,7 +105,11 @@ function Consent() {
         <p className="mt-3 text-xs text-muted-foreground">
           This does not bypass this app's permissions or backend policies.
         </p>
-        {error && <p className="mt-3 text-xs text-red-600" role="alert">{error}</p>}
+        {error && (
+          <p className="mt-3 text-xs text-red-600" role="alert">
+            {error}
+          </p>
+        )}
         <div className="mt-6 flex gap-2">
           <button
             disabled={busy}

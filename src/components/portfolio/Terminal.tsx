@@ -17,6 +17,7 @@ const COMMANDS: Record<string, string | (() => string)> = {
   resume       — download my resume
   contact      — how to reach me
   github       — GitHub profile
+  linkedin     — LinkedIn profile
   whoami       — quick identity
   pwd          — current path
   ls           — list sections
@@ -47,6 +48,7 @@ Phone    : ${PROFILE.phone}
 LinkedIn : ${PROFILE.linkedin}
 GitHub   : ${PROFILE.github}`,
   github: `→ ${PROFILE.github}`,
+  linkedin: `→ ${PROFILE.linkedin}`,
   whoami: `${PROFILE.name.toLowerCase().replace(/\s+/g, "-")}`,
   pwd: `/home/prince/portfolio`,
   ls: `about  skills  projects  why  journey  github  education  certifications  achievements  terminal  contact`,
@@ -77,12 +79,17 @@ export function TerminalMode() {
   const [value, setValue] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { scrollRef.current?.scrollTo({ top: 99999 }); }, [lines]);
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 99999 });
+  }, [lines]);
 
   const run = (raw: string) => {
     const cmd = raw.trim().toLowerCase();
     if (!cmd) return;
-    if (cmd === "clear") { setLines([]); return; }
+    if (cmd === "clear") {
+      setLines([]);
+      return;
+    }
     // simple `cat <file>` support
     let out: string;
     if (cmd.startsWith("cat ")) {
@@ -91,17 +98,27 @@ export function TerminalMode() {
       out = v == null ? `cat: ${key}: No such file` : typeof v === "function" ? v() : v;
     } else {
       const v = COMMANDS[cmd];
-      out = v == null ? `command not found: ${cmd} — try 'help'` : typeof v === "function" ? v() : v;
+      out =
+        v == null ? `command not found: ${cmd} — try 'help'` : typeof v === "function" ? v() : v;
     }
     setLines((prev) => [...prev, { kind: "in", text: raw }, { kind: "out", text: out }]);
     if (cmd === "resume") window.open(PROFILE.resume, "_blank");
-    if (cmd === "github") window.open(PROFILE.github, "_blank");
+    if (cmd === "github") window.open(PROFILE.github, "_blank", "noopener,noreferrer");
+    if (cmd === "linkedin") window.open(PROFILE.linkedin, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <Section id="terminal" eyebrow="Terminal" title="Explore via terminal" subtitle="For the devs — try 'help' to begin.">
+    <Section
+      id="terminal"
+      eyebrow="Terminal"
+      title="Explore via terminal"
+      subtitle="For the devs — try 'help' to begin."
+    >
       <motion.div
-        initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
         className="glass overflow-hidden rounded-2xl"
       >
         <div className="flex items-center gap-2 border-b border-white/[0.08] bg-white/[0.03] px-4 py-2.5">
@@ -114,18 +131,29 @@ export function TerminalMode() {
         </div>
         <div ref={scrollRef} className="max-h-80 overflow-auto p-4 font-mono text-sm">
           {lines.map((l, i) => (
-            <div key={i} className={l.kind === "in" ? "text-accent-cyan" : "text-foreground/85 whitespace-pre-wrap"}>
+            <div
+              key={i}
+              className={
+                l.kind === "in" ? "text-accent-cyan" : "text-foreground/85 whitespace-pre-wrap"
+              }
+            >
               {l.kind === "in" ? `➜ ${l.text}` : l.text}
             </div>
           ))}
           <form
-            onSubmit={(e) => { e.preventDefault(); run(value); setValue(""); }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              run(value);
+              setValue("");
+            }}
             className="mt-2 flex items-center gap-2"
           >
             <span className="text-accent-cyan">➜</span>
             <input
-              value={value} onChange={(e) => setValue(e.target.value)}
-              autoComplete="off" spellCheck={false}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              autoComplete="off"
+              spellCheck={false}
               className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground/60"
               placeholder="type a command (help, about, projects…)"
             />

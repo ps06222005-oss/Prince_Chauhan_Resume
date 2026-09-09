@@ -1,25 +1,21 @@
 import { defineTool } from "@lovable.dev/mcp-js";
-import { PROFILE } from "@/lib/portfolio-data";
+import { FALLBACK_PROJECTS } from "@/data/projects";
 
-const PROJECTS = [
-  {
-    name: "JARVIS",
-    description: "Python voice assistant with speech recognition and text-to-speech.",
-    tech: ["Python", "SpeechRecognition", "pyttsx3"],
-    repo: PROFILE.jarvisRepo,
-  },
-  {
-    name: "AI Automation Scripts",
-    description: "Small Python utilities exploring automation and AI/ML basics.",
-    tech: ["Python", "Pandas", "Requests"],
-    repo: PROFILE.github,
-  },
-];
+const PROJECTS = FALLBACK_PROJECTS.map((p) => ({
+  name: p.displayName,
+  repoName: p.name,
+  description: p.overview,
+  tech: p.technologies,
+  repo: p.githubUrl,
+  demo: p.demoUrl,
+  category: p.category,
+}));
 
 export default defineTool({
   name: "get_projects",
   title: "Get projects",
-  description: "List Prince's public portfolio projects with descriptions, tech stack, and repo links.",
+  description:
+    "List Prince's public portfolio projects with descriptions, tech stack, and repo links.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: () => ({

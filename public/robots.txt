@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://princechauhan.lovable.app/sitemap.xml
+# Canonical Portfolio Sitemap
+Sitemap: https://ps06222005-oss.github.io/sitemap.xml
+

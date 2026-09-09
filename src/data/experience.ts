@@ -18,11 +18,13 @@ export const EXPERIENCE = [
   {
     title: "Project-based learning",
     period: "Current",
-    description: "Building small Python, automation and web projects while developing an open-source presence on GitHub.",
+    description:
+      "Building small Python, automation and web projects while developing an open-source presence on GitHub.",
   },
   {
     title: "AI/ML workshops",
     period: "2024",
-    description: "Participating in workshops and coursework to build practical foundations in AI and machine learning.",
+    description:
+      "Participating in workshops and coursework to build practical foundations in AI and machine learning.",
   },
 ] as const;

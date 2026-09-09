@@ -5,10 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth")({
   ssr: false,
   head: () => ({
-    meta: [
-      { title: "Sign in — Prince Chauhan" },
-      { name: "robots", content: "noindex, nofollow" },
-    ],
+    meta: [{ title: "Sign in — Prince Chauhan" }, { name: "robots", content: "noindex, nofollow" }],
   }),
   validateSearch: (s: Record<string, unknown>): { next?: string } =>
     typeof s.next === "string" ? { next: s.next } : {},
@@ -85,7 +82,11 @@ function AuthPage() {
             autoComplete={mode === "signin" ? "current-password" : "new-password"}
             className="w-full rounded-lg border border-white/[0.1] px-3 py-2 text-sm outline-none focus:border-primary"
           />
-          {error && <p className="text-xs text-red-600" role="alert">{error}</p>}
+          {error && (
+            <p className="text-xs text-red-600" role="alert">
+              {error}
+            </p>
+          )}
           <button
             type="submit"
             disabled={busy}
@@ -95,7 +96,10 @@ function AuthPage() {
           </button>
         </form>
         <button
-          onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError(null); }}
+          onClick={() => {
+            setMode(mode === "signin" ? "signup" : "signin");
+            setError(null);
+          }}
           className="mt-4 w-full text-xs text-muted-foreground hover:text-foreground"
         >
           {mode === "signin" ? "No account? Create one" : "Have an account? Sign in"}

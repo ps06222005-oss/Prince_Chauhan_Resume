@@ -18,8 +18,8 @@ export const PROFILE = {
 } as const;
 
 export const STATS = [
-  { label: "Projects Built", value: 2, suffix: "+" },
-  { label: "Certificates", value: 3, suffix: "" },
+  { label: "Public Repositories", value: 5, suffix: "" },
+  { label: "Verified Credentials", value: "Adding", suffix: "" },
   { label: "Technologies", value: 12, suffix: "+" },
   { label: "Internship", value: "Open", suffix: "" },
 ] as const;

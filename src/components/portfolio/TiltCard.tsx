@@ -4,7 +4,13 @@ import { useRef, useState, type ReactNode } from "react";
  * Subtle 3D tilt + spotlight follow. Pointer-only; keyboard/touch users get a
  * plain static card, and the transform is skipped when motion is reduced.
  */
-export function TiltCard({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function TiltCard({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [style, setStyle] = useState<React.CSSProperties>({});
   const [spot, setSpot] = useState<{ x: number; y: number } | null>(null);

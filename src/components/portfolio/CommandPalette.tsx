@@ -1,9 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Search, Home, User, Wrench, FolderGit2, Sparkles, Route as RouteIcon,
-  Github, GraduationCap, Award, Trophy, Terminal as TermIcon, Mail,
-  Download, Linkedin, Copy, Command,
+  Search,
+  Home,
+  User,
+  Wrench,
+  FolderGit2,
+  Sparkles,
+  Route as RouteIcon,
+  Github,
+  GraduationCap,
+  Award,
+  Trophy,
+  Terminal as TermIcon,
+  Mail,
+  Download,
+  Linkedin,
+  Copy,
+  Command,
 } from "lucide-react";
 import { PROFILE } from "@/lib/portfolio-data";
 
@@ -30,7 +44,6 @@ const sectionActions: { id: string; label: string; icon: Action["icon"] }[] = [
   { id: "beyond", label: "Beyond Coding", icon: Sparkles },
   { id: "terminal", label: "Terminal", icon: TermIcon },
   { id: "contact", label: "Contact", icon: Mail },
-
 ];
 
 export function CommandPalette() {
@@ -49,7 +62,12 @@ export function CommandPalette() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  useEffect(() => { if (!open) { setQ(""); setCursor(0); } }, [open]);
+  useEffect(() => {
+    if (!open) {
+      setQ("");
+      setCursor(0);
+    }
+  }, [open]);
 
   const actions: Action[] = useMemo(() => {
     const go = (id: string) => () => {
@@ -57,23 +75,81 @@ export function CommandPalette() {
       setOpen(false);
     };
     const nav: Action[] = sectionActions.map((s) => ({
-      id: `go-${s.id}`, label: `Go to ${s.label}`, group: "Navigate", icon: s.icon, run: go(s.id),
+      id: `go-${s.id}`,
+      label: `Go to ${s.label}`,
+      group: "Navigate",
+      icon: s.icon,
+      run: go(s.id),
     }));
     const acts: Action[] = [
-      { id: "resume", label: "Download Resume", hint: "PDF", group: "Actions", icon: Download,
-        run: () => { window.open(PROFILE.resume, "_blank"); setOpen(false); } },
-      { id: "copy-email", label: "Copy Email", hint: PROFILE.email, group: "Actions", icon: Copy,
-        run: () => { navigator.clipboard?.writeText(PROFILE.email); setOpen(false); } },
-      { id: "copy-phone", label: "Copy Phone", hint: PROFILE.phone, group: "Actions", icon: Copy,
-        run: () => { navigator.clipboard?.writeText(PROFILE.phone); setOpen(false); } },
+      {
+        id: "resume",
+        label: "Download Resume",
+        hint: "PDF",
+        group: "Actions",
+        icon: Download,
+        run: () => {
+          window.open(PROFILE.resume, "_blank");
+          setOpen(false);
+        },
+      },
+      {
+        id: "copy-email",
+        label: "Copy Email",
+        hint: PROFILE.email,
+        group: "Actions",
+        icon: Copy,
+        run: () => {
+          navigator.clipboard?.writeText(PROFILE.email);
+          setOpen(false);
+        },
+      },
+      {
+        id: "copy-phone",
+        label: "Copy Phone",
+        hint: PROFILE.phone,
+        group: "Actions",
+        icon: Copy,
+        run: () => {
+          navigator.clipboard?.writeText(PROFILE.phone);
+          setOpen(false);
+        },
+      },
     ];
     const links: Action[] = [
-      { id: "gh", label: "Open GitHub", hint: PROFILE.githubUser, group: "Links", icon: Github,
-        run: () => { window.open(PROFILE.github, "_blank"); setOpen(false); } },
-      { id: "li", label: "Open LinkedIn", hint: "prince-chauhan", group: "Links", icon: Linkedin,
-        run: () => { window.open(PROFILE.linkedin, "_blank"); setOpen(false); } },
-      { id: "mail", label: "Send Email", hint: PROFILE.email, group: "Links", icon: Mail,
-        run: () => { window.location.href = `mailto:${PROFILE.email}`; setOpen(false); } },
+      {
+        id: "gh",
+        label: "Open GitHub",
+        hint: PROFILE.githubUser,
+        group: "Links",
+        icon: Github,
+        run: () => {
+          window.open(PROFILE.github, "_blank", "noopener,noreferrer");
+          setOpen(false);
+        },
+      },
+      {
+        id: "li",
+        label: "Open LinkedIn",
+        hint: "prince-chauhan-3418a3288",
+        group: "Links",
+        icon: Linkedin,
+        run: () => {
+          window.open(PROFILE.linkedin, "_blank", "noopener,noreferrer");
+          setOpen(false);
+        },
+      },
+      {
+        id: "mail",
+        label: "Send Email",
+        hint: PROFILE.email,
+        group: "Links",
+        icon: Mail,
+        run: () => {
+          window.location.href = `mailto:${PROFILE.email}`;
+          setOpen(false);
+        },
+      },
     ];
     return [...nav, ...acts, ...links];
   }, []);
@@ -90,12 +166,21 @@ export function CommandPalette() {
     return g;
   }, [filtered]);
 
-  useEffect(() => { setCursor(0); }, [q]);
+  useEffect(() => {
+    setCursor(0);
+  }, [q]);
 
   const onKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowDown") { e.preventDefault(); setCursor((c) => Math.min(c + 1, filtered.length - 1)); }
-    else if (e.key === "ArrowUp") { e.preventDefault(); setCursor((c) => Math.max(c - 1, 0)); }
-    else if (e.key === "Enter") { e.preventDefault(); filtered[cursor]?.run(); }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setCursor((c) => Math.min(c + 1, filtered.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setCursor((c) => Math.max(c - 1, 0));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      filtered[cursor]?.run();
+    }
   };
 
   let idx = -1;
@@ -104,7 +189,9 @@ export function CommandPalette() {
     <AnimatePresence>
       {open && (
         <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           className="fixed inset-0 z-[80] grid place-items-start justify-center bg-black/60 backdrop-blur-sm p-4 pt-[10vh]"
           onClick={() => setOpen(false)}
         >
@@ -132,14 +219,18 @@ export function CommandPalette() {
             </div>
             <div className="max-h-[55vh] overflow-auto p-2">
               {filtered.length === 0 && (
-                <p className="p-6 text-center text-sm text-muted-foreground">No results for "{q}"</p>
+                <p className="p-6 text-center text-sm text-muted-foreground">
+                  No results for "{q}"
+                </p>
               )}
               {(Object.keys(grouped) as Array<keyof typeof grouped>).map((group) => {
                 const items = grouped[group];
                 if (!items.length) return null;
                 return (
                   <div key={group} className="mb-1">
-                    <p className="px-3 py-1.5 text-[10px] uppercase tracking-widest text-muted-foreground">{group}</p>
+                    <p className="px-3 py-1.5 text-[10px] uppercase tracking-widest text-muted-foreground">
+                      {group}
+                    </p>
                     {items.map((a) => {
                       idx += 1;
                       const active = idx === cursor;
@@ -149,14 +240,18 @@ export function CommandPalette() {
                           onMouseEnter={() => setCursor(filtered.indexOf(a))}
                           onClick={a.run}
                           className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
-                            active ? "bg-white/[0.06] text-foreground" : "text-foreground/90 hover:bg-white/[0.04]"
+                            active
+                              ? "bg-white/[0.06] text-foreground"
+                              : "text-foreground/90 hover:bg-white/[0.04]"
                           }`}
                         >
                           <span className="grid h-7 w-7 place-items-center rounded-md bg-white/[0.04] text-accent-cyan ring-1 ring-white/[0.08]">
                             <a.icon size={13} />
                           </span>
                           <span className="flex-1 truncate">{a.label}</span>
-                          {a.hint && <span className="truncate text-xs text-muted-foreground">{a.hint}</span>}
+                          {a.hint && (
+                            <span className="truncate text-xs text-muted-foreground">{a.hint}</span>
+                          )}
                         </button>
                       );
                     })}

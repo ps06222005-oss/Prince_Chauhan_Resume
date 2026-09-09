@@ -1,7 +1,24 @@
 import {
-  BookOpen, Brain, Braces, Boxes, Cloud, Code, Database, FileCode2, GitBranch,
-  Github as GithubIcon, Globe, Languages, ListTree, MessageSquare, Mic, Network,
-  Palette, Server, Terminal, Volume2,
+  BookOpen,
+  Brain,
+  Braces,
+  Boxes,
+  Cloud,
+  Code,
+  Database,
+  FileCode2,
+  GitBranch,
+  Github as GithubIcon,
+  Globe,
+  Languages,
+  ListTree,
+  MessageSquare,
+  Mic,
+  Network,
+  Palette,
+  Server,
+  Terminal,
+  Volume2,
 } from "lucide-react";
 
 export type Skill = {

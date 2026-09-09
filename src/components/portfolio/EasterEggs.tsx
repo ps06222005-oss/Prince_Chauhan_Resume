@@ -3,9 +3,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PartyPopper, X } from "lucide-react";
 
 const KONAMI = [
-  "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
-  "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight",
-  "b", "a",
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowLeft",
+  "ArrowRight",
+  "b",
+  "a",
 ];
 
 /** Tasteful hidden interactions: a console note and a Konami-code surprise. */
@@ -14,10 +21,7 @@ export function EasterEggs() {
 
   useEffect(() => {
     // Secret developer message for anyone who opens DevTools.
-    console.log(
-      "%c👋 Hey, fellow developer!",
-      "font-size:14px;font-weight:700;color:#3B82F6",
-    );
+    console.log("%c👋 Hey, fellow developer!", "font-size:14px;font-weight:700;color:#3B82F6");
     console.log(
       "%cBuilt by Prince Chauhan with React, Tailwind & Framer Motion.\nPress Ctrl/⌘ + K for the command palette — or try the Konami code. 🎮",
       "color:#64748b",
@@ -60,7 +64,11 @@ export function EasterEggs() {
                 style={{ left: `${(i * 37) % 100}%`, top: "-5%" }}
                 initial={{ y: 0, opacity: 1, rotate: 0 }}
                 animate={{ y: "110vh", opacity: [1, 1, 0], rotate: 540 }}
-                transition={{ duration: 2.6 + (i % 5) * 0.35, delay: (i % 7) * 0.12, ease: "easeIn" }}
+                transition={{
+                  duration: 2.6 + (i % 5) * 0.35,
+                  delay: (i % 7) * 0.12,
+                  ease: "easeIn",
+                }}
               />
             ))}
           </div>
@@ -79,8 +87,8 @@ export function EasterEggs() {
               <div className="flex-1">
                 <p className="font-display text-sm font-semibold">Konami code unlocked 🎮</p>
                 <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                  You found the easter egg. Curiosity like this is exactly how I learn to
-                  build things — thanks for poking around!
+                  You found the easter egg. Curiosity like this is exactly how I learn to build
+                  things — thanks for poking around!
                 </p>
               </div>
               <button

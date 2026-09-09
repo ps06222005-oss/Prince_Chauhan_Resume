@@ -23,7 +23,10 @@ function NotFound() {
           The URL you followed doesn't match any section of this portfolio.
         </p>
         <div className="mt-8 flex items-center justify-center gap-3">
-          <Link to="/" className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground glow-ring hover:scale-[1.03] transition-transform">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground glow-ring hover:scale-[1.03] transition-transform"
+          >
             <Home size={14} /> Back home
           </Link>
           <button

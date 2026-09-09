@@ -1,8 +1,15 @@
 import { motion } from "framer-motion";
 import { Section } from "./Section";
 import {
-  Music, Gamepad2, BookOpen, Dumbbell, Youtube, Coffee,
-  Target, Sparkles, Lightbulb,
+  Music,
+  Gamepad2,
+  BookOpen,
+  Dumbbell,
+  Youtube,
+  Coffee,
+  Target,
+  Sparkles,
+  Lightbulb,
 } from "lucide-react";
 
 const interests = [
@@ -84,7 +91,9 @@ export function BeyondCoding() {
           <ul className="mt-5 space-y-2.5 text-sm text-muted-foreground">
             {learningNow.map((l) => (
               <li key={l} className="flex gap-2">
-                <span className="text-primary" aria-hidden>▹</span>
+                <span className="text-primary" aria-hidden>
+                  ▹
+                </span>
                 {l}
               </li>
             ))}
@@ -105,7 +114,9 @@ export function BeyondCoding() {
           <ul className="mt-5 space-y-2.5 text-sm text-muted-foreground">
             {goals.map((g) => (
               <li key={g} className="flex gap-2">
-                <span className="text-primary" aria-hidden>→</span>
+                <span className="text-primary" aria-hidden>
+                  →
+                </span>
                 {g}
               </li>
             ))}
@@ -127,7 +138,9 @@ export function BeyondCoding() {
                 key={f}
                 className="rounded-2xl border border-border bg-background/60 p-4 text-sm leading-relaxed text-muted-foreground transition-colors hover:border-primary/30"
               >
-                <span className="mr-2 font-display text-xs font-semibold text-primary">0{i + 1}</span>
+                <span className="mr-2 font-display text-xs font-semibold text-primary">
+                  0{i + 1}
+                </span>
                 {f}
               </div>
             ))}

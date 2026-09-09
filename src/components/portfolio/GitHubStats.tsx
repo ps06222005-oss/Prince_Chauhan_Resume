@@ -1,125 +1,307 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Github, Users, GitFork, Star, ExternalLink } from "lucide-react";
+import { useEffect, useState, useMemo, useCallback } from "react";
+import {
+  Github,
+  Star,
+  GitFork,
+  ExternalLink,
+  Search,
+  RefreshCw,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { Section } from "./Section";
-import { PROFILE } from "@/lib/portfolio-data";
+import { fetchGithubEcosystem, type GithubEcosystemData } from "@/services/github";
+import { FALLBACK_PROJECTS } from "@/data/projects";
+import { formatUtcDate } from "@/lib/utils";
 
-type User = { avatar_url: string; followers: number; following: number; public_repos: number; bio?: string; name?: string; html_url: string };
-type Repo = { id: number; name: string; description: string | null; html_url: string; stargazers_count: number; forks_count: number; language: string | null; updated_at: string };
+const LANGUAGE_COLORS: Record<string, string> = {
+  Python: "#eab308",
+  TypeScript: "#38bdf8",
+  JavaScript: "#facc15",
+  C: "#94a3b8",
+  HTML: "#fb923c",
+  CSS: "#c084fc",
+};
 
 export function GitHubStats() {
-  const [user, setUser] = useState<User | null>(null);
-  const [repos, setRepos] = useState<Repo[]>([]);
-  const [error, setError] = useState(false);
+  const [data, setData] = useState<GithubEcosystemData>({
+    user: null,
+    projects: FALLBACK_PROJECTS,
+    allLanguages: ["Python", "TypeScript", "C", "HTML", "CSS"],
+    allCategories: ["AI/ML", "Web", "Systems"],
+    totalStars: 0,
+    totalForks: 0,
+    syncState: "idle",
+    lastSyncedAt: null,
+  });
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeLang, setActiveLang] = useState<string>("All");
+  const [expanded, setExpanded] = useState(false);
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const [u, r] = await Promise.all([
-          fetch(`https://api.github.com/users/${PROFILE.githubUser}`),
-          fetch(`https://api.github.com/users/${PROFILE.githubUser}/repos?sort=updated&per_page=6`),
-        ]);
-        if (!u.ok || !r.ok) throw new Error("gh");
-        const uj = (await u.json()) as User;
-        const rj = (await r.json()) as Repo[];
-        if (!cancelled) { setUser(uj); setRepos(rj); }
-      } catch { if (!cancelled) setError(true); }
-    })();
-    return () => { cancelled = true; };
+  const syncTelemetry = useCallback(async (force = false) => {
+    setLoading(true);
+    try {
+      const res = await fetchGithubEcosystem(undefined, force);
+      setData(res);
+    } catch {
+      // Graceful fallback
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const langs = Array.from(new Set(repos.map((r) => r.language).filter(Boolean))) as string[];
+  useEffect(() => {
+    syncTelemetry(false);
+  }, [syncTelemetry]);
+
+  const { projects, allLanguages, user } = data;
+
+  const languageFrequency = useMemo(() => {
+    return projects.reduce<Record<string, number>>((acc, p) => {
+      if (p.primaryLanguage) {
+        acc[p.primaryLanguage] = (acc[p.primaryLanguage] || 0) + 1;
+      }
+      return acc;
+    }, {});
+  }, [projects]);
+
+  const totalLangCount = useMemo(() => {
+    return Object.values(languageFrequency).reduce((a, b) => a + b, 0) || 1;
+  }, [languageFrequency]);
+
+  const filteredRepos = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return projects.filter((repo) => {
+      const matchQ =
+        !q ||
+        (
+          repo.displayName +
+          " " +
+          repo.name +
+          " " +
+          (repo.overview || "") +
+          " " +
+          (repo.primaryLanguage || "")
+        )
+          .toLowerCase()
+          .includes(q);
+      const matchLang = activeLang === "All" || repo.primaryLanguage === activeLang;
+      return matchQ && matchLang;
+    });
+  }, [projects, searchQuery, activeLang]);
+
+  const visibleRepos = expanded || searchQuery ? filteredRepos : filteredRepos.slice(0, 6);
 
   return (
-    <Section id="github" eyebrow="GitHub" title="Live from my GitHub" subtitle="Real-time snapshot of my public work.">
-      <div className="grid gap-6 lg:grid-cols-3">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
-          className="glass rounded-2xl p-6 lg:col-span-1"
-        >
-          {user ? (
-            <>
-              <div className="flex items-center gap-4">
-                <img src={user.avatar_url} alt={user.name || PROFILE.githubUser} loading="lazy" width={64} height={64}
-                  className="h-16 w-16 rounded-full ring-2 ring-accent-blue/40" />
-                <div className="min-w-0">
-                  <p className="font-semibold truncate">{user.name || PROFILE.githubUser}</p>
-                  <p className="text-xs text-muted-foreground">@{PROFILE.githubUser}</p>
-                </div>
-              </div>
-              {user.bio && <p className="mt-4 text-sm text-muted-foreground">{user.bio}</p>}
-              <div className="mt-5 grid grid-cols-3 gap-2 text-center">
-                <Stat icon={Users} label="Followers" value={user.followers} />
-                <Stat icon={Github} label="Repos" value={user.public_repos} />
-                <Stat icon={GitFork} label="Following" value={user.following} />
-              </div>
-            </>
-          ) : (
-            <FallbackProfile error={error} />
-          )}
-          <a href={PROFILE.github} target="_blank" rel="noreferrer"
-            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
-            <Github size={14} /> View Profile
-          </a>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}
-          className="glass rounded-2xl p-6 lg:col-span-2"
-        >
-          <h3 className="font-display text-lg font-semibold">Recent Repositories</h3>
-          {repos.length === 0 && !error && <p className="mt-4 text-sm text-muted-foreground">Loading…</p>}
-          {error && repos.length === 0 && (
-            <p className="mt-4 text-sm text-muted-foreground">
-              Couldn't reach GitHub right now — visit my profile directly.
-            </p>
-          )}
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {repos.slice(0, 6).map((r) => (
-              <a key={r.id} href={r.html_url} target="_blank" rel="noreferrer"
-                className="group rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 hover:border-accent-blue/40 hover:bg-white/[0.04] transition-colors">
-                <div className="flex items-center justify-between gap-2">
-                  <p className="truncate text-sm font-semibold">{r.name}</p>
-                  <ExternalLink size={12} className="opacity-40 group-hover:opacity-100" />
-                </div>
-                {r.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{r.description}</p>}
-                <div className="mt-3 flex items-center gap-3 text-[11px] text-muted-foreground">
-                  {r.language && <span className="text-accent-cyan">{r.language}</span>}
-                  <span className="inline-flex items-center gap-1"><Star size={11} />{r.stargazers_count}</span>
-                  <span className="inline-flex items-center gap-1"><GitFork size={11} />{r.forks_count}</span>
-                </div>
-              </a>
-            ))}
-          </div>
-          {langs.length > 0 && (
-            <div className="mt-5 flex flex-wrap gap-2">
-              <span className="text-xs uppercase tracking-wider text-muted-foreground">Top Languages:</span>
-              {langs.map((l) => <span key={l} className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-0.5 text-xs">{l}</span>)}
+    <Section
+      id="github"
+      index="04"
+      eyebrow="Supporting Evidence"
+      title="Open-source commit rhythm & repository ledger."
+      subtitle="Understated telemetry verifying continuous development, programming language balance, and public repositories."
+      accent="amber"
+    >
+      {/* Quiet Telemetry Bar */}
+      <div className="border-b border-white/[0.08] pb-8 mb-10">
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 font-mono">
+          <div>
+            <div className="text-[11px] text-muted-foreground/70 uppercase">
+              PUBLIC REPOSITORIES
             </div>
-          )}
-        </motion.div>
+            <div className="mt-1 font-display text-2xl sm:text-3xl font-bold text-foreground">
+              {user?.public_repos || projects.length}
+            </div>
+            <div className="text-[10px] text-muted-foreground/60 mt-0.5">Active Codebases</div>
+          </div>
+
+          <div>
+            <div className="text-[11px] text-muted-foreground/70 uppercase">CORE STACK</div>
+            <div className="mt-1 font-display text-2xl sm:text-3xl font-bold text-amber-400">
+              Python · TS
+            </div>
+            <div className="text-[10px] text-muted-foreground/60 mt-0.5">Primary Languages</div>
+          </div>
+
+          <div>
+            <div className="text-[11px] text-muted-foreground/70 uppercase">
+              DEVELOPMENT CADENCE
+            </div>
+            <div className="mt-1 font-display text-2xl sm:text-3xl font-bold text-foreground">
+              Continuous
+            </div>
+            <div className="text-[10px] text-muted-foreground/60 mt-0.5">Active Since 2024</div>
+          </div>
+
+          <div>
+            <div className="text-[11px] text-muted-foreground/70 uppercase">LIVE SYNC</div>
+            <button
+              type="button"
+              onClick={() => syncTelemetry(true)}
+              className="mt-1 inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <RefreshCw size={13} className={loading ? "animate-spin text-amber-400" : ""} />
+              <span>{loading ? "Syncing..." : "Sync GitHub"}</span>
+            </button>
+            <div className="text-[10px] text-emerald-400 mt-0.5">Verified API Telemetry</div>
+          </div>
+        </div>
+
+        {/* Minimal Language Spectrum Line */}
+        <div className="mt-8 space-y-2">
+          <div className="flex h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+            {Object.entries(languageFrequency).map(([lang, count]) => {
+              const pct = ((count / totalLangCount) * 100).toFixed(1);
+              return (
+                <div
+                  key={lang}
+                  style={{
+                    width: `${pct}%`,
+                    backgroundColor: LANGUAGE_COLORS[lang] || "#888b94",
+                  }}
+                  title={`${lang}: ${pct}%`}
+                />
+              );
+            })}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4 font-mono text-[11px] text-muted-foreground">
+            {Object.entries(languageFrequency).map(([lang, count]) => {
+              const pct = Math.round((count / totalLangCount) * 100);
+              return (
+                <span key={lang} className="flex items-center gap-1.5">
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: LANGUAGE_COLORS[lang] || "#888b94" }}
+                  />
+                  <span>
+                    {lang} <strong className="text-foreground/80">{pct}%</strong>
+                  </span>
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Filter and Ledger Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-4">
+        <div className="flex flex-wrap items-center gap-2">
+          {["All", ...allLanguages].map((lang) => (
+            <button
+              key={lang}
+              type="button"
+              onClick={() => setActiveLang(lang)}
+              className={`rounded-full px-3 py-1 font-mono text-xs transition-all ${
+                activeLang === lang
+                  ? "bg-foreground text-background font-bold"
+                  : "border border-white/[0.08] text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {lang}
+            </button>
+          ))}
+        </div>
+
+        <div className="relative w-full sm:w-64">
+          <Search
+            size={13}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Filter repository ledger..."
+            className="w-full rounded-full border border-white/[0.1] bg-white/[0.02] pl-8 pr-4 py-1.5 font-mono text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-amber-400"
+          />
+        </div>
+      </div>
+
+      {/* Understated Minimalist Repository Ledger (No Bulky Cards) */}
+      <div className="divide-y divide-white/[0.06] border-t border-white/[0.08]">
+        {visibleRepos.map((repo) => (
+          <div
+            key={repo.id}
+            className="group flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 py-4 transition-colors hover:bg-white/[0.015]"
+          >
+            <div className="space-y-1 min-w-0">
+              <div className="flex items-center gap-3">
+                <a
+                  href={repo.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-display text-base sm:text-lg font-bold text-foreground hover:text-amber-300 transition-colors flex items-center gap-1.5 truncate"
+                >
+                  <span>{repo.name}</span>
+                  <ExternalLink
+                    size={12}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                  />
+                </a>
+
+                {repo.primaryLanguage && (
+                  <span className="font-mono text-[11px] text-muted-foreground/80">
+                    {repo.primaryLanguage}
+                  </span>
+                )}
+              </div>
+
+              <p className="font-sans text-xs sm:text-sm text-muted-foreground truncate max-w-2xl">
+                {repo.overview || repo.what || "Public open-source repository."}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-4 font-mono text-xs text-muted-foreground shrink-0">
+              {repo.stars > 0 && (
+                <span className="flex items-center gap-1 text-amber-300/80">
+                  <Star size={12} /> {repo.stars}
+                </span>
+              )}
+              {repo.forks > 0 && (
+                <span className="flex items-center gap-1 text-muted-foreground">
+                  <GitFork size={12} /> {repo.forks}
+                </span>
+              )}
+              {repo.updatedAt && (
+                <span className="text-[11px] text-muted-foreground/60 hidden md:inline">
+                  {formatUtcDate(repo.updatedAt)}
+                </span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Expand Ledger Button if > 6 repos */}
+      {!searchQuery && filteredRepos.length > 6 && (
+        <div className="mt-4 text-center">
+          <button
+            type="button"
+            onClick={() => setExpanded(!expanded)}
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.02] px-4 py-1.5 font-mono text-xs text-muted-foreground hover:text-foreground hover:border-white/[0.2] transition-colors"
+          >
+            <span>
+              {expanded ? "Collapse Ledger" : `Show All ${filteredRepos.length} Repositories`}
+            </span>
+            {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+          </button>
+        </div>
+      )}
+
+      {/* Bottom Link to GitHub Profile */}
+      <div className="mt-8 flex items-center justify-between border-t border-white/[0.06] pt-4 font-mono text-xs text-muted-foreground">
+        <span>Verified Profile: ps06222005-oss</span>
+        <a
+          href="https://github.com/ps06222005-oss"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1.5 text-foreground hover:text-amber-300 transition-colors"
+        >
+          <Github size={13} />
+          <span>View complete GitHub ecosystem</span>
+        </a>
       </div>
     </Section>
-  );
-}
-
-function Stat({ icon: Icon, label, value }: { icon: React.ComponentType<{ size?: number }>; label: string; value: number }) {
-  return (
-    <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-2.5">
-      <Icon size={12} />
-      <p className="mt-1 text-lg font-bold text-gradient">{value}</p>
-      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
-    </div>
-  );
-}
-
-function FallbackProfile({ error }: { error: boolean }) {
-  return (
-    <div className="text-sm text-muted-foreground">
-      <p className="font-semibold text-foreground">{PROFILE.name}</p>
-      <p className="text-xs">@{PROFILE.githubUser}</p>
-      <p className="mt-3">{error ? "Live GitHub stats unavailable." : "Loading…"}</p>
-    </div>
   );
 }

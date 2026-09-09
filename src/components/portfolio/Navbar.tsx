@@ -1,59 +1,102 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Download, Github } from "lucide-react";
+import { X, Download, Github, Linkedin, Mail, Terminal, ArrowUpRight } from "lucide-react";
 import { PROFILE } from "@/lib/portfolio-data";
 import logo from "@/assets/logo-pc.png";
 
-
-const links = [
-  { id: "home", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "skills", label: "Skills" },
-  { id: "projects", label: "Projects" },
-  { id: "why", label: "Why Me" },
-  { id: "journey", label: "Journey" },
-  { id: "github", label: "GitHub" },
-  { id: "education", label: "Education" },
-  { id: "beyond", label: "Beyond" },
-  { id: "contact", label: "Contact" },
-
+const CHAPTERS = [
+  {
+    id: "home",
+    index: "00",
+    title: "OPENING SCENE",
+    subtitle: "Kinetic Identity & Multi-Mode World",
+  },
+  {
+    id: "about",
+    index: "01",
+    title: "IDENTITY MANIFESTO",
+    subtitle: "Acoustic Models, Autonomy & University Foundations",
+  },
+  {
+    id: "projects",
+    index: "02",
+    title: "ENGINEERED ARTIFACTS",
+    subtitle: "Autonomous Architectures, Waveforms & Code",
+  },
+  {
+    id: "skills",
+    index: "03",
+    title: "ARCHITECTURAL LINEAGES",
+    subtitle: "Visual Relationship Map & Capability Graphs",
+  },
+  {
+    id: "github",
+    index: "04",
+    title: "ENGINEERING EVIDENCE",
+    subtitle: "Language Balance & Public Repository Ledger",
+  },
+  {
+    id: "certifications",
+    index: "05",
+    title: "ARCHIVAL EXHIBITION",
+    subtitle: "Verified Accreditations & Institutional Audits",
+  },
+  {
+    id: "contact",
+    index: "06",
+    title: "CONTINUUM & DIRECT CONTACT",
+    subtitle: "Direct Inquiries & Transmission Channels",
+  },
 ];
 
 export function Navbar() {
+  const [activeChapter, setActiveChapter] = useState("home");
+  const [indexOpen, setIndexOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("home");
-  const [spin, setSpin] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [time, setTime] = useState("");
 
-
-  // Scroll state is rAF-throttled and the active section comes from an
-  // IntersectionObserver, so scrolling never forces a layout read per event.
+  // Live IST time
   useEffect(() => {
-    let raf = 0;
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        setScrolled(window.scrollY > 20);
-      });
+    const updateTime = () => {
+      const now = new Date();
+      setTime(
+        now.toLocaleTimeString("en-US", {
+          timeZone: "Asia/Kolkata",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }),
+      );
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
 
+  // Scroll tracking to minimize navbar
   useEffect(() => {
-    const sections = links
-      .map((l) => document.getElementById(l.id))
-      .filter((el): el is HTMLElement => !!el);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 80);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Intersection observer for chapters
+  useEffect(() => {
+    const sections = CHAPTERS.map((c) => document.getElementById(c.id)).filter(
+      (el): el is HTMLElement => !!el,
+    );
     if (!sections.length) return;
+
     const visible = new Map<string, number>();
     const io = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) visible.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
+        for (const e of entries) {
+          visible.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
+        }
         let best = "";
         let bestRatio = 0;
         for (const [id, ratio] of visible) {
@@ -62,111 +105,304 @@ export function Navbar() {
             bestRatio = ratio;
           }
         }
-        if (best) setActive(best);
+        if (best) setActiveChapter(best);
       },
-      { rootMargin: "-96px 0px -55% 0px", threshold: [0, 0.15, 0.35, 0.6, 1] },
+      { rootMargin: "-80px 0px -55% 0px", threshold: [0, 0.2, 0.5, 1] },
     );
+
     sections.forEach((s) => io.observe(s));
     return () => io.disconnect();
   }, []);
 
-  const go = (id: string) => {
-    setOpen(false);
+  // Keyboard shortcut Esc
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && indexOpen) setIndexOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [indexOpen]);
+
+  const scrollTo = (id: string) => {
+    setIndexOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const currentChapterObj = CHAPTERS.find((c) => c.id === activeChapter) || CHAPTERS[0];
+
   return (
-    <motion.header
-      initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-xl bg-background/70 border-b border-border shadow-[0_1px_20px_-8px_rgba(15,23,42,0.08)]" : ""}`}
-    >
-      <nav aria-label="Primary" className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
-        <button
-          onClick={() => { setSpin((s) => s + 1); go("home"); }}
-          aria-label="Prince Chauhan — back to top"
-          className="group flex shrink-0 items-center gap-2.5">
-          <motion.img
-            src={logo} alt="" width={32} height={32}
-            animate={{ rotate: spin * 360 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="h-8 w-8 transition-transform duration-300 group-hover:scale-105"
-          />
-
-          <span className="font-display text-base font-bold tracking-tight leading-none">
-            <span className="text-foreground">Prince</span>
-            <span className="text-primary"> Chauhan</span>
-          </span>
-        </button>
-
-        <ul className="hidden lg:flex items-center gap-1">
-          {links.map((l) => (
-            <li key={l.id}>
-              <button onClick={() => go(l.id)} aria-current={active === l.id ? "true" : undefined}
-                className={`relative rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${active === l.id ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-                {active === l.id && (
-                  <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-primary/[0.08] ring-1 ring-primary/20"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }} />
-                )}
-                <span className="relative">{l.label}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-
-
-        <div className="hidden lg:flex items-center gap-2">
+    <>
+      {/* Minimal Floating Navigation Capsule (Item 10) */}
+      <header
+        role="banner"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out pointer-events-none ${
+          scrolled ? "py-2.5 sm:py-3" : "py-4 sm:py-5"
+        }`}
+      >
+        <div
+          className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ${
+            scrolled && !isHovered ? "opacity-90" : "opacity-100"
+          }`}
+        >
+          {/* Brand & Monogram */}
           <button
-            onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
-            aria-label="Open command palette"
-            className="hidden xl:inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+            type="button"
+            onClick={() => scrollTo("home")}
+            className="pointer-events-auto flex items-center gap-2.5 font-mono text-xs text-foreground group"
           >
-            <span>Search</span>
-            <span className="rounded-md border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 text-[10px]">⌘K</span>
+            <div className="relative flex h-7 w-7 items-center justify-center rounded-full border border-white/[0.12] bg-[#0c0e14] transition-colors group-hover:border-amber-400">
+              <img
+                src={logo}
+                alt="Prince Chauhan monogram logo"
+                width={16}
+                height={16}
+                className="h-4 w-4 object-contain"
+              />
+            </div>
+            <div
+              className={`transition-all duration-300 hidden sm:flex flex-col text-left font-mono ${
+                scrolled && !isHovered
+                  ? "opacity-0 -translate-x-2 pointer-events-none w-0 overflow-hidden"
+                  : "opacity-100 translate-x-0"
+              }`}
+            >
+              <span className="font-bold tracking-tight text-foreground text-xs leading-none">
+                PRINCE CHAUHAN
+              </span>
+              <span className="text-[10px] text-muted-foreground/70 mt-0.5">
+                AI &amp; ML // SYSTEMS
+              </span>
+            </div>
           </button>
-          <a href={PROFILE.github} target="_blank" rel="noreferrer" aria-label="GitHub"
-            className="grid h-9 w-9 place-items-center rounded-full glass hover:text-accent-cyan transition-colors">
-            <Github size={15} />
-          </a>
-          <a href={PROFILE.resume} download
-            className="inline-flex items-center gap-1.5 rounded-full bg-gradient-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:scale-[1.03] transition-transform">
-            <Download size={13} /> Resume
-          </a>
-        </div>
 
-        <button onClick={() => setOpen((v) => !v)} className="lg:hidden rounded-lg p-2 hover:bg-white/[0.04]" aria-label="Toggle menu">
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </nav>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden overflow-hidden backdrop-blur-xl bg-background/95 border-b border-border"
+          {/* Minimal Floating Capsule (Reduces prominence on scroll) */}
+          <div
+            onClick={() => setIndexOpen(true)}
+            className={`pointer-events-auto cursor-pointer flex items-center gap-2.5 rounded-full border border-white/[0.1] bg-[#0c0e14]/85 px-3.5 py-1.5 backdrop-blur-xl font-mono text-xs shadow-lg transition-all duration-300 hover:border-amber-400/60 ${
+              scrolled ? "scale-95 hover:scale-100" : ""
+            }`}
           >
-            <ul className="flex flex-col gap-1 px-6 py-4">
-              {links.map((l) => (
-                <li key={l.id}>
-                  <button onClick={() => go(l.id)}
-                    className={`w-full rounded-lg px-3 py-2 text-left text-sm ${active === l.id ? "bg-white/[0.04] text-foreground" : "text-muted-foreground"}`}>
-                    {l.label}
-                  </button>
-                </li>
-              ))}
-              <li className="mt-2 flex gap-2">
-                <a href={PROFILE.github} target="_blank" rel="noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-full glass px-4 py-2 text-sm">
-                  <Github size={14} /> GitHub
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <span className="text-amber-400 font-bold">[{currentChapterObj.index}]</span>
+            <span className="text-foreground/90 font-medium tracking-wider uppercase text-[11px]">
+              {currentChapterObj.title}
+            </span>
+          </div>
+
+          {/* Quick Triggers & Direct Recruiter Paths */}
+          <div className="pointer-events-auto flex items-center gap-2.5 font-mono text-xs">
+            <nav className="hidden lg:flex items-center gap-4 text-[11px] text-muted-foreground mr-1">
+              <button
+                type="button"
+                onClick={() => scrollTo("projects")}
+                className="hover:text-amber-300 transition-colors"
+              >
+                PROJECTS
+              </button>
+              <a
+                href={PROFILE.resume}
+                download
+                className="hover:text-amber-300 transition-colors flex items-center gap-1"
+              >
+                <span>CV</span>
+                <Download size={11} className="text-amber-400" />
+              </a>
+              <a
+                href={PROFILE.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-amber-300 transition-colors flex items-center gap-1"
+                aria-label="LinkedIn Profile"
+              >
+                <Linkedin size={11} className="text-amber-400" />
+                <span>LINKEDIN</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => scrollTo("contact")}
+                className="hover:text-amber-300 transition-colors"
+              >
+                CONTACT
+              </button>
+            </nav>
+
+            <button
+              type="button"
+              onClick={() =>
+                window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))
+              }
+              className={`hidden sm:inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-[#0c0e14]/80 px-3 py-1.5 text-muted-foreground hover:text-foreground hover:border-white/[0.2] transition-all backdrop-blur-md ${
+                scrolled && !isHovered
+                  ? "opacity-0 scale-90 pointer-events-none"
+                  : "opacity-100 scale-100"
+              }`}
+              title="Command Palette (⌘K)"
+            >
+              <Terminal size={12} className="text-amber-400" />
+              <span>CMD</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIndexOpen(!indexOpen)}
+              className="inline-flex items-center gap-2 rounded-full border border-white/[0.14] bg-[#0c0e14]/90 px-3.5 py-1.5 font-semibold text-foreground hover:border-amber-400 hover:text-amber-300 transition-colors backdrop-blur-xl shadow-lg"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-foreground" />
+              <span>{indexOpen ? "CLOSE" : "INDEX"}</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Right Edge Ambient Chapter Spatial Markers (Desktop Only) */}
+      <aside
+        aria-label="Chapter progress"
+        className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col gap-3 font-mono text-[10px]"
+      >
+        {CHAPTERS.map((c) => {
+          const isActive = activeChapter === c.id;
+          return (
+            <button
+              key={c.id}
+              type="button"
+              onClick={() => scrollTo(c.id)}
+              className="group flex items-center justify-end gap-2 text-right transition-all"
+            >
+              <span
+                className={`transition-opacity duration-200 ${
+                  isActive
+                    ? "opacity-100 text-amber-300 font-bold"
+                    : "opacity-0 group-hover:opacity-100 text-muted-foreground"
+                }`}
+              >
+                {c.index} {c.title}
+              </span>
+              <span
+                className={`block transition-all duration-300 ${
+                  isActive
+                    ? "h-5 w-1 bg-amber-400 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]"
+                    : "h-2 w-1 bg-white/20 rounded-full group-hover:bg-white/50"
+                }`}
+              />
+            </button>
+          );
+        })}
+      </aside>
+
+      {/* Fullscreen Spatial Index Overlay */}
+      <AnimatePresence>
+        {indexOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-[80] flex flex-col justify-between bg-[#07080a]/98 backdrop-blur-2xl p-6 sm:p-12 md:p-16 overflow-y-auto"
+          >
+            {/* Top Bar inside Overlay */}
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-6 font-mono text-xs text-muted-foreground">
+              <div className="flex items-center gap-3">
+                <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+                <span className="text-foreground font-bold">SPATIAL INDEX // 2025</span>
+              </div>
+
+              <div className="flex items-center gap-6">
+                <span className="hidden sm:inline">GHAZIABAD {time} [UTC+5:30]</span>
+                <button
+                  type="button"
+                  onClick={() => setIndexOpen(false)}
+                  className="flex items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.04] px-4 py-2 text-foreground hover:bg-white/[0.08] transition-colors"
+                >
+                  <X size={14} />
+                  <span>CLOSE [ESC]</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Huge Spatial Chapter Navigation List */}
+            <div className="my-auto py-10">
+              <nav className="space-y-3 sm:space-y-4">
+                {CHAPTERS.map((c) => {
+                  const isActive = activeChapter === c.id;
+
+                  return (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => scrollTo(c.id)}
+                      className="group flex w-full items-baseline justify-between border-b border-white/[0.04] pb-4 text-left transition-colors duration-200 hover:border-white/[0.2]"
+                    >
+                      <div className="flex items-baseline gap-4 sm:gap-8">
+                        <span className="font-mono text-sm sm:text-base text-amber-400/80 font-semibold">
+                          [{c.index}]
+                        </span>
+                        <div>
+                          <span
+                            className={`font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight transition-colors duration-200 ${
+                              isActive ? "text-amber-300" : "text-[#d1d5db] group-hover:text-white"
+                            }`}
+                          >
+                            {c.title}
+                          </span>
+                          <p className="mt-1 font-mono text-xs sm:text-sm text-muted-foreground/70 hidden sm:block">
+                            {c.subtitle}
+                          </p>
+                        </div>
+                      </div>
+
+                      <span className="hidden font-mono text-xs text-muted-foreground group-hover:text-foreground sm:inline-flex items-center gap-1">
+                        <span>GO TO SCENE</span>
+                        <ArrowUpRight
+                          size={14}
+                          className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                        />
+                      </span>
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
+
+            {/* Bottom Quick Links in Overlay */}
+            <div className="flex flex-wrap items-center justify-between gap-6 border-t border-white/[0.08] pt-6 font-mono text-xs text-muted-foreground">
+              <div className="flex items-center gap-6">
+                <a
+                  href={PROFILE.resume}
+                  download
+                  className="flex items-center gap-1.5 text-foreground hover:text-amber-300 transition-colors"
+                >
+                  <Download size={13} className="text-amber-400" />
+                  <span>CURRICULUM VITAE</span>
                 </a>
-                <a href={PROFILE.resume} download
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
-                  <Download size={14} /> Resume
+                <a
+                  href={PROFILE.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-foreground hover:text-amber-300 transition-colors"
+                >
+                  <Github size={13} />
+                  <span>GITHUB</span>
                 </a>
-              </li>
-            </ul>
+                <a
+                  href={PROFILE.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-foreground hover:text-amber-300 transition-colors"
+                >
+                  <Linkedin size={13} />
+                  <span>LINKEDIN</span>
+                </a>
+              </div>
+
+              <div className="text-muted-foreground/60 text-[11px]">
+                PRINCE CHAUHAN · B.TECH CSE (AI &amp; ML) · SVERIFIED ARTIFACTS
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </>
   );
 }

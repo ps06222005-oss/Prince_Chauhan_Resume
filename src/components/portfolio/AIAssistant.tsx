@@ -32,8 +32,7 @@ function answer(q: string): string {
     return `B.Tech in Computer Science Engineering (AI & ML) at Sunderdeep Global University — expected 2028.`;
   if (/contact|email|reach|phone|linkedin/.test(t))
     return `Email: ${PROFILE.email}\nPhone: ${PROFILE.phone}\nLinkedIn: ${PROFILE.linkedin}\nGitHub: ${PROFILE.github}`;
-  if (/github/.test(t))
-    return `My GitHub: ${PROFILE.github}`;
+  if (/github/.test(t)) return `My GitHub: ${PROFILE.github}`;
   if (/internship|job|hire/.test(t))
     return `Yes — I'm actively open to software development and AI/ML internships. Reach out at ${PROFILE.email}.`;
   return `I can only answer questions about this portfolio — try asking about skills, projects, resume, education, or contact.`;
@@ -90,10 +89,13 @@ export function AIAssistant() {
     setMsgs((prev) => [...prev, { role: "user", text: q }]);
     setInput("");
     setTyping(true);
-    window.setTimeout(() => {
-      setMsgs((prev) => [...prev, { role: "bot", text: answer(q) }]);
-      setTyping(false);
-    }, 550 + Math.min(q.length * 12, 600));
+    window.setTimeout(
+      () => {
+        setMsgs((prev) => [...prev, { role: "bot", text: answer(q) }]);
+        setTyping(false);
+      },
+      550 + Math.min(q.length * 12, 600),
+    );
   };
 
   const clear = () => setMsgs([WELCOME]);
@@ -169,7 +171,11 @@ export function AIAssistant() {
                 </motion.div>
               ))}
               {typing && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-start"
+                >
                   <div className="inline-flex items-center gap-1 rounded-2xl border border-white/[0.08] bg-white/[0.04] px-3 py-2.5">
                     <Dot delay={0} />
                     <Dot delay={0.15} />

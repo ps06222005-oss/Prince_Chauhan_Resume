@@ -1,54 +1,56 @@
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 
+export interface SectionProps {
+  id: string;
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  children: ReactNode;
+  index?: string;
+  accent?: "amber" | "cyan" | "violet" | "neutral";
+  highlightWord?: boolean;
+  className?: string;
+}
+
 export function Section({
   id,
   eyebrow,
   title,
   subtitle,
   children,
-}: {
-  id: string;
-  eyebrow?: string;
-  title: string;
-  subtitle?: string;
-  children: ReactNode;
-}) {
+  index,
+  className = "",
+}: SectionProps) {
   return (
-    <section id={id} className="relative mx-auto max-w-7xl px-6 py-28 sm:py-32">
-      {/* Faint web lattice, masked so it only whispers behind the heading */}
-      <div
-        aria-hidden
-        className="web-pattern pointer-events-none absolute inset-x-0 top-0 -z-10 h-72 opacity-30"
-        style={{ maskImage: "linear-gradient(to bottom, black, transparent)" }}
-      />
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
+    <section id={id} className={`relative mx-auto max-w-7xl px-6 py-20 sm:py-28 ${className}`}>
+      <motion.header
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-14 max-w-2xl"
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="relative mb-14 max-w-4xl border-t border-white/[0.08] pt-8 sm:pt-10"
       >
-        {eyebrow && (
-          <span className="inline-flex items-center gap-2 rounded-full glass px-3.5 py-1.5 text-[11px] font-medium tracking-[0.18em] uppercase text-primary">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_2px_oklch(0.58_0.21_22/0.8)]" />
-            {eyebrow}
-          </span>
-        )}
-        <h2 className="mt-5 text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.05]">
-          {title.split(" ").map((w, i, arr) =>
-            i === arr.length - 1 ? (
-              <span key={i} className="text-gradient">
-                {" "}
-                {w}
-              </span>
-            ) : (
-              <span key={i}>{i === 0 ? "" : " "}{w}</span>
-            ),
+        <div className="flex items-center gap-3 font-mono text-xs text-muted-foreground/80">
+          {index && <span className="font-bold text-amber-400">[{index}]</span>}
+          {eyebrow && (
+            <span className="uppercase tracking-[0.2em] font-semibold text-foreground/80">
+              {eyebrow}
+            </span>
           )}
+        </div>
+
+        <h2 className="mt-4 font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-[-0.04em] text-[#f4f4f2] leading-[1.05]">
+          {title}
         </h2>
-        {subtitle && <p className="mt-5 text-muted-foreground text-lg leading-relaxed">{subtitle}</p>}
-      </motion.div>
+
+        {subtitle && (
+          <p className="mt-4 max-w-2xl font-sans text-base sm:text-lg leading-relaxed text-muted-foreground/90 font-normal">
+            {subtitle}
+          </p>
+        )}
+      </motion.header>
+
       {children}
     </section>
   );
