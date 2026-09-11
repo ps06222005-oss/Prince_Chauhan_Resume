@@ -240,22 +240,48 @@ export function transformRepoToProject(
 }
 
 /**
- * Filter and rank repositories.
+ * Map repository names to a canonical project key to guarantee strict zero-duplicate rendering.
+ */
+function getCanonicalRepoKey(repoName: string): string {
+  const lower = repoName.toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (lower.includes("jarvis")) return "jarvis";
+  if (lower.includes("stream")) return "onlinestream";
+  if (lower.includes("decode")) return "decodelabs";
+  if (lower.includes("resume") || lower.includes("portfolio")) return "portfolio";
+  return lower;
+}
+
+/**
+ * Filter, rank, and strictly deduplicate repositories.
  * Ignores empty or private forks, sorts by intelligent ranking score.
+ * Guarantees that duplicate aliases (e.g. JARVIS and jarvis-voice-assistant-) resolve to ONE canonical entry.
  */
 export function rankAndFilterProjects(
   repos: GithubRawRepo[],
   source: "github-live" | "cached-live" = "github-live",
 ): EngineeringProject[] {
-  return repos
+  const projects = repos
     .filter((repo) => {
       // Must not be an archived fork or disabled repository
       if (repo.disabled) return false;
-      // Allow user's own repositories
       return true;
     })
     .map((repo) => transformRepoToProject(repo, source))
     .sort((a, b) => b.score - a.score);
+
+  // Strict Canonical Deduplication
+  const seenKeys = new Set<string>();
+  const deduplicated: EngineeringProject[] = [];
+
+  for (const project of projects) {
+    const key = getCanonicalRepoKey(project.name);
+    if (!seenKeys.has(key)) {
+      seenKeys.add(key);
+      deduplicated.push(project);
+    }
+  }
+
+  return deduplicated;
 }
 
 /**

@@ -1,149 +1,222 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { GraduationCap, MapPin, Compass, ArrowDownRight, Sparkles } from "lucide-react";
 
+/**
+ * About — Luxury Editorial Profile & Engineering Manifesto
+ *
+ * Visual System: BLACK + CHROME + IVORY + ULTRAVIOLET
+ * Editorial layout inspired by architectural monographs and design studios:
+ * - High-contrast editorial typography with generous negative space
+ * - Grounded strictly in real academic and technical facts
+ * - Sunderdeep Global University (B.Tech CSE AI & ML, 2024–2028, Ghaziabad / Delhi NCR)
+ * - Chronological development milestones
+ */
 export function About() {
-  const containerRef = useRef<HTMLElement | null>(null);
-  const shouldReduceMotion = useReducedMotion();
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Choreographed typography tracking transition (Section 9)
-  const letterSpacing = useTransform(
-    scrollYProgress,
-    [0.1, 0.45, 0.8],
-    ["0.15em", "0.45em", "0.2em"],
-  );
-  const textScale = useTransform(scrollYProgress, [0.15, 0.5], [0.96, 1]);
-  const statementY = useTransform(scrollYProgress, [0.15, 0.55], [40, 0]);
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <section
-      ref={containerRef}
       id="about"
-      aria-label="Identity Manifesto"
-      className="relative min-h-[90vh] w-full overflow-hidden bg-[#060709] py-28 sm:py-40 border-t border-white/[0.05]"
+      aria-label="About Prince Chauhan"
+      className="relative w-full overflow-hidden bg-[#08090c] text-white border-t border-white/[0.08]"
     >
-      {/* Visual Silence Atmosphere — background slows down, deep obsidian void */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(245,158,11,0.03)_0%,_transparent_70%)]"
-      />
+      {/* =========================================================================
+          QUIET EDITORIAL PAUSE: PHILOSOPHICAL TENET
+          Spacious, contemplative typographic statement in deep carbon space.
+          ========================================================================= */}
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-24 sm:py-32 border-b border-white/[0.06]">
+        <div className="max-w-4xl space-y-6">
+          <div className="inline-flex items-center gap-2 font-mono text-[11px] text-violet-400 tracking-widest uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-violet-400 shadow-[0_0_8px_rgba(139,92,246,0.8)]" />
+            <span>CORE PHILOSOPHY</span>
+          </div>
 
-      <div className="relative mx-auto w-full max-w-7xl px-6">
-        {/* Kinetic Chapter Transition — Letters separate then settle */}
-        <div className="border-b border-white/[0.06] pb-6 flex items-center justify-between">
-          <motion.div
-            style={{ letterSpacing: shouldReduceMotion ? "0.2em" : letterSpacing }}
-            className="font-mono text-xs uppercase text-amber-400 font-semibold select-none"
-          >
-            01 // A · B · O · U · T
-          </motion.div>
-          <span className="font-mono text-[10px] text-muted-foreground/60 uppercase tracking-widest hidden sm:inline">
-            IDENTITY MANIFESTO
-          </span>
-        </div>
-
-        {/* Section 10: One Strong Editorial Human Statement */}
-        <div className="py-20 sm:py-32 max-w-5xl">
-          <motion.h2
-            style={{
-              scale: shouldReduceMotion ? 1 : textScale,
-              y: shouldReduceMotion ? 0 : statementY,
-            }}
-            className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[-0.04em] text-[#f4f4f2] leading-[1.04]"
-          >
-            I build intelligent systems that turn{" "}
-            <span className="font-bold text-white underline decoration-amber-400/40 underline-offset-8">
-              complex acoustic &amp; mathematical models
+          <blockquote className="font-display font-light text-2xl sm:text-4xl md:text-5xl text-white/95 leading-[1.2] tracking-tight">
+            “Software is the rigorous translation of{" "}
+            <span className="font-serif italic font-normal text-gradient-chrome">
+              human curiosity
             </span>{" "}
-            into deterministic software.
-          </motion.h2>
+            into autonomous digital capability.”
+          </blockquote>
 
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-12 sm:mt-16 grid grid-cols-1 gap-10 md:grid-cols-12"
-          >
-            <div className="md:col-span-4 font-mono text-xs text-amber-400/90 uppercase tracking-wider space-y-2">
-              <div>SUNDERDEEP GLOBAL UNIVERSITY</div>
-              <div className="text-muted-foreground/60">B.TECH CSE (AI &amp; ML) · 2024–2028</div>
-              <div className="text-muted-foreground/60">GHAZIABAD, DELHI NCR</div>
-            </div>
-
-            <div className="md:col-span-8 space-y-6 font-sans text-lg sm:text-xl text-muted-foreground/90 leading-relaxed font-light">
-              <p>
-                Software should not merely react; it should anticipate, interpret noisy acoustic
-                inputs, and execute with precision. Rather than treating artificial intelligence as
-                an opaque black box, I approach it as an engineering discipline grounded in memory
-                safety, asymptotic bounds, and high-craft reactive interfaces.
-              </p>
-              <p className="text-base sm:text-lg text-muted-foreground/70">
-                From offline voice-driven operating system control in Python to GPU-accelerated
-                spatial shaders in TypeScript, my work balances foundational computational rigor
-                with refined sensory craft.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* 3 Core Grounded Realities — Pure Typographic Layout without AI Card Boxes */}
-        <div className="grid grid-cols-1 gap-12 sm:gap-16 lg:grid-cols-3 border-t border-white/[0.06] pt-14 sm:pt-18 font-mono">
-          <div className="space-y-3">
-            <div className="text-xs text-amber-400 font-semibold tracking-wider">
-              01 // ALGORITHMIC FOUNDATIONS
-            </div>
-            <p className="font-sans text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Formally grounded in discrete mathematics, C memory primitives, relational schemas,
-              and asymptotic computational bounds at Sunderdeep Global University.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            <div className="text-xs text-accent-cyan font-semibold tracking-wider">
-              02 // AUTONOMOUS VOICE ENGINES
-            </div>
-            <p className="font-sans text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Pioneering acoustic signal processing, dynamic microphone ambient noise calibration,
-              lexical intent dispatchers, and offline voice synthesis in Python.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            <div className="text-xs text-[#f4f4f2] font-semibold tracking-wider">
-              03 // LIVING INTERFACES
-            </div>
-            <p className="font-sans text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Refusing to separate engineering truth from visual sophistication. Creating type-safe
-              reactive architectures with procedural WebGL shaders that feel alive.
-            </p>
+          <div className="pt-2 font-mono text-[11px] text-white/40 flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span className="text-white/70">PRINCE CHAUHAN</span>
+            <span className="text-white/20">/</span>
+            <span>SUNDERDEEP GLOBAL UNIVERSITY</span>
+            <span className="text-white/20">/</span>
+            <span>B.TECH CSE (AI &amp; ML) · 2024–2028</span>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Coordinates & Direct Artifact Conduit */}
-        <div className="mt-20 sm:mt-28 flex flex-wrap items-center justify-between gap-6 border-t border-white/[0.06] pt-6 font-mono text-xs text-muted-foreground/70">
-          <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>OPEN TO 2025/2026 AI/ML &amp; SYSTEMS INTERNSHIPS</span>
+      {/* =========================================================================
+          EDITORIAL BIOGRAPHY & CHRONOLOGICAL PROGRESSION
+          Asymmetric spread with refined typography, academic credentials, and milestones.
+          ========================================================================= */}
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-32 space-y-20">
+        {/* Section Title */}
+        <div className="space-y-3">
+          <div className="font-mono text-xs text-violet-400 tracking-widest uppercase">
+            PROFILE &amp; BACKGROUND
           </div>
 
-          <a
-            href="https://github.com/ps06222005-oss"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 text-foreground hover:text-amber-300 transition-colors group"
+          <h2 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl tracking-[-0.035em] text-white">
+            Driven by curiosity. <br />
+            <span className="text-gradient-chrome">Grounded in code.</span>
+          </h2>
+        </div>
+
+        {/* Asymmetric Publication Spread */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Core Narrative */}
+          <div className="lg:col-span-6 space-y-6 text-white/80 font-sans text-base sm:text-lg leading-relaxed font-light">
+            <p>
+              I am an undergraduate engineer pursuing a Bachelor of Technology in Computer Science
+              &amp; Engineering with specialization in Artificial Intelligence &amp; Machine
+              Learning at Sunderdeep Global University in Ghaziabad, India.
+            </p>
+
+            <p>
+              My work focuses on building software from first principles—demystifying autonomous
+              intelligence, low-latency audio pipelines, and modern web architectures rather than
+              simply consuming opaque abstractions.
+            </p>
+
+            <p className="text-white/70 text-base">
+              This approach guided the development of{" "}
+              <strong className="text-white font-medium">JARVIS</strong>, an autonomous desktop
+              assistant engineered in Python with dynamic ambient energy threshold calibration, and{" "}
+              <strong className="text-white font-medium">OnlineStream</strong>, a responsive media
+              streaming web application deployed on high-performance edge infrastructure.
+            </p>
+
+            {/* Architectural Discipline Note */}
+            <div className="border-l-2 border-violet-500/50 pl-5 py-2 font-mono text-xs text-white/60 space-y-1 bg-white/[0.01]">
+              <div className="text-violet-300 font-semibold uppercase tracking-wider">
+                ENGINEERING MINDSET
+              </div>
+              <p className="font-sans text-xs text-white/70">
+                Understand the audio buffer, the token stream, memory lifecycles, and network
+                packets before orchestrating higher-level frameworks.
+              </p>
+            </div>
+          </div>
+
+          {/* Right Column: Academic Credentials & Chronology */}
+          <div className="lg:col-span-6 space-y-10">
+            {/* Academic Credential Card */}
+            <div className="rounded-2xl border border-white/[0.08] bg-[#0e1017] p-6 sm:p-8 space-y-4">
+              <div className="font-mono text-xs text-violet-400 font-medium tracking-wider flex items-center gap-2">
+                <GraduationCap size={16} />
+                <span>ACADEMIC FOUNDATION</span>
+              </div>
+
+              <div className="space-y-1.5">
+                <h3 className="font-display font-bold text-xl sm:text-2xl text-white">
+                  Bachelor of Technology (B.Tech)
+                </h3>
+                <div className="font-mono text-xs sm:text-sm text-violet-300">
+                  Computer Science &amp; Engineering (Artificial Intelligence &amp; Machine
+                  Learning)
+                </div>
+                <div className="font-sans text-xs text-white/50 pt-1">
+                  Sunderdeep Global University · Ghaziabad, Uttar Pradesh, India
+                </div>
+                <div className="font-mono text-xs text-white/40">
+                  Expected Graduation: 2028 · Currently Enrolled (2024–2028)
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2 font-mono text-xs text-white/60 border-t border-white/[0.06]">
+                <div className="flex items-center gap-1.5">
+                  <MapPin size={13} className="text-violet-400" />
+                  <span>Delhi NCR Region</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Compass size={13} className="text-violet-400" />
+                  <span>Open to Relocation &amp; Remote</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Chronological Milestones */}
+            <div className="space-y-6">
+              <div className="font-mono text-xs uppercase tracking-widest text-violet-400 font-medium flex items-center gap-2">
+                <Sparkles size={14} />
+                <span>CHRONOLOGICAL PROGRESSION</span>
+              </div>
+
+              <div className="space-y-6 border-l border-white/[0.1] pl-5 ml-1">
+                {/* 2024 */}
+                <div className="relative space-y-1">
+                  <span className="absolute -left-[25px] top-1.5 h-2 w-2 rounded-full bg-violet-400 ring-4 ring-[#08090c]" />
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono font-bold text-violet-400 text-xs">2024</span>
+                    <span className="text-white/30">—</span>
+                    <span className="text-white font-medium text-sm">
+                      Foundational Computation &amp; DecodeLabs
+                    </span>
+                  </div>
+                  <p className="font-sans text-xs text-white/65 leading-relaxed">
+                    Commenced B.Tech in CSE (AI &amp; ML). Deepened knowledge in Python, data
+                    structures, algorithms, and completed core software tasks in DecodeLabs
+                    technical internship.
+                  </p>
+                </div>
+
+                {/* 2025 */}
+                <div className="relative space-y-1">
+                  <span className="absolute -left-[25px] top-1.5 h-2 w-2 rounded-full bg-violet-400 ring-4 ring-[#08090c]" />
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono font-bold text-violet-400 text-xs">2025</span>
+                    <span className="text-white/30">—</span>
+                    <span className="text-white font-medium text-sm">
+                      JARVIS Voice Assistant &amp; OnlineStream
+                    </span>
+                  </div>
+                  <p className="font-sans text-xs text-white/65 leading-relaxed">
+                    Engineered JARVIS voice assistant with dynamic ambient energy calibration in
+                    Python, and deployed OnlineStream media streaming interface on edge
+                    infrastructure.
+                  </p>
+                </div>
+
+                {/* 2026 */}
+                <div className="relative space-y-1">
+                  <span className="absolute -left-[25px] top-1.5 h-2 w-2 rounded-full bg-sky-400 ring-4 ring-[#08090c]" />
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono font-bold text-sky-400 text-xs">2026</span>
+                    <span className="text-white/30">—</span>
+                    <span className="text-white font-medium text-sm">
+                      Autonomous Agents &amp; Spatial Software
+                    </span>
+                  </div>
+                  <p className="font-sans text-xs text-white/65 leading-relaxed">
+                    Exploring local Small Language Model (SLM) orchestration, real-time voice
+                    pipelines, and high-craft creative technology web applications. Actively seeking
+                    software engineering &amp; AI internship opportunities.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section Transition */}
+        <div className="pt-8 border-t border-white/[0.06] flex items-center justify-between font-mono text-xs text-white/40">
+          <button
+            type="button"
+            onClick={() => scrollTo("projects")}
+            className="group flex items-center gap-2 text-white/70 hover:text-violet-300 transition-colors cursor-pointer"
           >
-            <span>VIEW VERIFIED REPOSITORIES</span>
-            <ArrowUpRight
+            <span>VIEW FEATURED PROJECTS</span>
+            <ArrowDownRight
               size={14}
-              className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+              className="text-violet-400 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5"
             />
-          </a>
+          </button>
+          <span className="hidden sm:inline text-white/30">CANONICAL SYSTEMS</span>
         </div>
       </div>
     </section>

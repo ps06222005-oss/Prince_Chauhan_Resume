@@ -1,0 +1,19 @@
+<svg viewBox="0 0 110 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="p-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="60%" stop-color="#E5E7EB" />
+      <stop offset="100%" stop-color="#9CA3AF" />
+    </linearGradient>
+    <linearGradient id="c-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDBA74" />
+      <stop offset="40%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#EA580C" />
+    </linearGradient>
+  </defs>
+  <!-- Letter P -->
+  <path d="M 6 6 L 36 6 C 45 6 50 11 50 20 C 50 29 44 34 35 34 L 20 34 L 20 46 L 6 46 Z" fill="url(#p-grad)"/>
+  <path d="M 20 16 L 33 16 C 36 16 38 18 38 20 C 38 22 36 24 33 24 L 20 24 Z" fill="#07080a"/>
+  <!-- Letter C -->
+  <path d="M 96 15 L 83 23 C 80 18 73 16 67 16 C 55 16 48 24 48 31 C 48 38 55 46 67 46 C 74 46 81 43 85 37 L 98 44 C 91 53 80 52 67 52 C 47 52 34 39 34 31 C 34 19 47 10 67 10 C 79 10 90 14 96 15 Z" fill="url(#c-grad)"/>
+</svg>

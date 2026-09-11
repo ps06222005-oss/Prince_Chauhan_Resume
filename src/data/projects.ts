@@ -61,27 +61,6 @@ export const REPO_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
       "Cross-platform system tray utility",
     ],
   },
-  "jarvis-voice-assistant-": {
-    category: "AI/ML",
-    displayName: "JARVIS — Voice Assistant Mini",
-    positioning:
-      "Lightweight Python voice automation prototype focusing on rapid speech interaction and local utility commands.",
-    what: "A standalone Python voice automation script for rapid command dispatch and speech audio feedback.",
-    why: "Exploratory prototyping to evaluate speech recognition response latencies and system command execution speeds.",
-    how: "Single-runtime Python script with dedicated handler routines for rapid task execution.",
-    engineering: "Zero-dependency local audio feedback loop with fast speech-to-text turnaround.",
-    enhancedOverview:
-      "Lightweight Python voice assistant prototype focusing on rapid speech interaction, audio feedback, and local utility commands.",
-    technologies: ["Python", "SpeechRecognition", "pyttsx3", "Audio Utilities"],
-    features: [
-      "Voice-driven search and command dispatch",
-      "Speech feedback synthesis",
-      "Quick script execution",
-    ],
-    architecture:
-      "Single-runtime Python script with lightweight handler routines for rapid task execution.",
-    learned: "Foundational speech recognition APIs and real-time audio pipeline debugging.",
-  },
   onlinestream: {
     category: "Web",
     displayName: "OnlineStream — Media Interface",
@@ -197,33 +176,6 @@ export const FALLBACK_PROJECTS: EngineeringProject[] = [
     solutions: "Ambient noise calibration + token normalization with graceful keyword matching.",
     learned: "System automation and voice pipeline design in Python.",
     future: ["Wake-word detection", "Offline SLM intent classification"],
-    source: "curated-fallback",
-  },
-  {
-    id: 1250942604,
-    name: "Jarvis-voice-assistant-",
-    displayName: "JARVIS — Voice Assistant Mini",
-    overview:
-      "Mini project in Python for voice assistance and system task automation with speech feedback.",
-    category: "AI/ML",
-    primaryLanguage: "Python",
-    technologies: ["Python", "SpeechRecognition", "pyttsx3"],
-    stars: 0,
-    forks: 0,
-    sizeKb: 21050,
-    pushedAt: "2026-05-27T06:00:55Z",
-    createdAt: "2026-05-27T05:24:07Z",
-    githubUrl: "https://github.com/ps06222005-oss/Jarvis-voice-assistant-",
-    demoUrl: null,
-    status: "Engineered",
-    isPriority: true,
-    isFeatured: false,
-    score: 65,
-    features: [
-      "Voice command recognition",
-      "Audio output synthesis",
-      "Lightweight standalone execution",
-    ],
     source: "curated-fallback",
   },
   {

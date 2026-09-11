@@ -53,7 +53,7 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x07080a, 0.022);
+    scene.fog = new THREE.FogExp2(0x08090c, 0.022);
 
     const camera = new THREE.PerspectiveCamera(
       48,
@@ -89,10 +89,10 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
     const originalPositions = new Float32Array(totalPoints * 3);
     const colors = new Float32Array(totalPoints * 3);
 
-    const colorGraphite = new THREE.Color("#181c26");
-    const colorChalk = new THREE.Color("#d1d5db");
-    const colorAmber = new THREE.Color("#f59e0b");
-    const colorCyan = new THREE.Color("#38bdf8");
+    const colorGraphite = new THREE.Color("#11131a");
+    const colorChalk = new THREE.Color("#f5f5f7");
+    const colorViolet = new THREE.Color("#8b5cf6");
+    const colorIce = new THREE.Color("#38bdf8");
 
     let idx = 0;
     const startX = -((gridX - 1) * spacingX) / 2;
@@ -115,9 +115,9 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
         const dist = Math.sqrt(x * x + z * z);
         const ptColor = new THREE.Color();
         if (dist < 4.5) {
-          ptColor.lerpColors(colorChalk, colorAmber, 0.25);
+          ptColor.lerpColors(colorChalk, colorViolet, 0.35);
         } else if (dist < 9) {
-          ptColor.lerpColors(colorChalk, colorGraphite, 0.6);
+          ptColor.lerpColors(colorChalk, colorGraphite, 0.65);
         } else {
           ptColor.copy(colorGraphite);
         }
@@ -141,8 +141,8 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
     if (pctx) {
       const grad = pctx.createRadialGradient(32, 32, 0, 32, 32, 32);
       grad.addColorStop(0, "rgba(255, 255, 255, 0.95)");
-      grad.addColorStop(0.25, "rgba(244, 244, 242, 0.6)");
-      grad.addColorStop(0.6, "rgba(245, 158, 11, 0.1)");
+      grad.addColorStop(0.25, "rgba(245, 245, 247, 0.6)");
+      grad.addColorStop(0.6, "rgba(139, 92, 246, 0.12)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       pctx.fillStyle = grad;
       pctx.fillRect(0, 0, 64, 64);

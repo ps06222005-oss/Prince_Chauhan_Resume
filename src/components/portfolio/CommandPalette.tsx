@@ -20,6 +20,7 @@ import {
   Command,
 } from "lucide-react";
 import { PROFILE } from "@/lib/portfolio-data";
+import { openOrDownloadResume } from "@/lib/resume";
 
 type Action = {
   id: string;
@@ -89,7 +90,7 @@ export function CommandPalette() {
         group: "Actions",
         icon: Download,
         run: () => {
-          window.open(PROFILE.resume, "_blank");
+          openOrDownloadResume();
           setOpen(false);
         },
       },

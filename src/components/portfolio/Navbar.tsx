@@ -1,94 +1,42 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Download, Github, Linkedin, Mail, Terminal, ArrowUpRight } from "lucide-react";
+import { X, Download, Github, Linkedin, Menu, ArrowUpRight, FileText } from "lucide-react";
 import { PROFILE } from "@/lib/portfolio-data";
-import logo from "@/assets/logo-pc.png";
+import { RESUME_PATH, RESUME_FILENAME } from "@/lib/resume";
+import { NAV_LINKS } from "@/data/navigation";
+import { PCLogo } from "./PCLogo";
+import { MagneticButton } from "./MagneticButton";
 
-const CHAPTERS = [
-  {
-    id: "home",
-    index: "00",
-    title: "OPENING SCENE",
-    subtitle: "Kinetic Identity & Multi-Mode World",
-  },
-  {
-    id: "about",
-    index: "01",
-    title: "IDENTITY MANIFESTO",
-    subtitle: "Acoustic Models, Autonomy & University Foundations",
-  },
-  {
-    id: "projects",
-    index: "02",
-    title: "ENGINEERED ARTIFACTS",
-    subtitle: "Autonomous Architectures, Waveforms & Code",
-  },
-  {
-    id: "skills",
-    index: "03",
-    title: "ARCHITECTURAL LINEAGES",
-    subtitle: "Visual Relationship Map & Capability Graphs",
-  },
-  {
-    id: "github",
-    index: "04",
-    title: "ENGINEERING EVIDENCE",
-    subtitle: "Language Balance & Public Repository Ledger",
-  },
-  {
-    id: "certifications",
-    index: "05",
-    title: "ARCHIVAL EXHIBITION",
-    subtitle: "Verified Accreditations & Institutional Audits",
-  },
-  {
-    id: "contact",
-    index: "06",
-    title: "CONTINUUM & DIRECT CONTACT",
-    subtitle: "Direct Inquiries & Transmission Channels",
-  },
-];
-
+/**
+ * Navbar — Floating Glassmorphism Navigation Bar
+ *
+ * Visual Hierarchy:
+ * - Left: PC Logo monogram + Prince Chauhan title
+ * - Center: Floating section links with sliding active spring indicator
+ * - Right: Magnetic 'Resume' CTA button with direct PDF download
+ * - Mobile: Seamlessly transitions to a compact glass bar with hamburger toggle
+ * - Entrance: Smooth spring entrance transition from top
+ */
 export function Navbar() {
-  const [activeChapter, setActiveChapter] = useState("home");
-  const [indexOpen, setIndexOpen] = useState(false);
+  const [activeId, setActiveId] = useState("home");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [time, setTime] = useState("");
 
-  // Live IST time
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTime(
-        now.toLocaleTimeString("en-US", {
-          timeZone: "Asia/Kolkata",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        }),
-      );
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Scroll tracking to minimize navbar
+  // Scroll detection for slight glass tint adjustment
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 80);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Intersection observer for chapters
+  // Intersection observer to track active section
   useEffect(() => {
-    const sections = CHAPTERS.map((c) => document.getElementById(c.id)).filter(
-      (el): el is HTMLElement => !!el,
-    );
+    const sections = ["home", ...NAV_LINKS.map((l) => l.id)]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+
     if (!sections.length) return;
 
     const visible = new Map<string, number>();
@@ -105,299 +53,244 @@ export function Navbar() {
             bestRatio = ratio;
           }
         }
-        if (best) setActiveChapter(best);
+        if (best) setActiveId(best);
       },
-      { rootMargin: "-80px 0px -55% 0px", threshold: [0, 0.2, 0.5, 1] },
+      { rootMargin: "-80px 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
     );
 
     sections.forEach((s) => io.observe(s));
     return () => io.disconnect();
   }, []);
 
-  // Keyboard shortcut Esc
+  // Keyboard accessibility
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && indexOpen) setIndexOpen(false);
+      if (e.key === "Escape" && mobileMenuOpen) setMobileMenuOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [indexOpen]);
+  }, [mobileMenuOpen]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [mobileMenuOpen]);
 
   const scrollTo = (id: string) => {
-    setIndexOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
-
-  const currentChapterObj = CHAPTERS.find((c) => c.id === activeChapter) || CHAPTERS[0];
 
   return (
     <>
-      {/* Minimal Floating Navigation Capsule (Item 10) */}
       <header
         role="banner"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out pointer-events-none ${
-          scrolled ? "py-2.5 sm:py-3" : "py-4 sm:py-5"
-        }`}
+        className="fixed inset-x-0 top-3 sm:top-5 z-50 flex justify-center px-3 sm:px-6 pointer-events-none"
       >
-        <div
-          className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ${
-            scrolled && !isHovered ? "opacity-90" : "opacity-100"
+        <motion.div
+          initial={{ y: -30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className={`pointer-events-auto w-full max-w-5xl rounded-full border transition-all duration-300 px-3.5 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between ${
+            scrolled
+              ? "bg-[#090b10]/90 backdrop-blur-2xl border-white/[0.12] shadow-[0_16px_40px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.1)]"
+              : "bg-[#0c0e16]/80 backdrop-blur-xl border-white/[0.08] shadow-[0_12px_32px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)]"
           }`}
         >
-          {/* Brand & Monogram */}
+          {/* =================================================================
+              LEFT: PC LOGO MONOGRAM & TITLE
+              ================================================================= */}
           <button
             type="button"
             onClick={() => scrollTo("home")}
-            className="pointer-events-auto flex items-center gap-2.5 font-mono text-xs text-foreground group"
+            className="group flex items-center gap-2.5 rounded-full py-1 pr-2 text-left focus-visible:outline-none cursor-pointer select-none"
+            aria-label="Prince Chauhan Home"
           >
-            <div className="relative flex h-7 w-7 items-center justify-center rounded-full border border-white/[0.12] bg-[#0c0e14] transition-colors group-hover:border-amber-400">
-              <img
-                src={logo}
-                alt="Prince Chauhan monogram logo"
-                width={16}
-                height={16}
-                className="h-4 w-4 object-contain"
-              />
-            </div>
-            <div
-              className={`transition-all duration-300 hidden sm:flex flex-col text-left font-mono ${
-                scrolled && !isHovered
-                  ? "opacity-0 -translate-x-2 pointer-events-none w-0 overflow-hidden"
-                  : "opacity-100 translate-x-0"
-              }`}
-            >
-              <span className="font-bold tracking-tight text-foreground text-xs leading-none">
+            <PCLogo className="h-6 sm:h-7 w-auto transition-transform duration-300 group-hover:scale-105" />
+            <div className="flex flex-col">
+              <span className="font-display text-xs sm:text-sm font-bold tracking-tight text-white group-hover:text-violet-200 transition-colors">
                 PRINCE CHAUHAN
               </span>
-              <span className="text-[10px] text-muted-foreground/70 mt-0.5">
-                AI &amp; ML // SYSTEMS
+              <span className="hidden sm:inline font-mono text-[9px] tracking-widest text-white/40 uppercase">
+                AI / ML SCHOLAR
               </span>
             </div>
           </button>
 
-          {/* Minimal Floating Capsule (Reduces prominence on scroll) */}
-          <div
-            onClick={() => setIndexOpen(true)}
-            className={`pointer-events-auto cursor-pointer flex items-center gap-2.5 rounded-full border border-white/[0.1] bg-[#0c0e14]/85 px-3.5 py-1.5 backdrop-blur-xl font-mono text-xs shadow-lg transition-all duration-300 hover:border-amber-400/60 ${
-              scrolled ? "scale-95 hover:scale-100" : ""
-            }`}
+          {/* =================================================================
+              CENTER: FLOATING SECTION LINKS (DESKTOP)
+              ================================================================= */}
+          <nav
+            aria-label="Main Navigation"
+            className="hidden md:flex items-center gap-1 rounded-full bg-white/[0.03] p-1 border border-white/[0.05]"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-amber-400 font-bold">[{currentChapterObj.index}]</span>
-            <span className="text-foreground/90 font-medium tracking-wider uppercase text-[11px]">
-              {currentChapterObj.title}
-            </span>
+            {NAV_LINKS.map((link) => {
+              const isActive = activeId === link.id;
+              return (
+                <button
+                  key={link.id}
+                  type="button"
+                  onClick={() => scrollTo(link.id)}
+                  className={`relative rounded-full px-3.5 py-1.5 font-mono text-xs font-medium transition-all duration-200 cursor-pointer select-none ${
+                    isActive
+                      ? "text-white font-semibold"
+                      : "text-white/60 hover:text-white hover:bg-white/[0.04]"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNavFloatingPill"
+                      className="absolute inset-0 rounded-full bg-white/[0.1] border border-white/[0.12] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"
+                      transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* =================================================================
+              RIGHT: RESUME CTA BUTTON (MAGNETIC HOVER EFFECT)
+              ================================================================= */}
+          <div className="hidden md:flex items-center gap-2.5">
+            <MagneticButton
+              href={RESUME_PATH}
+              download={RESUME_FILENAME}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Download Prince Chauhan Resume (PDF)"
+              className="group inline-flex items-center gap-2 rounded-full border border-violet-500/35 bg-gradient-to-r from-violet-600/20 via-violet-500/15 to-indigo-600/20 hover:from-violet-600/30 hover:to-indigo-600/30 hover:border-violet-400 px-4 py-1.5 font-mono text-xs font-semibold text-white transition-all duration-200 shadow-[0_0_20px_rgba(139,92,246,0.2)]"
+            >
+              <Download
+                size={13}
+                className="text-violet-300 group-hover:-translate-y-0.5 transition-transform"
+              />
+              <span>Resume</span>
+            </MagneticButton>
           </div>
 
-          {/* Quick Triggers & Direct Recruiter Paths */}
-          <div className="pointer-events-auto flex items-center gap-2.5 font-mono text-xs">
-            <nav className="hidden lg:flex items-center gap-4 text-[11px] text-muted-foreground mr-1">
-              <button
-                type="button"
-                onClick={() => scrollTo("projects")}
-                className="hover:text-amber-300 transition-colors"
-              >
-                PROJECTS
-              </button>
-              <a
-                href={PROFILE.resume}
-                download
-                className="hover:text-amber-300 transition-colors flex items-center gap-1"
-              >
-                <span>CV</span>
-                <Download size={11} className="text-amber-400" />
-              </a>
-              <a
-                href={PROFILE.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-amber-300 transition-colors flex items-center gap-1"
-                aria-label="LinkedIn Profile"
-              >
-                <Linkedin size={11} className="text-amber-400" />
-                <span>LINKEDIN</span>
-              </a>
-              <button
-                type="button"
-                onClick={() => scrollTo("contact")}
-                className="hover:text-amber-300 transition-colors"
-              >
-                CONTACT
-              </button>
-            </nav>
+          {/* =================================================================
+              MOBILE ACTIONS: COMPACT RESUME CTA + HAMBURGER BUTTON
+              ================================================================= */}
+          <div className="flex md:hidden items-center gap-2">
+            <MagneticButton
+              href={RESUME_PATH}
+              download={RESUME_FILENAME}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Download Resume"
+              className="inline-flex items-center gap-1.5 rounded-full border border-violet-500/35 bg-violet-500/15 px-3 py-1 font-mono text-[11px] font-semibold text-white"
+            >
+              <Download size={11} className="text-violet-300" />
+              <span>Resume</span>
+            </MagneticButton>
 
             <button
               type="button"
-              onClick={() =>
-                window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))
-              }
-              className={`hidden sm:inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-[#0c0e14]/80 px-3 py-1.5 text-muted-foreground hover:text-foreground hover:border-white/[0.2] transition-all backdrop-blur-md ${
-                scrolled && !isHovered
-                  ? "opacity-0 scale-90 pointer-events-none"
-                  : "opacity-100 scale-100"
-              }`}
-              title="Command Palette (⌘K)"
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Open Navigation Menu"
+              className="grid h-8 w-8 place-items-center rounded-full border border-white/[0.12] bg-[#12141e] text-white hover:text-violet-300 shadow-md cursor-pointer transition-colors"
             >
-              <Terminal size={12} className="text-amber-400" />
-              <span>CMD</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setIndexOpen(!indexOpen)}
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.14] bg-[#0c0e14]/90 px-3.5 py-1.5 font-semibold text-foreground hover:border-amber-400 hover:text-amber-300 transition-colors backdrop-blur-xl shadow-lg"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-foreground" />
-              <span>{indexOpen ? "CLOSE" : "INDEX"}</span>
+              <Menu size={16} />
             </button>
           </div>
-        </div>
+        </motion.div>
       </header>
 
-      {/* Right Edge Ambient Chapter Spatial Markers (Desktop Only) */}
-      <aside
-        aria-label="Chapter progress"
-        className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col gap-3 font-mono text-[10px]"
-      >
-        {CHAPTERS.map((c) => {
-          const isActive = activeChapter === c.id;
-          return (
-            <button
-              key={c.id}
-              type="button"
-              onClick={() => scrollTo(c.id)}
-              className="group flex items-center justify-end gap-2 text-right transition-all"
-            >
-              <span
-                className={`transition-opacity duration-200 ${
-                  isActive
-                    ? "opacity-100 text-amber-300 font-bold"
-                    : "opacity-0 group-hover:opacity-100 text-muted-foreground"
-                }`}
-              >
-                {c.index} {c.title}
-              </span>
-              <span
-                className={`block transition-all duration-300 ${
-                  isActive
-                    ? "h-5 w-1 bg-amber-400 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]"
-                    : "h-2 w-1 bg-white/20 rounded-full group-hover:bg-white/50"
-                }`}
-              />
-            </button>
-          );
-        })}
-      </aside>
-
-      {/* Fullscreen Spatial Index Overlay */}
+      {/* =====================================================================
+          MOBILE FULL-SCREEN EDITORIAL GLASS OVERLAY
+          ===================================================================== */}
       <AnimatePresence>
-        {indexOpen && (
+        {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[80] flex flex-col justify-between bg-[#07080a]/98 backdrop-blur-2xl p-6 sm:p-12 md:p-16 overflow-y-auto"
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[100] flex flex-col justify-between bg-[#08090c]/96 backdrop-blur-2xl p-6 sm:p-8"
           >
-            {/* Top Bar inside Overlay */}
-            <div className="flex items-center justify-between border-b border-white/[0.08] pb-6 font-mono text-xs text-muted-foreground">
-              <div className="flex items-center gap-3">
-                <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-                <span className="text-foreground font-bold">SPATIAL INDEX // 2025</span>
+            {/* Top Bar inside Mobile Drawer */}
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+              <div className="flex items-center gap-2.5">
+                <PCLogo className="h-7 w-auto" />
+                <span className="font-display font-bold text-sm tracking-tight text-white">
+                  PRINCE CHAUHAN
+                </span>
               </div>
 
-              <div className="flex items-center gap-6">
-                <span className="hidden sm:inline">GHAZIABAD {time} [UTC+5:30]</span>
-                <button
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close Menu"
+                className="grid h-9 w-9 place-items-center rounded-full border border-white/[0.1] bg-white/[0.04] text-white hover:text-violet-400 transition-colors cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Nav Links */}
+            <nav aria-label="Mobile Navigation" className="my-auto flex flex-col space-y-4 py-8">
+              {NAV_LINKS.map((link, idx) => (
+                <motion.button
+                  key={link.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05 + 0.1, duration: 0.3 }}
                   type="button"
-                  onClick={() => setIndexOpen(false)}
-                  className="flex items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.04] px-4 py-2 text-foreground hover:bg-white/[0.08] transition-colors"
+                  onClick={() => scrollTo(link.id)}
+                  className="group flex items-center justify-between py-2 text-left cursor-pointer"
                 >
-                  <X size={14} />
-                  <span>CLOSE [ESC]</span>
-                </button>
-              </div>
-            </div>
+                  <span className="font-display font-bold text-2xl text-white group-hover:text-violet-300 transition-colors">
+                    {link.label}
+                  </span>
+                  <span className="font-mono text-xs text-white/30 group-hover:text-violet-400 transition-colors">
+                    0{idx + 1}
+                  </span>
+                </motion.button>
+              ))}
+            </nav>
 
-            {/* Huge Spatial Chapter Navigation List */}
-            <div className="my-auto py-10">
-              <nav className="space-y-3 sm:space-y-4">
-                {CHAPTERS.map((c) => {
-                  const isActive = activeChapter === c.id;
+            {/* Mobile Footer & Quick Actions */}
+            <div className="space-y-4 border-t border-white/[0.08] pt-6 font-mono text-xs">
+              <a
+                href={RESUME_PATH}
+                download={RESUME_FILENAME}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 font-semibold text-white flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.35)]"
+              >
+                <FileText size={15} />
+                <span>DOWNLOAD VERIFIED RESUME (PDF)</span>
+              </a>
 
-                  return (
-                    <button
-                      key={c.id}
-                      type="button"
-                      onClick={() => scrollTo(c.id)}
-                      className="group flex w-full items-baseline justify-between border-b border-white/[0.04] pb-4 text-left transition-colors duration-200 hover:border-white/[0.2]"
-                    >
-                      <div className="flex items-baseline gap-4 sm:gap-8">
-                        <span className="font-mono text-sm sm:text-base text-amber-400/80 font-semibold">
-                          [{c.index}]
-                        </span>
-                        <div>
-                          <span
-                            className={`font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight transition-colors duration-200 ${
-                              isActive ? "text-amber-300" : "text-[#d1d5db] group-hover:text-white"
-                            }`}
-                          >
-                            {c.title}
-                          </span>
-                          <p className="mt-1 font-mono text-xs sm:text-sm text-muted-foreground/70 hidden sm:block">
-                            {c.subtitle}
-                          </p>
-                        </div>
-                      </div>
-
-                      <span className="hidden font-mono text-xs text-muted-foreground group-hover:text-foreground sm:inline-flex items-center gap-1">
-                        <span>GO TO SCENE</span>
-                        <ArrowUpRight
-                          size={14}
-                          className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                        />
-                      </span>
-                    </button>
-                  );
-                })}
-              </nav>
-            </div>
-
-            {/* Bottom Quick Links in Overlay */}
-            <div className="flex flex-wrap items-center justify-between gap-6 border-t border-white/[0.08] pt-6 font-mono text-xs text-muted-foreground">
-              <div className="flex items-center gap-6">
-                <a
-                  href={PROFILE.resume}
-                  download
-                  className="flex items-center gap-1.5 text-foreground hover:text-amber-300 transition-colors"
-                >
-                  <Download size={13} className="text-amber-400" />
-                  <span>CURRICULUM VITAE</span>
-                </a>
-                <a
-                  href={PROFILE.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-foreground hover:text-amber-300 transition-colors"
-                >
-                  <Github size={13} />
-                  <span>GITHUB</span>
-                </a>
-                <a
-                  href={PROFILE.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-foreground hover:text-amber-300 transition-colors"
-                >
-                  <Linkedin size={13} />
-                  <span>LINKEDIN</span>
-                </a>
-              </div>
-
-              <div className="text-muted-foreground/60 text-[11px]">
-                PRINCE CHAUHAN · B.TECH CSE (AI &amp; ML) · SVERIFIED ARTIFACTS
+              <div className="flex items-center justify-between text-[11px] text-white/50 pt-2">
+                <span>GHAZIABAD · DELHI NCR</span>
+                <div className="flex items-center gap-4">
+                  <a
+                    href={PROFILE.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white"
+                  >
+                    GitHub
+                  </a>
+                  <a
+                    href={PROFILE.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white"
+                  >
+                    LinkedIn
+                  </a>
+                </div>
               </div>
             </div>
           </motion.div>

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Terminal as TermIcon } from "lucide-react";
 import { Section } from "./Section";
 import { PROFILE } from "@/lib/portfolio-data";
+import { openOrDownloadResume } from "@/lib/resume";
 
 const now = () => new Date().toString();
 
@@ -102,7 +103,7 @@ export function TerminalMode() {
         v == null ? `command not found: ${cmd} — try 'help'` : typeof v === "function" ? v() : v;
     }
     setLines((prev) => [...prev, { kind: "in", text: raw }, { kind: "out", text: out }]);
-    if (cmd === "resume") window.open(PROFILE.resume, "_blank");
+    if (cmd === "resume") openOrDownloadResume();
     if (cmd === "github") window.open(PROFILE.github, "_blank", "noopener,noreferrer");
     if (cmd === "linkedin") window.open(PROFILE.linkedin, "_blank", "noopener,noreferrer");
   };
