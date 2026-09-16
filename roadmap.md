@@ -1,6 +1,9 @@
-- [ ] Fix the deferred overlay recursion causing runtime stack overflow.
-- [ ] Consolidate profile, projects, skills, education, experience, certificates, and LinkedIn config into reusable data modules without changing visible content.
-- [ ] Upgrade GitHub integration with cached public API data, ranking, real-only metrics, graceful states, and fallback projects.
-- [ ] Wire sections, assistant, terminal, MCP tools, SEO, and navigation to the centralized data layer.
-- [ ] Polish responsive interaction, accessibility, reduced motion, and semantic controls.
-- [ ] Run lint/build and browser QA for desktop/mobile, GitHub states, resume, links, assistant, terminal, and command palette.
+- [x] Fix the deferred overlay recursion causing runtime stack overflow.
+- [ ] Audit routes, assets, fonts, dependencies, runtime behavior, links, controls, and performance for genuine production issues.
+- [ ] Verify the canonical `/resume.pdf` asset and route every resume action to it.
+- [ ] Reconcile profile, projects, skills, experience, credentials, assistant, terminal, MCP, SEO, and navigation with verified source data.
+- [ ] Deduplicate projects and remove unsupported claims, metrics, credentials, and technologies.
+- [ ] Fix GitHub integration with cached public API data, real-only metrics, graceful loading, empty, rate-limit, and fallback states.
+- [ ] Apply focused premium editorial polish without replacing the current cinematic creative-tech direction.
+- [ ] Polish responsive behavior, accessibility, reduced motion, semantic controls, and mobile rendering cost.
+- [ ] Run diagnostics and browser QA across phone, tablet, desktop, resume, navigation, CTAs, external links, overlays, overflow, and console state.
