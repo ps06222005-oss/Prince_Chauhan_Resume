@@ -411,9 +411,8 @@ export function Projects() {
     allCategories: ["AI/ML", "Web", "Engineering"],
     totalStars: 0,
     totalForks: 0,
-    totalRepos: 18,
-    activeSince: "2024",
-    lastPushed: null,
+    syncState: "idle",
+    lastSyncedAt: null,
   });
 
   const [activeDossier, setActiveDossier] = useState<EngineeringProject | null>(null);

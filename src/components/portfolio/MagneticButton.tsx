@@ -59,7 +59,7 @@ export function MagneticButton({
 
   const motionProps = {
     animate: shouldReduceMotion ? { x: 0, y: 0 } : { x: position.x, y: position.y },
-    transition: { type: "spring", stiffness: 220, damping: 18, mass: 0.1 },
+    transition: { type: "spring" as const, stiffness: 220, damping: 18, mass: 0.1 },
     onMouseMove: handleMouseMove,
     onMouseLeave: handleMouseLeave,
     className: "inline-block",

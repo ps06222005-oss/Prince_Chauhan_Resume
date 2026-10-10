@@ -299,9 +299,9 @@ export function GitHubStats() {
                     <GitFork size={13} /> {repo.forks}
                   </span>
                 )}
-                {repo.updatedAt && (
+                {repo.pushedAt && (
                   <span className="text-[11px] text-white/40 hidden sm:inline">
-                    Updated {formatUtcDate(repo.updatedAt)}
+                    Updated {formatUtcDate(repo.pushedAt)}
                   </span>
                 )}
               </div>

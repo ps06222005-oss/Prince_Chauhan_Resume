@@ -19,7 +19,7 @@ import { MagneticButton } from "./MagneticButton";
  */
 export function Hero() {
   const heroRef = useRef<HTMLElement | null>(null);
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useReducedMotion() ?? false;
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   const { scrollYProgress } = useScroll({

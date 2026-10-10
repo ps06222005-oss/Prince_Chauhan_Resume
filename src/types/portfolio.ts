@@ -84,6 +84,7 @@ export type EngineeringProject = {
   score: number; // Computed ranking score
   // Architectural Case Study enrichment (if available)
   positioning?: string;
+  enhancedOverview?: string;
   what?: string;
   why?: string;
   how?: string;
