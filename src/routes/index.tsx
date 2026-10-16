@@ -191,23 +191,17 @@ export const Route = createFileRoute("/")({
             "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Home", item: CANONICAL },
-              { "@type": "ListItem", position: 2, name: "About", item: `${CANONICAL}#about` },
-              { "@type": "ListItem", position: 3, name: "Projects", item: `${CANONICAL}#projects` },
+              { "@type": "ListItem", position: 2, name: "Projects", item: `${CANONICAL}#projects` },
+              { "@type": "ListItem", position: 3, name: "About", item: `${CANONICAL}#about` },
               { "@type": "ListItem", position: 4, name: "Skills", item: `${CANONICAL}#skills` },
               { "@type": "ListItem", position: 5, name: "GitHub", item: `${CANONICAL}#github` },
               {
                 "@type": "ListItem",
                 position: 6,
-                name: "Education",
-                item: `${CANONICAL}#education`,
-              },
-              {
-                "@type": "ListItem",
-                position: 7,
                 name: "Certifications",
                 item: `${CANONICAL}#certifications`,
               },
-              { "@type": "ListItem", position: 8, name: "Contact", item: `${CANONICAL}#contact` },
+              { "@type": "ListItem", position: 7, name: "Contact", item: `${CANONICAL}#contact` },
             ],
           },
         }),
@@ -228,8 +222,8 @@ function Portfolio() {
 
       {/* Narrative Continuum Chapters */}
       <Hero />
-      <About />
       <Projects />
+      <About />
       <Skills />
       <GitHubStats />
       <Certifications />

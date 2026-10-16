@@ -58,10 +58,13 @@ async function runBrowserVerification() {
     // Wait for typing indicator to appear and then disappear
     await page.waitForTimeout(1000);
     // Wait until last message contains text
-    await page.waitForFunction(() => {
-      const messages = document.querySelectorAll('div[role="dialog"] div[class*="max-w-[88%]"]');
-      return messages.length > 0;
-    }, { timeout: 10000 });
+    await page.waitForFunction(
+      () => {
+        const messages = document.querySelectorAll('div[role="dialog"] div[class*="max-w-[88%]"]');
+        return messages.length > 0;
+      },
+      { timeout: 10000 },
+    );
 
     await page.waitForTimeout(1500);
 
@@ -101,7 +104,7 @@ async function runBrowserVerification() {
   // 6. Test Action Button (Download Resume)
   console.log("\n6. Testing action buttons (Download Resume)...");
   const resumeButton = internMsg.locator('button:has-text("Download Resume")');
-  const hasResumeBtn = await resumeButton.count() > 0;
+  const hasResumeBtn = (await resumeButton.count()) > 0;
   console.log("   Download Resume button present:", hasResumeBtn);
 
   if (hasResumeBtn) {
@@ -124,8 +127,8 @@ async function runBrowserVerification() {
   console.log(`Total console errors: ${consoleErrors.length}`);
 
   // Filter out benign noise like favicon or 404 on analytics if any
-  const criticalErrors = consoleErrors.filter(e =>
-    !e.includes("favicon") && !e.includes("preconnect")
+  const criticalErrors = consoleErrors.filter(
+    (e) => !e.includes("favicon") && !e.includes("preconnect"),
   );
 
   if (criticalErrors.length > 0) {

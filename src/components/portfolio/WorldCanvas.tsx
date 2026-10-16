@@ -239,12 +239,12 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
       const aTop = aboutEl?.offsetTop ?? window.innerHeight;
       const cTop = contactEl?.offsetTop ?? window.innerHeight * 5;
 
-      if (scrollY < aTop - 120) {
+      if (scrollY < pTop - 120) {
         activeMode = 0; // HERO
-      } else if (scrollY < pTop - 120) {
-        activeMode = 1; // ABOUT
-      } else if (scrollY < sTop - 120) {
+      } else if (scrollY < aTop - 120) {
         activeMode = 2; // PROJECTS
+      } else if (scrollY < sTop - 120) {
+        activeMode = 1; // ABOUT
       } else if (scrollY < cTop - 180) {
         activeMode = 3; // SKILLS & GITHUB
       } else {

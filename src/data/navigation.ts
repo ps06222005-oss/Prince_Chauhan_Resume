@@ -5,10 +5,9 @@ export interface NavLinkItem {
 }
 
 export const NAV_LINKS: NavLinkItem[] = [
-  { id: "about", label: "About", num: "01" },
-  { id: "projects", label: "Projects", num: "02" },
-  { id: "skills", label: "Capabilities", num: "03" },
-  { id: "github", label: "Archive", num: "04" },
-  { id: "certifications", label: "Education", num: "05" },
-  { id: "contact", label: "Contact", num: "06" },
+  { id: "home", label: "Home", num: "01" },
+  { id: "projects", label: "Work", num: "02" },
+  { id: "about", label: "About", num: "03" },
+  { id: "skills", label: "Skills", num: "04" },
+  { id: "contact", label: "Contact", num: "05" },
 ];

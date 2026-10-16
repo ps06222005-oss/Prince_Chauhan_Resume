@@ -1,21 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, Download, Github, Linkedin, Mail, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Download,
+  Github,
+  Linkedin,
+  Mail,
+  Send,
+  Sparkles,
+  Code2,
+  Cpu,
+  Layers,
+  Terminal,
+} from "lucide-react";
+import profileImg from "@/assets/profile.jpg";
 import { PROFILE } from "@/lib/portfolio-data";
 import { RESUME_PATH, RESUME_FILENAME } from "@/lib/resume";
-import { HeroArtifact } from "./HeroArtifact";
 import { MagneticButton } from "./MagneticButton";
 
 /**
- * Hero — Premium Gen-Z Creative Technology & AI Engineering Experience
- *
- * Visual System: BLACK + CHROME + IVORY + ULTRAVIOLET
- * Editorial composition inspired by Active Theory & Lusion:
- * - Controlled editorial typography: "PRINCE" in clean geometric display, "CHAUHAN" in high-contrast chrome
- * - Dedicated right-hand negative space for the physical 3D luxury sculpture (never collides)
- * - Mobile: Graceful vertical hierarchy (Header -> Typography -> 3D Sculpture -> Narrative & Actions)
- * - Luxury CTA buttons with thin borders, subtle ultraviolet luminescence, and tactile hover states
- * - Direct, verified PDF resume download
+ * Hero — Cinematic Midnight Experience matching reference direction:
+ * - Left: Eyebrow + Open to Internships pill, Monumental Title with electric gradient,
+ *         compelling positioning bio, primary "View My Work →", "Download Resume", verified socials.
+ * - Center: Celestial neon portal with Prince's real profile photo, floating mantra badge,
+ *           and code snippet widget.
+ * - Right (Desktop): Restrained bento cards for Tech Stack squircle icons, Internship availability,
+ *                    and quick Featured Project preview.
  */
 export function Hero() {
   const heroRef = useRef<HTMLElement | null>(null);
@@ -27,10 +37,10 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 50]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
 
-  // Pointer tracking with RAF throttling
+  // Pointer tracking for subtle ambient reactive parallax
   useEffect(() => {
     if (shouldReduceMotion) return;
     const heroEl = heroRef.current;
@@ -65,187 +75,303 @@ export function Hero() {
     <section
       ref={heroRef}
       id="home"
-      aria-label="Prince Chauhan Hero"
-      className="relative min-h-[100svh] w-full overflow-hidden flex flex-col justify-between pt-24 sm:pt-28 pb-8 sm:pb-12 select-none bg-[#08090c]"
+      aria-label="Prince Chauhan Introduction"
+      className="relative min-h-[92dvh] w-full overflow-hidden bg-[#07090e] text-white pt-24 sm:pt-28 pb-16 sm:pb-24 flex flex-col justify-center border-b border-white/[0.08]"
     >
       {/* =========================================================================
-          BACKGROUND: CARBON VOID & SUBTLE ULTRAVIOLET SPECULAR ATMOSPHERE
+          BACKGROUND: COSMIC VOLUMETRIC GLOW (Midnight, Electric Blue, Violet)
           ========================================================================= */}
       <motion.div
         style={{ y: backgroundY }}
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
       >
-        {/* Soft Electric Ultraviolet Volumetric Glow */}
-        <div className="absolute top-[10%] right-[12%] w-[26rem] sm:w-[42rem] lg:w-[54rem] h-[26rem] sm:h-[42rem] lg:h-[54rem] rounded-full opacity-20 blur-[140px] sm:blur-[180px] bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.35),rgba(109,40,217,0.15),transparent_70%)]" />
+        {/* Soft Electric Blue Aura */}
+        <div className="absolute top-[8%] left-[10%] w-[24rem] sm:w-[38rem] lg:w-[46rem] h-[24rem] sm:h-[38rem] rounded-full opacity-25 blur-[120px] bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.4),rgba(37,99,235,0.2),transparent_70%)]" />
 
-        {/* Subtle Slate / Cool Grey Depth Fill */}
-        <div className="absolute -bottom-20 -left-20 w-[20rem] sm:w-[34rem] h-[20rem] sm:h-[34rem] rounded-full opacity-10 blur-[120px] bg-[radial-gradient(circle_at_center,rgba(148,163,184,0.25),transparent_70%)]" />
+        {/* Ultraviolet Violet Volumetric Glow */}
+        <div className="absolute top-[18%] right-[12%] w-[22rem] sm:w-[36rem] lg:w-[44rem] h-[22rem] sm:h-[36rem] rounded-full opacity-20 blur-[130px] bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.35),rgba(124,58,237,0.15),transparent_70%)]" />
 
-        {/* Delicate Architectural Precision Grid */}
-        <div className="absolute inset-0 opacity-[0.02] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:4rem_4rem] sm:bg-[size:6rem_6rem]" />
+        {/* Subtle Warm Orange Glow Dot Accent */}
+        <div className="absolute top-[35%] left-[45%] w-32 h-32 rounded-full opacity-15 blur-[70px] bg-amber-500" />
 
-        {/* Subtle Horizontal Horizon Divider */}
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/[0.05] to-transparent" />
+        {/* Fine Architectural Grid */}
+        <div className="absolute inset-0 opacity-[0.025] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:4rem_4rem] sm:bg-[size:5rem_5rem]" />
       </motion.div>
 
       {/* =========================================================================
-          TOP METADATA STRIP: PURPOSEFUL CONTEXT & RECRUITER AVAILABILITY
+          MAIN HERO CONTENT STAGE
           ========================================================================= */}
       <motion.div
         style={{ opacity: heroOpacity }}
-        className="relative z-20 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
+        className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
       >
-        <div className="flex flex-wrap items-center justify-between gap-y-2 border-b border-white/[0.06] pb-3.5 font-mono text-[11px] text-white/50">
-          <div className="flex items-center gap-2.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse shadow-[0_0_8px_rgba(139,92,246,0.8)]" />
-            <span className="text-white/80 font-medium tracking-wider uppercase">
-              AI / ML DEVELOPER × CREATIVE TECHNOLOGIST
-            </span>
-          </div>
-
-          <div className="flex items-center gap-4 sm:gap-6 text-white/60">
-            <div className="flex items-center gap-1.5">
-              <span className="text-violet-300 font-medium">AVAILABLE FOR INTERNSHIPS</span>
-            </div>
-            <div className="hidden sm:flex items-center gap-1 text-white/40">
-              <span>·</span>
-              <span>GHAZIABAD · DELHI NCR</span>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* =========================================================================
-          MAIN EDITORIAL STAGE: ASYMMETRIC SPATIAL COMPOSITION
-          Desktop: Left = Editorial Typography & Actions / Right = 3D Luxury Sculpture
-          Mobile: Top = Typography -> 3D Sculpture -> Introduction & Actions
-          ========================================================================= */}
-      <motion.div
-        style={{ opacity: heroOpacity }}
-        className="relative z-10 mx-auto my-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:py-8"
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           {/* -----------------------------------------------------------------
-              LEFT COLUMN (7 COLS): EDITORIAL IDENTITY & RECRUITER ACTIONS
+              LEFT COLUMN (5 COLS): EDITORIAL IDENTITY & POSITIONING
               ----------------------------------------------------------------- */}
-          <div className="lg:col-span-7 flex flex-col justify-center space-y-6 sm:space-y-8 order-1">
-            {/* Monumental, Controlled Identity Typography */}
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-violet-500/20 bg-violet-500/[0.06] font-mono text-[10px] sm:text-[11px] text-violet-300 tracking-widest uppercase">
-                <span>[ FIRST-PRINCIPLES SYSTEMS ]</span>
-              </div>
+          <div className="lg:col-span-5 flex flex-col justify-center space-y-6">
+            {/* Eyebrow & Status Pill */}
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="font-mono text-[11px] font-semibold text-sky-400 tracking-wider uppercase">
+                FULL STACK DEVELOPER · AI/ML STUDENT
+              </span>
 
-              {/* Editorial Title: PRINCE CHAUHAN */}
-              <h1 className="font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-[-0.04em] leading-[0.92] text-white">
-                <span className="block tracking-[-0.035em]">PRINCE</span>
-                <span className="block text-gradient-chrome font-black italic tracking-[-0.045em] drop-shadow-[0_2px_24px_rgba(255,255,255,0.12)]">
-                  CHAUHAN
-                </span>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 font-mono text-[10px] text-emerald-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>OPEN TO INTERNSHIPS</span>
+              </div>
+            </div>
+
+            {/* Monumental Name Header */}
+            <div className="space-y-1">
+              <h1 className="font-display font-black text-4xl sm:text-6xl lg:text-6xl xl:text-7xl tracking-[-0.035em] leading-[0.95] text-white">
+                PRINCE <br />
+                <span className="text-gradient-electric">CHAUHAN</span>
               </h1>
             </div>
 
-            {/* In mobile view, render the 3D sculpture in flow between Title & Bio */}
-            <div className="block lg:hidden w-full h-[300px] sm:h-[360px] my-2">
-              <HeroArtifact mousePos={mousePos} shouldReduceMotion={shouldReduceMotion} />
+            {/* Bold Headline & Authentic Positioning */}
+            <div className="space-y-3 max-w-lg">
+              <h2 className="font-display font-bold text-lg sm:text-xl text-white/95 leading-snug">
+                Building Modern Web Experiences with AI-Powered Solutions.
+              </h2>
+              <p className="font-sans text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                I'm a B.Tech CSE (AI &amp; ML) student at Sunderdeep Global University who loves
+                turning ideas into real-world products. I build full stack web applications, AI
+                tools, and automation systems that solve real problems.
+              </p>
             </div>
 
-            {/* Concise, Grounded Engineering Statement */}
-            <p className="font-sans text-base sm:text-lg md:text-xl text-white/80 leading-relaxed max-w-xl font-light">
-              Undergraduate Computer Science &amp; Engineering scholar (AI &amp; ML) at Sunderdeep
-              Global University. Engineering autonomous voice intelligence, low-latency media
-              pipelines, and experimental digital interfaces from first principles.
-            </p>
-
-            {/* Luxury Action Conduits (Tactile magnetic feel, subtle ultraviolet glow) */}
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
-              {/* Primary Action: Explore Systems */}
-              <MagneticButton
+            {/* Actions: View My Work + Download Resume */}
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <button
+                type="button"
                 onClick={() => scrollTo("projects")}
-                className="group relative inline-flex items-center gap-2.5 rounded-full px-6 py-3 font-mono text-xs font-bold text-white bg-gradient-to-r from-violet-600 via-violet-500 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition-all duration-300 shadow-[0_0_24px_rgba(139,92,246,0.35)] hover:shadow-[0_0_32px_rgba(139,92,246,0.5)] active:scale-95 cursor-pointer"
+                className="group inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-sans text-xs font-semibold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 transition-all duration-200 shadow-[0_0_24px_rgba(59,130,246,0.35)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] active:scale-95 cursor-pointer"
               >
-                <span>Explore Work</span>
-                <ArrowDown
+                <span>View My Work</span>
+                <ArrowRight
                   size={14}
-                  className="transition-transform duration-300 group-hover:translate-y-0.5"
+                  className="transition-transform duration-200 group-hover:translate-x-0.5"
                 />
-              </MagneticButton>
+              </button>
 
-              {/* Direct Resume Download Button — Real PDF Asset */}
               <MagneticButton
                 href={RESUME_PATH}
                 download={RESUME_FILENAME}
                 target="_blank"
                 rel="noopener noreferrer"
-                title="Download Prince Chauhan Resume (PDF)"
-                className="group relative inline-flex items-center gap-2 rounded-full border border-white/[0.15] bg-[#11131c] hover:border-violet-400/60 hover:bg-[#161824] px-5 py-3 font-mono text-xs font-semibold text-white/90 hover:text-white transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
+                title="Download Prince Chauhan Resume"
+                className="inline-flex items-center gap-2 rounded-full border border-white/[0.15] bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/[0.25] px-4 py-2.5 font-sans text-xs font-semibold text-slate-200 hover:text-white transition-all duration-200 active:scale-95 cursor-pointer"
               >
-                <Download
-                  size={14}
-                  className="text-violet-400 transition-transform duration-300 group-hover:-translate-y-0.5"
-                />
+                <Download size={14} className="text-sky-400" />
                 <span>Download Resume</span>
               </MagneticButton>
+            </div>
 
-              {/* Quick Verified Profiles */}
-              <div className="flex items-center gap-2 pl-1 sm:pl-2">
-                <MagneticButton
-                  href={PROFILE.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub Profile"
-                  title="GitHub Repository Archive"
-                  className="grid h-10 w-10 place-items-center rounded-full border border-white/[0.1] bg-[#11131c] text-white/70 hover:text-white hover:border-violet-400/50 hover:bg-[#161824] transition-all duration-200 cursor-pointer"
-                >
-                  <Github size={16} />
-                </MagneticButton>
+            {/* Social Icons Strip */}
+            <div className="flex items-center gap-3 pt-2">
+              <a
+                href={PROFILE.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub Profile"
+                className="grid h-8 w-8 place-items-center rounded-full border border-white/[0.1] bg-white/[0.03] text-slate-300 hover:text-white hover:border-sky-400/50 hover:bg-sky-500/10 transition-colors"
+              >
+                <Github size={14} />
+              </a>
+              <a
+                href={PROFILE.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn Profile"
+                className="grid h-8 w-8 place-items-center rounded-full border border-white/[0.1] bg-white/[0.03] text-slate-300 hover:text-white hover:border-sky-400/50 hover:bg-sky-500/10 transition-colors"
+              >
+                <Linkedin size={14} />
+              </a>
+              <a
+                href={`mailto:${PROFILE.email}`}
+                aria-label="Send Email to Prince"
+                className="grid h-8 w-8 place-items-center rounded-full border border-white/[0.1] bg-white/[0.03] text-slate-300 hover:text-white hover:border-sky-400/50 hover:bg-sky-500/10 transition-colors"
+              >
+                <Mail size={14} />
+              </a>
+            </div>
+          </div>
 
-                <MagneticButton
-                  href={PROFILE.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn Profile"
-                  title="LinkedIn Professional Network"
-                  className="grid h-10 w-10 place-items-center rounded-full border border-white/[0.1] bg-[#11131c] text-white/70 hover:text-white hover:border-violet-400/50 hover:bg-[#161824] transition-all duration-200 cursor-pointer"
-                >
-                  <Linkedin size={16} />
-                </MagneticButton>
+          {/* -----------------------------------------------------------------
+              CENTER COLUMN (4 COLS): CELESTIAL PORTAL & MANTRA
+              ----------------------------------------------------------------- */}
+          <div className="lg:col-span-4 flex flex-col items-center justify-center relative">
+            {/* Glowing Celestial Neon Rim Portal */}
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-88 md:h-88 flex items-center justify-center">
+              {/* Outer Neon Glow Ring */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 rounded-full border-2 border-transparent bg-gradient-to-tr from-sky-500 via-amber-500/40 to-violet-600 opacity-60 blur-md animate-pulse"
+              />
+
+              {/* Crisp Electric Gradient Portal Border */}
+              <div className="absolute inset-1.5 rounded-full p-[2px] bg-gradient-to-tr from-sky-400 via-amber-400/60 to-violet-500 shadow-[0_0_35px_rgba(56,189,248,0.3)]">
+                <div className="w-full h-full rounded-full bg-[#090c14] overflow-hidden relative">
+                  <img
+                    src={profileImg}
+                    alt="Prince Chauhan"
+                    className="w-full h-full object-cover object-top scale-105 filter brightness-95 contrast-105"
+                  />
+                  {/* Subtle Cinematic Vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07090e]/80 via-transparent to-transparent" />
+                </div>
+              </div>
+
+              {/* Mantra Chip Pill at Top-Right */}
+              <div className="absolute top-2 -right-4 sm:-right-6 z-20 hidden sm:flex flex-col items-end">
+                <span className="font-mono text-[9px] font-bold tracking-widest text-slate-400 uppercase bg-[#0d101a]/90 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/[0.08] shadow-lg">
+                  IDEAS · CODE · AI · BUILD · REPEAT
+                </span>
+              </div>
+            </div>
+
+            {/* Floating Code Snippet Card Widget Below Avatar */}
+            <div className="mt-4 w-full max-w-sm rounded-xl border border-white/[0.1] bg-[#0c0f1a]/85 backdrop-blur-md p-3 shadow-xl font-mono text-[11px] space-y-1">
+              <div className="flex items-center gap-1.5 text-slate-500 text-[10px]">
+                <span>// Currently working on</span>
+              </div>
+              <div className="flex items-start gap-2 text-slate-200">
+                <span className="text-amber-400 text-xs">◆</span>
+                <span className="text-[11px] leading-snug">
+                  AI tools, voice intelligence, and full-stack products that make a difference.
+                </span>
               </div>
             </div>
           </div>
 
           {/* -----------------------------------------------------------------
-              RIGHT COLUMN (5 COLS): ABSTRACT 3D SCULPTURE (DESKTOP)
-              Dedicated negative space, zero collision with the typography.
+              RIGHT COLUMN (3 COLS): BENTO FEATURE PANELS (DESKTOP)
               ----------------------------------------------------------------- */}
-          <div className="hidden lg:block lg:col-span-5 relative w-full h-full min-h-[460px] xl:min-h-[540px] order-2">
-            <HeroArtifact mousePos={mousePos} shouldReduceMotion={shouldReduceMotion} />
-          </div>
-        </div>
-      </motion.div>
+          <div className="lg:col-span-3 hidden lg:flex flex-col gap-3">
+            {/* Panel 1: Tech Stack Bento Card */}
+            <div className="rounded-2xl border border-white/[0.08] bg-[#0c101c]/80 backdrop-blur-md p-4 space-y-3 shadow-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 font-sans text-xs font-bold text-white">
+                  <Code2 size={13} className="text-sky-400" />
+                  <span>Tech Stack</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => scrollTo("skills")}
+                  className="font-mono text-[10px] text-slate-400 hover:text-sky-300 transition-colors"
+                >
+                  View All →
+                </button>
+              </div>
 
-      {/* =========================================================================
-          BOTTOM HUD-FREE STATUS STRIP
-          Clean, dignified technical indicator without fake telemetry.
-          ========================================================================= */}
-      <motion.div
-        style={{ opacity: heroOpacity }}
-        className="relative z-20 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-4"
-      >
-        <div className="flex items-center justify-between border-t border-white/[0.06] pt-3 font-mono text-[11px] text-white/40">
-          <div className="flex items-center gap-2">
-            <span className="text-white/30">DISCIPLINE:</span>
-            <span className="text-white/80 font-medium">AUTONOMOUS SYSTEMS &amp; INTERACTION</span>
-          </div>
+              {/* 4x2 Squircle Badge Grid */}
+              <div className="grid grid-cols-4 gap-2">
+                {[
+                  {
+                    name: "Python",
+                    tag: "Py",
+                    color: "from-sky-500/20 to-blue-500/20 text-sky-300",
+                  },
+                  {
+                    name: "React",
+                    tag: "Re",
+                    color: "from-cyan-500/20 to-sky-500/20 text-cyan-300",
+                  },
+                  {
+                    name: "TypeScript",
+                    tag: "TS",
+                    color: "from-blue-500/20 to-indigo-500/20 text-blue-300",
+                  },
+                  {
+                    name: "C Lang",
+                    tag: "C",
+                    color: "from-slate-500/20 to-zinc-500/20 text-slate-300",
+                  },
+                  {
+                    name: "Tailwind",
+                    tag: "TW",
+                    color: "from-teal-500/20 to-sky-500/20 text-teal-300",
+                  },
+                  {
+                    name: "Pandas",
+                    tag: "Pd",
+                    color: "from-violet-500/20 to-purple-500/20 text-violet-300",
+                  },
+                  {
+                    name: "Git",
+                    tag: "Git",
+                    color: "from-orange-500/20 to-amber-500/20 text-orange-300",
+                  },
+                  {
+                    name: "AI/NLP",
+                    tag: "AI",
+                    color: "from-emerald-500/20 to-teal-500/20 text-emerald-300",
+                  },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    title={item.name}
+                    className={`h-11 rounded-xl bg-gradient-to-br ${item.color} border border-white/[0.06] flex flex-col items-center justify-center text-[10px] font-mono font-bold hover:scale-105 transition-transform cursor-default select-none shadow-sm`}
+                  >
+                    <span>{item.tag}</span>
+                    <span className="text-[8px] font-sans font-normal opacity-70 truncate px-0.5 max-w-full">
+                      {item.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-          <button
-            type="button"
-            onClick={() => scrollTo("about")}
-            className="flex items-center gap-2 text-white/50 hover:text-violet-300 transition-colors cursor-pointer uppercase tracking-wider"
-          >
-            <span>Scroll To Manifest</span>
-            <ArrowDown size={12} className="animate-bounce" />
-          </button>
+            {/* Panel 2: Available for Internships Status Card */}
+            <div className="rounded-2xl border border-white/[0.08] bg-[#0c101c]/80 backdrop-blur-md p-4 flex items-center justify-between shadow-lg">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-white">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                  <span className="text-emerald-400">Available for Internships</span>
+                </div>
+                <p className="text-[11px] text-slate-400">
+                  Open to exciting software &amp; AI opportunities.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => scrollTo("contact")}
+                aria-label="Contact for Internship"
+                className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              >
+                <Send size={13} />
+              </button>
+            </div>
+
+            {/* Panel 3: Featured Project Spotlight Card (JARVIS) */}
+            <div className="rounded-2xl border border-white/[0.08] bg-[#0c101c]/80 backdrop-blur-md p-4 space-y-2 shadow-lg">
+              <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+                <span>Featured Project</span>
+                <span className="text-amber-400 font-bold">01 / 04</span>
+              </div>
+              <div className="font-display font-bold text-sm text-white">
+                JARVIS — Voice Intelligence
+              </div>
+              <p className="text-[11px] text-slate-400 line-clamp-2">
+                Autonomous Python assistant with noise-calibrated speech recognition &amp; OS
+                automation.
+              </p>
+              <div className="flex items-center gap-2 pt-1">
+                <a
+                  href={PROFILE.jarvisRepo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full text-center py-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] font-sans text-[11px] font-medium text-white transition-colors"
+                >
+                  View Repo ↗
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </motion.div>
     </section>

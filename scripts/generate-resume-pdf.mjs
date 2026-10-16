@@ -70,7 +70,7 @@ async function createResume() {
   cursorY -= 12;
 
   drawCenteredText(
-    "LinkedIn: linkedin.com/in/prince-chauhan-3418a328 | GitHub: github.com/ps06222005-oss | Portfolio: princechauhan.lovable.app",
+    "LinkedIn: linkedin.com/in/prince-chauhan-3418a3288 | GitHub: github.com/ps06222005-oss | Portfolio: princechauhan.lovable.app",
     fontRegular,
     8.5,
     colorGray,
@@ -310,8 +310,8 @@ async function createResume() {
   drawBullet("Published the project on GitHub.", fontRegular, 8.5, colorBlack, 10.5);
   cursorY -= 3;
 
-  // Project 2: AI Automation Scripts
-  page.drawText("AI Automation Scripts | Python, Pandas, Requests", {
+  // Project 2: OnlineStream Media Interface
+  page.drawText("OnlineStream – Media Interface | TypeScript, React, Tailwind CSS, Vercel", {
     x: marginX,
     y: cursorY,
     size: 8.5,
@@ -320,14 +320,14 @@ async function createResume() {
   });
   cursorY -= 11;
   drawBullet(
-    "Built Python scripts for repetitive productivity tasks and CSV data processing using Pandas.",
+    "Engineered a responsive streaming media web application with real-time playback state management.",
     fontRegular,
     8.5,
     colorBlack,
     10.5,
   );
   drawBullet(
-    "Practiced file handling, data transformation, reusable scripting, and automation workflows.",
+    "Deployed to Vercel edge infrastructure with zero layout shifts and mobile-first responsive architecture.",
     fontRegular,
     8.5,
     colorBlack,
