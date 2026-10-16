@@ -9,5 +9,6 @@ export const NAV_LINKS: NavLinkItem[] = [
   { id: "projects", label: "Work", num: "02" },
   { id: "about", label: "About", num: "03" },
   { id: "skills", label: "Skills", num: "04" },
-  { id: "contact", label: "Contact", num: "05" },
+  { id: "experience", label: "Experience", num: "05" },
+  { id: "contact", label: "Contact", num: "06" },
 ];

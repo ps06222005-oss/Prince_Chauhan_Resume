@@ -1,4 +1,4 @@
-import profileImg from "@/assets/profile.jpg";
+const profileImg = new URL("../assets/profile.jpg", import.meta.url).href;
 
 export const PROFILE = {
   name: "Prince Chauhan",

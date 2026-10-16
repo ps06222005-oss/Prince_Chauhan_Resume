@@ -111,35 +111,42 @@ export function Hero() {
               LEFT COLUMN (5 COLS): EDITORIAL IDENTITY & POSITIONING
               ----------------------------------------------------------------- */}
           <div className="lg:col-span-5 flex flex-col justify-center space-y-6">
-            {/* Eyebrow & Status Pill */}
-            <div className="flex flex-wrap items-center gap-2.5">
+            {/* Eyebrow */}
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-sky-400 animate-pulse" />
               <span className="font-mono text-[11px] font-semibold text-sky-400 tracking-wider uppercase">
                 FULL STACK DEVELOPER · AI/ML STUDENT
               </span>
-
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 font-mono text-[10px] text-emerald-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>OPEN TO INTERNSHIPS</span>
-              </div>
             </div>
 
             {/* Monumental Name Header */}
             <div className="space-y-1">
-              <h1 className="font-display font-black text-4xl sm:text-6xl lg:text-6xl xl:text-7xl tracking-[-0.035em] leading-[0.95] text-white">
-                PRINCE <br />
-                <span className="text-gradient-electric">CHAUHAN</span>
+              <div className="flex items-center gap-2">
+                <h1 className="font-display font-black text-5xl sm:text-7xl lg:text-7xl xl:text-8xl tracking-[-0.035em] leading-[0.9] text-white">
+                  PRINCE
+                </h1>
+                <span className="text-slate-500 text-xl sm:text-2xl font-light -mt-4 select-none opacity-80">
+                  ✦
+                </span>
+              </div>
+              <h1 className="font-display font-black text-5xl sm:text-7xl lg:text-7xl xl:text-8xl tracking-[-0.035em] leading-[0.9] text-gradient-chauhan">
+                CHAUHAN
               </h1>
             </div>
 
-            {/* Bold Headline & Authentic Positioning */}
-            <div className="space-y-3 max-w-lg">
-              <h2 className="font-display font-bold text-lg sm:text-xl text-white/95 leading-snug">
-                Building Modern Web Experiences with AI-Powered Solutions.
+            {/* Headline with Editorial Serif Accent */}
+            <div className="space-y-3 max-w-lg pt-1">
+              <h2 className="font-display font-bold text-xl sm:text-2xl text-white/95 leading-snug">
+                Building AI-Powered Applications <br />
+                For A{" "}
+                <span className="font-serif italic font-normal text-gradient-chauhan text-2xl sm:text-3xl">
+                  Smarter Tomorrow.
+                </span>
               </h2>
               <p className="font-sans text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-                I'm a B.Tech CSE (AI &amp; ML) student at Sunderdeep Global University who loves
-                turning ideas into real-world products. I build full stack web applications, AI
-                tools, and automation systems that solve real problems.
+                I'm a B.Tech CSE (AI &amp; ML) student who loves turning ideas into real-world
+                products. I build modern web applications, AI tools, and automation systems that
+                solve real problems.
               </p>
             </div>
 
@@ -148,7 +155,7 @@ export function Hero() {
               <button
                 type="button"
                 onClick={() => scrollTo("projects")}
-                className="group inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-sans text-xs font-semibold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 transition-all duration-200 shadow-[0_0_24px_rgba(59,130,246,0.35)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] active:scale-95 cursor-pointer"
+                className="group inline-flex items-center gap-2 rounded-full px-6 py-3 font-sans text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 hover:from-sky-300 hover:to-indigo-500 transition-all duration-200 shadow-[0_0_24px_rgba(56,189,248,0.45)] hover:shadow-[0_0_36px_rgba(56,189,248,0.7)] active:scale-95 cursor-pointer"
               >
                 <span>View My Work</span>
                 <ArrowRight
@@ -163,87 +170,90 @@ export function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Download Prince Chauhan Resume"
-                className="inline-flex items-center gap-2 rounded-full border border-white/[0.15] bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/[0.25] px-4 py-2.5 font-sans text-xs font-semibold text-slate-200 hover:text-white transition-all duration-200 active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/[0.15] bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/[0.25] px-5 py-3 font-sans text-xs sm:text-sm font-semibold text-slate-200 hover:text-white transition-all duration-200 active:scale-95 cursor-pointer"
               >
                 <Download size={14} className="text-sky-400" />
                 <span>Download Resume</span>
               </MagneticButton>
             </div>
 
-            {/* Social Icons Strip */}
-            <div className="flex items-center gap-3 pt-2">
+            {/* Social Links Strip */}
+            <div className="flex items-center gap-5 pt-2 font-mono text-xs text-slate-300">
               <a
                 href={PROFILE.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="GitHub Profile"
-                className="grid h-8 w-8 place-items-center rounded-full border border-white/[0.1] bg-white/[0.03] text-slate-300 hover:text-white hover:border-sky-400/50 hover:bg-sky-500/10 transition-colors"
+                className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
               >
                 <Github size={14} />
+                <span>GitHub</span>
               </a>
               <a
                 href={PROFILE.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="LinkedIn Profile"
-                className="grid h-8 w-8 place-items-center rounded-full border border-white/[0.1] bg-white/[0.03] text-slate-300 hover:text-white hover:border-sky-400/50 hover:bg-sky-500/10 transition-colors"
+                className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
               >
                 <Linkedin size={14} />
+                <span>LinkedIn</span>
               </a>
               <a
                 href={`mailto:${PROFILE.email}`}
-                aria-label="Send Email to Prince"
-                className="grid h-8 w-8 place-items-center rounded-full border border-white/[0.1] bg-white/[0.03] text-slate-300 hover:text-white hover:border-sky-400/50 hover:bg-sky-500/10 transition-colors"
+                className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
               >
                 <Mail size={14} />
+                <span>Email</span>
               </a>
             </div>
           </div>
 
           {/* -----------------------------------------------------------------
-              CENTER COLUMN (4 COLS): CELESTIAL PORTAL & MANTRA
+              CENTER COLUMN: CINEMATIC PORTRAIT & SCRIPT MANTRA
               ----------------------------------------------------------------- */}
           <div className="lg:col-span-4 flex flex-col items-center justify-center relative">
-            {/* Glowing Celestial Neon Rim Portal */}
             <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-88 md:h-88 flex items-center justify-center">
-              {/* Outer Neon Glow Ring */}
+              {/* Outer Neon Rim Glow */}
               <div
                 aria-hidden="true"
-                className="absolute inset-0 rounded-full border-2 border-transparent bg-gradient-to-tr from-sky-500 via-amber-500/40 to-violet-600 opacity-60 blur-md animate-pulse"
+                className="absolute inset-0 rounded-full border border-transparent bg-gradient-to-tr from-sky-400 via-blue-500/30 to-violet-600 opacity-70 blur-lg animate-pulse"
               />
 
-              {/* Crisp Electric Gradient Portal Border */}
-              <div className="absolute inset-1.5 rounded-full p-[2px] bg-gradient-to-tr from-sky-400 via-amber-400/60 to-violet-500 shadow-[0_0_35px_rgba(56,189,248,0.3)]">
-                <div className="w-full h-full rounded-full bg-[#090c14] overflow-hidden relative">
+              {/* Glowing Rim Border Frame */}
+              <div className="absolute inset-1.5 rounded-full p-[2px] bg-gradient-to-tr from-sky-400 via-blue-500 to-violet-500 shadow-[0_0_35px_rgba(56,189,248,0.35)]">
+                <div className="w-full h-full rounded-full bg-[#080b12] overflow-hidden relative">
                   <img
                     src={profileImg}
                     alt="Prince Chauhan"
                     className="w-full h-full object-cover object-top scale-105 filter brightness-95 contrast-105"
                   />
-                  {/* Subtle Cinematic Vignette */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07090e]/80 via-transparent to-transparent" />
+                  {/* Subtle dark vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07090e]/75 via-transparent to-transparent" />
                 </div>
               </div>
 
-              {/* Mantra Chip Pill at Top-Right */}
-              <div className="absolute top-2 -right-4 sm:-right-6 z-20 hidden sm:flex flex-col items-end">
-                <span className="font-mono text-[9px] font-bold tracking-widest text-slate-400 uppercase bg-[#0d101a]/90 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/[0.08] shadow-lg">
-                  IDEAS · CODE · AI · BUILD · REPEAT
-                </span>
+              {/* Authentic Handwritten Script Accent matching reference */}
+              <div className="absolute top-4 -right-4 sm:-right-8 z-20 pointer-events-none select-none text-right">
+                <div className="font-script text-2xl sm:text-3xl leading-[1.05] text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] rotate-[-6deg] tracking-wide">
+                  Ideas <br />
+                  Code <br />
+                  Automate <br />
+                  Repeat.
+                </div>
               </div>
             </div>
 
-            {/* Floating Code Snippet Card Widget Below Avatar */}
-            <div className="mt-4 w-full max-w-sm rounded-xl border border-white/[0.1] bg-[#0c0f1a]/85 backdrop-blur-md p-3 shadow-xl font-mono text-[11px] space-y-1">
-              <div className="flex items-center gap-1.5 text-slate-500 text-[10px]">
-                <span>// Currently working on</span>
+            {/* Floating Code Status Widget Below Avatar */}
+            <div className="mt-4 w-full max-w-sm rounded-xl border border-white/[0.1] bg-[#0c0f1a]/85 backdrop-blur-md p-3.5 shadow-xl font-mono text-[11px] flex items-center justify-between">
+              <div className="space-y-1">
+                <div className="text-slate-500 text-[10px]">// Currently working on</div>
+                <div className="text-slate-200 text-[11px] leading-snug">
+                  Building AI tools and full stack products that make a difference.
+                </div>
               </div>
-              <div className="flex items-start gap-2 text-slate-200">
-                <span className="text-amber-400 text-xs">◆</span>
-                <span className="text-[11px] leading-snug">
-                  AI tools, voice intelligence, and full-stack products that make a difference.
-                </span>
-              </div>
+              <span className="relative flex h-2.5 w-2.5 shrink-0 ml-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-sky-500" />
+              </span>
             </div>
           </div>
 
@@ -251,8 +261,33 @@ export function Hero() {
               RIGHT COLUMN (3 COLS): BENTO FEATURE PANELS (DESKTOP)
               ----------------------------------------------------------------- */}
           <div className="lg:col-span-3 hidden lg:flex flex-col gap-3">
-            {/* Panel 1: Tech Stack Bento Card */}
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c101c]/80 backdrop-blur-md p-4 space-y-3 shadow-lg">
+            {/* Panel 1: Open to Internships Card */}
+            <div className="rounded-2xl border border-white/[0.08] bg-[#0c101c]/85 backdrop-blur-md p-4 flex items-center justify-between shadow-lg hover:border-emerald-500/30 transition-colors">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2 text-xs font-bold text-white">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                  </span>
+                  <span className="text-white">Open to Internships</span>
+                </div>
+                <p className="text-[11px] text-slate-400">
+                  Let's build something amazing together.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => scrollTo("contact")}
+                aria-label="Contact for Internship"
+                className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              >
+                <Send size={12} className="rotate-45 -translate-y-0.5" />
+              </button>
+            </div>
+
+            {/* Panel 2: Tech Stack Bento Card (4x3 Grid matching reference) */}
+            <div className="rounded-2xl border border-white/[0.08] bg-[#0c101c]/85 backdrop-blur-md p-4 space-y-3 shadow-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 font-sans text-xs font-bold text-white">
                   <Code2 size={13} className="text-sky-400" />
@@ -261,63 +296,85 @@ export function Hero() {
                 <button
                   type="button"
                   onClick={() => scrollTo("skills")}
-                  className="font-mono text-[10px] text-slate-400 hover:text-sky-300 transition-colors"
+                  className="font-mono text-[10px] text-slate-400 hover:text-sky-300 transition-colors cursor-pointer"
                 >
                   View All →
                 </button>
               </div>
 
-              {/* 4x2 Squircle Badge Grid */}
+              {/* 4x3 Squircle Badge Grid (12 technologies) */}
               <div className="grid grid-cols-4 gap-2">
                 {[
                   {
                     name: "Python",
                     tag: "Py",
-                    color: "from-sky-500/20 to-blue-500/20 text-sky-300",
+                    color: "from-sky-500/20 to-blue-500/20 text-sky-300 border-sky-500/30",
+                  },
+                  {
+                    name: "JavaScript",
+                    tag: "JS",
+                    color: "from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/30",
                   },
                   {
                     name: "React",
                     tag: "Re",
-                    color: "from-cyan-500/20 to-sky-500/20 text-cyan-300",
+                    color: "from-cyan-500/20 to-sky-500/20 text-cyan-300 border-cyan-500/30",
                   },
                   {
-                    name: "TypeScript",
-                    tag: "TS",
-                    color: "from-blue-500/20 to-indigo-500/20 text-blue-300",
+                    name: "Next.js",
+                    tag: "N",
+                    color: "from-slate-400/20 to-white/10 text-white border-white/20",
                   },
                   {
-                    name: "C Lang",
-                    tag: "C",
-                    color: "from-slate-500/20 to-zinc-500/20 text-slate-300",
+                    name: "Node.js",
+                    tag: "Node",
+                    color:
+                      "from-emerald-500/20 to-green-500/20 text-emerald-300 border-emerald-500/30",
+                  },
+                  {
+                    name: "MongoDB",
+                    tag: "M",
+                    color: "from-green-500/20 to-emerald-500/20 text-green-300 border-green-500/30",
                   },
                   {
                     name: "Tailwind",
                     tag: "TW",
-                    color: "from-teal-500/20 to-sky-500/20 text-teal-300",
+                    color: "from-teal-500/20 to-sky-500/20 text-teal-300 border-teal-500/30",
                   },
                   {
-                    name: "Pandas",
-                    tag: "Pd",
-                    color: "from-violet-500/20 to-purple-500/20 text-violet-300",
+                    name: "Docker",
+                    tag: "Doc",
+                    color: "from-blue-500/20 to-indigo-500/20 text-blue-300 border-blue-500/30",
                   },
                   {
                     name: "Git",
                     tag: "Git",
-                    color: "from-orange-500/20 to-amber-500/20 text-orange-300",
+                    color: "from-orange-500/20 to-rose-500/20 text-orange-300 border-orange-500/30",
                   },
                   {
-                    name: "AI/NLP",
+                    name: "TensorFlow",
+                    tag: "TF",
+                    color: "from-amber-600/20 to-orange-500/20 text-amber-400 border-amber-600/30",
+                  },
+                  {
+                    name: "OpenAI",
                     tag: "AI",
-                    color: "from-emerald-500/20 to-teal-500/20 text-emerald-300",
+                    color: "from-teal-400/20 to-emerald-500/20 text-teal-300 border-teal-400/30",
+                  },
+                  {
+                    name: "Postman",
+                    tag: "API",
+                    color:
+                      "from-orange-500/20 to-amber-600/20 text-orange-300 border-orange-500/30",
                   },
                 ].map((item, i) => (
                   <div
                     key={i}
                     title={item.name}
-                    className={`h-11 rounded-xl bg-gradient-to-br ${item.color} border border-white/[0.06] flex flex-col items-center justify-center text-[10px] font-mono font-bold hover:scale-105 transition-transform cursor-default select-none shadow-sm`}
+                    className={`h-12 rounded-xl bg-gradient-to-br ${item.color} border flex flex-col items-center justify-center text-[10px] font-mono font-bold hover:scale-105 transition-transform cursor-default select-none shadow-sm`}
                   >
                     <span>{item.tag}</span>
-                    <span className="text-[8px] font-sans font-normal opacity-70 truncate px-0.5 max-w-full">
+                    <span className="text-[7.5px] font-sans font-normal opacity-75 truncate px-0.5 max-w-full text-center">
                       {item.name}
                     </span>
                   </div>
@@ -325,53 +382,38 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Panel 2: Available for Internships Status Card */}
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c101c]/80 backdrop-blur-md p-4 flex items-center justify-between shadow-lg">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-                  <span className="text-emerald-400">Available for Internships</span>
-                </div>
-                <p className="text-[11px] text-slate-400">
-                  Open to exciting software &amp; AI opportunities.
-                </p>
+            {/* Panel 3: Stats Row matching reference (10+ Projects | 5+ Tech | 2+ Years) */}
+            <div className="grid grid-cols-3 gap-2 rounded-2xl border border-white/[0.08] bg-[#0c101c]/85 backdrop-blur-md p-3 text-center shadow-lg font-mono">
+              <div className="border-r border-white/[0.08] pr-1">
+                <div className="font-display font-black text-lg text-white">10+</div>
+                <div className="text-[10px] text-slate-400 font-sans">Projects</div>
               </div>
-
-              <button
-                type="button"
-                onClick={() => scrollTo("contact")}
-                aria-label="Contact for Internship"
-                className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
-              >
-                <Send size={13} />
-              </button>
-            </div>
-
-            {/* Panel 3: Featured Project Spotlight Card (JARVIS) */}
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c101c]/80 backdrop-blur-md p-4 space-y-2 shadow-lg">
-              <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
-                <span>Featured Project</span>
-                <span className="text-amber-400 font-bold">01 / 04</span>
+              <div className="border-r border-white/[0.08] px-1">
+                <div className="font-display font-black text-lg text-sky-400">5+</div>
+                <div className="text-[10px] text-slate-400 font-sans">Technologies</div>
               </div>
-              <div className="font-display font-bold text-sm text-white">
-                JARVIS — Voice Intelligence
-              </div>
-              <p className="text-[11px] text-slate-400 line-clamp-2">
-                Autonomous Python assistant with noise-calibrated speech recognition &amp; OS
-                automation.
-              </p>
-              <div className="flex items-center gap-2 pt-1">
-                <a
-                  href={PROFILE.jarvisRepo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center py-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] font-sans text-[11px] font-medium text-white transition-colors"
-                >
-                  View Repo ↗
-                </a>
+              <div className="pl-1">
+                <div className="font-display font-black text-lg text-violet-400">2+</div>
+                <div className="text-[10px] text-slate-400 font-sans">Years Learning</div>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Scroll To Explore Indicator matching reference */}
+        <div className="flex flex-col items-center justify-center pt-6 sm:pt-8 select-none">
+          <button
+            type="button"
+            onClick={() => scrollTo("projects")}
+            className="group flex flex-col items-center gap-1 text-slate-400 hover:text-sky-300 transition-colors cursor-pointer"
+          >
+            <span className="font-mono text-[9px] tracking-[0.2em] uppercase">
+              SCROLL TO EXPLORE
+            </span>
+            <div className="w-5 h-8 rounded-full border border-white/[0.2] flex items-start justify-center p-1 group-hover:border-sky-400/50 transition-colors">
+              <span className="h-1.5 w-1 rounded-full bg-sky-400 animate-bounce" />
+            </div>
+          </button>
         </div>
       </motion.div>
     </section>
