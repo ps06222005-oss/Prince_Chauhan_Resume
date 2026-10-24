@@ -7,3 +7,7 @@
 - [ ] Apply focused premium editorial polish without replacing the current cinematic creative-tech direction.
 - [ ] Polish responsive behavior, accessibility, reduced motion, semantic controls, and mobile rendering cost.
 - [ ] Run diagnostics and browser QA across phone, tablet, desktop, resume, navigation, CTAs, external links, overlays, overflow, and console state.
+- [ ] Reconcile the effective public canonical URL and resolve the currently failing live homepage response before investing in search promotion.
+- [ ] Review the current failing SEO findings and complete the user-approved corrective actions, including metadata or indexing issues.
+- [ ] Ensure project dialogs work by keyboard, show visible focus, and restore focus to the opener when closed.
+- [ ] Recheck search traffic evidence and complete the focused search-growth recommendations using recent saved research.
