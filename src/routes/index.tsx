@@ -11,9 +11,26 @@ import { Certifications } from "@/components/portfolio/Certifications";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { CustomCursor } from "@/components/portfolio/CustomCursor";
-import { WorldCanvas } from "@/components/portfolio/WorldCanvas";
 import { PROFILE } from "@/lib/portfolio-data";
 import { lazy, Suspense, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { WorkspaceProvider, useWorkspace } from "@/context/WorkspaceContext";
+import { BiosEntryPortal } from "@/components/workspace/BiosEntryPortal";
+import { WorkspaceHudDock } from "@/components/workspace/WorkspaceHudDock";
+import { CreativeWorldView } from "@/components/workspace/CreativeWorldView";
+import { TechnicalWorldView } from "@/components/workspace/TechnicalWorldView";
+
+// Lazy-load heavy 3D / Three.js components so initial page load remains lightweight
+const HolographicWorkspace = lazy(() =>
+  import("@/components/workspace/HolographicWorkspace").then((m) => ({
+    default: m.HolographicWorkspace,
+  })),
+);
+const WorldCanvas = lazy(() =>
+  import("@/components/portfolio/WorldCanvas").then((m) => ({
+    default: m.WorldCanvas,
+  })),
+);
 
 // Overlay widgets are interaction-only: split them out of the first payload and
 // mount after the page is idle so they never compete with LCP.
@@ -212,26 +229,127 @@ export const Route = createFileRoute("/")({
 
 function Portfolio() {
   return (
-    <main className="relative min-h-dvh bg-background text-foreground selection:bg-amber-400 selection:text-black">
-      <div aria-hidden className="noise-overlay" />
-      {/* Persistent Multi-Mode World Canvas (Hero, About, Projects, Skills, Contact) */}
-      <WorldCanvas />
-      <ScrollProgress />
-      <CustomCursor />
-      <Navbar />
+    <WorkspaceProvider>
+      <PortfolioContent />
+    </WorkspaceProvider>
+  );
+}
 
-      {/* Narrative Continuum Chapters */}
-      <Hero />
-      <Projects />
-      <About />
-      <Skills />
-      <GitHubStats />
-      <Certifications />
-      <Contact />
+function WorkspaceStageFallback() {
+  return (
+    <div className="min-h-dvh w-full bg-background text-foreground flex items-center justify-center px-4">
+      <div className="rounded-2xl border border-border bg-card px-6 py-4 shadow-sm font-mono text-xs text-muted-foreground flex items-center gap-3">
+        <span className="h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
+        <span>Initializing 3D Holographic Workspace...</span>
+      </div>
+    </div>
+  );
+}
 
-      <Footer />
-      <BackToTop />
-      <DeferredOverlays />
-    </main>
+function PortfolioContent() {
+  const { mode } = useWorkspace();
+
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      {mode === "portal" && (
+        <motion.main
+          key="portal"
+          initial={{ opacity: 0, scale: 0.99 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.99 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative min-h-dvh bg-background text-foreground selection:bg-blue-500 selection:text-white"
+        >
+          <div aria-hidden className="noise-overlay" />
+          <CustomCursor />
+          <BiosEntryPortal />
+        </motion.main>
+      )}
+
+      {mode === "creative" && (
+        <motion.main
+          key="creative"
+          initial={{ opacity: 0, x: -16 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 16 }}
+          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          className="relative min-h-dvh bg-background text-foreground selection:bg-blue-500 selection:text-white pb-24"
+        >
+          <div aria-hidden className="noise-overlay" />
+          <CustomCursor />
+          <CreativeWorldView />
+          <WorkspaceHudDock />
+          <DeferredOverlays />
+        </motion.main>
+      )}
+
+      {mode === "technical" && (
+        <motion.main
+          key="technical"
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -16 }}
+          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          className="relative min-h-dvh bg-background text-foreground selection:bg-blue-500 selection:text-white pb-24"
+        >
+          <div aria-hidden className="noise-overlay" />
+          <CustomCursor />
+          <TechnicalWorldView />
+          <WorkspaceHudDock />
+          <DeferredOverlays />
+        </motion.main>
+      )}
+
+      {mode === "workspace" && (
+        <motion.main
+          key="workspace"
+          initial={{ opacity: 0, scale: 0.985 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.985 }}
+          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          className="relative min-h-dvh bg-background text-foreground selection:bg-blue-500 selection:text-white"
+        >
+          <div aria-hidden className="noise-overlay" />
+          <CustomCursor />
+          <Suspense fallback={<WorkspaceStageFallback />}>
+            <HolographicWorkspace />
+          </Suspense>
+          <DeferredOverlays />
+        </motion.main>
+      )}
+
+      {mode === "full" && (
+        <motion.main
+          key="full"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -12 }}
+          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          className="relative min-h-dvh bg-background text-foreground selection:bg-blue-500 selection:text-white pb-24"
+        >
+          <div aria-hidden className="noise-overlay" />
+          <Suspense fallback={null}>
+            <WorldCanvas />
+          </Suspense>
+          <ScrollProgress />
+          <CustomCursor />
+          <Navbar />
+
+          {/* Narrative Continuum Chapters */}
+          <Hero />
+          <Projects />
+          <About />
+          <Skills />
+          <GitHubStats />
+          <Certifications />
+          <Contact />
+
+          <Footer />
+          <BackToTop />
+          <WorkspaceHudDock />
+          <DeferredOverlays />
+        </motion.main>
+      )}
+    </AnimatePresence>
   );
 }

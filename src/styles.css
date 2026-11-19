@@ -9,9 +9,10 @@
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--secondary-surface);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -29,68 +30,116 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-accent-blue: var(--accent-blue);
-  --color-accent-violet: var(--accent-violet);
-  --color-accent-orange: var(--accent-orange);
+  --color-accent-blue: var(--primary);
+  --color-accent-cyan: var(--accent);
+  --color-obsidian: var(--page-bg);
+  --font-syne: "Syne", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
   --font-sans: "Inter", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-script: "Caveat", "Dancing Script", cursive;
   --font-mono:
     "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
+/* ==========================================================================
+   ARCTIC MINIMAL LIGHT THEME (DEFAULT)
+   ========================================================================== */
 :root {
   --radius: 0.75rem;
 
-  /* Palette: Midnight + Electric Blue + Violet + Warm Orange Accent + Soft White */
-  --page-bg: #07090e;
-  --page-bg-soft: #0d101a;
-  --soft-white: #f8fafc;
-  --soft-white-card: #ffffff;
+  /* Arctic Minimal Palette 5 (Light) */
+  --page-bg: #f8fafc;
+  --page-bg-soft: #f1f5f9;
 
-  --accent-blue: #38bdf8;
-  --accent-blue-deep: #2563eb;
-  --accent-violet: #8b5cf6;
-  --accent-violet-light: #a78bfa;
-  --accent-orange: #f59e0b;
-  --accent-orange-light: #fbbf24;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --secondary-surface: #e2e8f0;
 
-  --background: #07090e;
-  --foreground: #f8fafc;
-  --card: #0d101a;
-  --card-foreground: #f8fafc;
-  --popover: #0d101a;
-  --popover-foreground: #f8fafc;
-  --primary: #3b82f6;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  --primary: #2563eb;
   --primary-foreground: #ffffff;
-  --secondary: #131726;
-  --secondary-foreground: #e2e8f0;
-  --muted: #141827;
-  --muted-foreground: #94a3b8;
-  --accent: #1e2438;
-  --accent-foreground: #f8fafc;
+  --secondary: #e2e8f0;
+  --secondary-foreground: #0f172a;
+
+  --muted: #e2e8f0;
+  --muted-foreground: #64748b;
+
+  --accent: #0ea5e9;
+  --accent-foreground: #ffffff;
+
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.09);
-  --ring: #38bdf8;
 
-  /* Gradients */
-  --gradient-electric: linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #8b5cf6 100%);
-  --gradient-neon: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
-  --gradient-primary: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-  --gradient-chrome: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+  --border: #cbd5e1;
+  --input: #e2e8f0;
+  --ring: #2563eb;
+
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(203, 213, 225, 0.7);
+  --glass-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+
+  --gradient-chrome: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #0ea5e9 100%);
+  --gradient-silver: linear-gradient(180deg, #0f172a 10%, #334155 100%);
+  --gradient-primary: linear-gradient(90deg, #2563eb 0%, #0ea5e9 100%);
 }
 
-.dark {
-  --background: #07090e;
+/* ==========================================================================
+   ARCTIC MINIMAL DARK THEME (LIQUID GLASS & SOFT GLOW)
+   ========================================================================== */
+.dark,
+[data-theme="dark"] {
+  /* Arctic Minimal Palette 5 (Dark) */
+  --page-bg: #0f172a;
+  --page-bg-soft: #1e293b;
+
+  --background: #0f172a;
   --foreground: #f8fafc;
+  --surface: #1e293b;
+  --secondary-surface: #334155;
+
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+
+  --primary: #60a5fa;
+  --primary-foreground: #0f172a;
+  --secondary: #334155;
+  --secondary-foreground: #f8fafc;
+
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+
+  --accent: #38bdf8;
+  --accent-foreground: #0f172a;
+
+  --destructive: #f87171;
+  --destructive-foreground: #ffffff;
+
+  --border: #334155;
+  --input: #334155;
+  --ring: #60a5fa;
+
+  --glass-bg: rgba(30, 41, 59, 0.75);
+  --glass-border: rgba(56, 189, 248, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+
+  --gradient-chrome: linear-gradient(135deg, #ffffff 0%, #dbeafe 38%, #60a5fa 75%, #38bdf8 100%);
+  --gradient-silver: linear-gradient(180deg, #ffffff 10%, #94a3b8 100%);
+  --gradient-primary: linear-gradient(90deg, #60a5fa 0%, #38bdf8 100%);
 }
 
 @layer base {
   * {
     border-color: var(--border);
+    transition-property: background-color, border-color;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   html {
     scroll-behavior: smooth;
@@ -111,12 +160,12 @@
   h4,
   h5 {
     font-family: var(--font-display);
-    letter-spacing: -0.03em;
+    letter-spacing: -0.035em;
     font-weight: 700;
   }
   ::selection {
-    background: rgba(56, 189, 248, 0.35);
-    color: #ffffff;
+    background: rgba(37, 99, 235, 0.25);
+    color: var(--foreground);
   }
   :focus-visible {
     outline: 2px solid var(--ring);
@@ -127,7 +176,7 @@
   }
 }
 
-/* Reduced-motion awareness */
+/* Respect reduced-motion preferences globally */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -142,20 +191,6 @@
   }
 }
 
-@utility text-gradient-electric {
-  background: var(--gradient-electric);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@utility text-gradient-neon {
-  background: var(--gradient-neon);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
 @utility text-gradient-chrome {
   background: var(--gradient-chrome);
   -webkit-background-clip: text;
@@ -163,41 +198,46 @@
   color: transparent;
 }
 
-@utility text-gradient-chauhan {
-  background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 45%, #c084fc 100%);
+@utility text-gradient-silver {
+  background: var(--gradient-silver);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-}
-
-@utility text-gradient-impact {
-  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #9333ea 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@utility font-script {
-  font-family: "Caveat", "Dancing Script", cursive;
 }
 
 @utility bg-gradient-primary {
   background: var(--gradient-primary);
 }
 
-@utility glass-dark {
-  background: rgba(13, 16, 26, 0.82);
+@utility glass {
+  background: var(--glass-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  box-shadow: var(--glass-shadow);
 }
 
-@utility glass-glow {
-  background: rgba(13, 16, 26, 0.75);
+@utility surface-carbon {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+@utility liquid-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  box-shadow: var(--glass-shadow);
+}
+
+@utility liquid-glass-glow {
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  box-shadow: 0 0 35px rgba(56, 189, 248, 0.12);
+  border: 1px solid var(--border);
+  box-shadow:
+    0 10px 40px -10px rgba(56, 189, 248, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 @utility noise-overlay {
@@ -205,6 +245,65 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Shimmer Animation for Lazy Image Placeholders */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.8s infinite ease-in-out;
+}
+
+/* Lightweight GPU-Composited 3D Spatial Animations (Creative & Technical Worlds) */
+@keyframes floatGentle {
+  0%,
+  100% {
+    transform: translate3d(0, 0px, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes orbitSlow {
+  0% {
+    transform: rotateX(68deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(68deg) rotateZ(360deg);
+  }
+}
+
+@keyframes cubeSpin {
+  0% {
+    transform: rotateX(-18deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(-18deg) rotateY(360deg);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 5.5s ease-in-out infinite;
+}
+
+.animate-orbit-slow {
+  animation: orbitSlow 16s linear infinite;
+}
+
+.animate-cube-spin {
+  animation: cubeSpin 20s linear infinite;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
 }

@@ -33,17 +33,11 @@ type Action = {
 
 const sectionActions: { id: string; label: string; icon: Action["icon"] }[] = [
   { id: "home", label: "Home", icon: Home },
+  { id: "projects", label: "Projects", icon: FolderGit2 },
   { id: "about", label: "About", icon: User },
   { id: "skills", label: "Skills", icon: Wrench },
-  { id: "projects", label: "Projects", icon: FolderGit2 },
-  { id: "why", label: "Why Hire Me", icon: Sparkles },
-  { id: "journey", label: "Learning Journey", icon: RouteIcon },
   { id: "github", label: "GitHub Stats", icon: Github },
-  { id: "education", label: "Education", icon: GraduationCap },
   { id: "certifications", label: "Certifications", icon: Award },
-  { id: "achievements", label: "Achievements", icon: Trophy },
-  { id: "beyond", label: "Beyond Coding", icon: Sparkles },
-  { id: "terminal", label: "Terminal", icon: TermIcon },
   { id: "contact", label: "Contact", icon: Mail },
 ];
 
@@ -85,7 +79,7 @@ export function CommandPalette() {
     const acts: Action[] = [
       {
         id: "resume",
-        label: "Download Resume",
+        label: "View Resume",
         hint: "PDF",
         group: "Actions",
         icon: Download,
@@ -202,9 +196,9 @@ export function CommandPalette() {
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.18 }}
             onClick={(e) => e.stopPropagation()}
-            className="glass w-full max-w-xl overflow-hidden rounded-2xl"
+            className="bg-card text-foreground border border-border shadow-2xl w-full max-w-xl overflow-hidden rounded-2xl backdrop-blur-xl dark:liquid-glass"
           >
-            <div className="flex items-center gap-3 border-b border-white/[0.08] px-4 py-3">
+            <div className="flex items-center gap-3 border-b border-border bg-secondary/30 px-4 py-3">
               <Search size={16} className="text-muted-foreground" />
               <input
                 autoFocus
@@ -212,9 +206,9 @@ export function CommandPalette() {
                 onChange={(e) => setQ(e.target.value)}
                 onKeyDown={onKeyDown}
                 placeholder="Search sections, actions, links…"
-                className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
+                className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
               />
-              <span className="hidden sm:inline-flex items-center gap-1 rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+              <span className="hidden sm:inline-flex items-center gap-1 rounded-md border border-border bg-secondary/50 px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
                 <Command size={10} /> K
               </span>
             </div>
@@ -229,7 +223,7 @@ export function CommandPalette() {
                 if (!items.length) return null;
                 return (
                   <div key={group} className="mb-1">
-                    <p className="px-3 py-1.5 text-[10px] uppercase tracking-widest text-muted-foreground">
+                    <p className="px-3 py-1.5 text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
                       {group}
                     </p>
                     {items.map((a) => {
@@ -240,13 +234,13 @@ export function CommandPalette() {
                           key={a.id}
                           onMouseEnter={() => setCursor(filtered.indexOf(a))}
                           onClick={a.run}
-                          className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
+                          className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors cursor-pointer ${
                             active
-                              ? "bg-white/[0.06] text-foreground"
-                              : "text-foreground/90 hover:bg-white/[0.04]"
+                              ? "bg-primary/10 text-primary font-medium"
+                              : "text-foreground hover:bg-secondary/40"
                           }`}
                         >
-                          <span className="grid h-7 w-7 place-items-center rounded-md bg-white/[0.04] text-accent-cyan ring-1 ring-white/[0.08]">
+                          <span className="grid h-7 w-7 place-items-center rounded-md bg-primary/10 text-primary ring-1 ring-primary/20">
                             <a.icon size={13} />
                           </span>
                           <span className="flex-1 truncate">{a.label}</span>
@@ -260,7 +254,7 @@ export function CommandPalette() {
                 );
               })}
             </div>
-            <div className="flex items-center justify-between gap-4 border-t border-white/[0.08] bg-white/[0.02] px-4 py-2 text-[11px] text-muted-foreground">
+            <div className="flex items-center justify-between gap-4 border-t border-border bg-secondary/30 px-4 py-2 text-[11px] text-muted-foreground font-mono">
               <span>↑↓ navigate · ↵ select · esc close</span>
               <span>{filtered.length} results</span>
             </div>

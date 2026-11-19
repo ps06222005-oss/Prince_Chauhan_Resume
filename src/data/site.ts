@@ -9,7 +9,7 @@
  *    JSON-LD structured data, sitemaps, and robots.txt) updates automatically.
  */
 
-const CANONICAL_DOMAIN = "https://ps06222005-oss.github.io";
+const CANONICAL_DOMAIN = "https://princechauhan.lovable.app";
 
 export const SITE_CONFIG = {
   // Primary Canonical URL — Single source of truth
@@ -40,7 +40,7 @@ export const SITE_CONFIG = {
   // Locale & Theme
   locale: "en_IN",
   language: "en",
-  themeColor: "#07080a",
+  themeColor: "#F8FAFC",
 
   // Verified External Profiles
   github: "https://github.com/ps06222005-oss",

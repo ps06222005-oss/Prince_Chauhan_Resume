@@ -23,7 +23,7 @@ const SUGGESTIONS = [
   "What is his AI/ML background?",
   "Is Prince open to internships?",
   "Technical Skills",
-  "Download Resume",
+  "View Resume (PDF)",
   "How to contact Prince?",
 ];
 
@@ -33,7 +33,7 @@ const WELCOME: AssistantMessage = {
   sources: ["Portfolio Overview"],
   actions: [
     { label: "View Projects", actionType: "link", url: "#projects" },
-    { label: "Download Resume", actionType: "resume", url: PROFILE.resume },
+    { label: "View Resume (PDF)", actionType: "resume", url: PROFILE.resume },
   ],
   engine: "rag-local",
 };
@@ -151,44 +151,45 @@ export function AIAssistant() {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-6 left-6 z-40 group grid h-14 w-14 place-items-center rounded-full bg-gradient-primary text-primary-foreground shadow-2xl hover:scale-110 active:scale-95 transition-all duration-200 border border-amber-400/30"
+        className="fixed bottom-4 sm:bottom-5 left-4 sm:left-6 z-30 group grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded-full bg-primary text-white shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 border border-primary/30 cursor-pointer"
         aria-label={open ? "Close assistant" : "Open assistant"}
         aria-expanded={open}
       >
         {open ? (
-          <X size={20} />
+          <X size={16} />
         ) : (
-          <Bot size={22} className="group-hover:rotate-6 transition-transform" />
+          <Bot size={18} className="group-hover:rotate-6 transition-transform" />
         )}
-        <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-background"></span>
+        <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border border-background"></span>
         </span>
       </motion.button>
 
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 16, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="glass fixed bottom-24 left-6 z-40 flex h-[520px] w-[min(420px,calc(100vw-3rem))] flex-col overflow-hidden rounded-2xl border border-white/[0.12] shadow-2xl backdrop-blur-xl bg-background/95"
+            exit={{ opacity: 0, y: 16, scale: 0.95 }}
+            transition={{ duration: 0.18 }}
+            className="fixed bottom-16 sm:bottom-20 left-3 sm:left-6 z-40 flex h-[480px] max-h-[calc(100dvh-6rem)] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border shadow-2xl backdrop-blur-xl bg-card/95 text-foreground dark:liquid-glass"
             role="dialog"
             aria-label="Portfolio AI assistant"
           >
             {/* Header */}
-            <div className="flex items-center gap-3 border-b border-white/[0.08] bg-white/[0.04] px-4 py-3.5">
-              <span className="relative grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-inner">
+            <div className="flex items-center gap-3 border-b border-border bg-secondary/30 px-4 py-3.5">
+              <span className="relative grid h-10 w-10 place-items-center rounded-xl bg-primary text-white shadow-inner">
                 <Bot size={18} />
                 <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-background bg-emerald-400" />
               </span>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="text-sm font-semibold tracking-tight">Portfolio AI</p>
+                  <p className="text-sm font-semibold tracking-tight text-foreground">
+                    Portfolio AI
+                  </p>
                   <button
                     onClick={() => setShowEngineInfo((v) => !v)}
-                    className="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.2 text-[10px] font-medium text-amber-400 hover:bg-amber-500/20 transition-colors"
+                    className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-1.5 py-0.2 text-[10px] font-medium text-primary hover:bg-primary/20 transition-colors cursor-pointer"
                     title="Click to view RAG Architecture"
                   >
                     <Sparkles size={10} />
@@ -196,14 +197,14 @@ export function AIAssistant() {
                   </button>
                 </div>
                 <p className="text-[11px] text-muted-foreground truncate">
-                  Trained on Prince's projects & verified resume
+                  Trained on Prince's projects &amp; verified resume
                 </p>
               </div>
 
               <div className="flex items-center gap-1">
                 <button
                   onClick={clear}
-                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-white/[0.08] hover:text-foreground transition-colors"
+                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer"
                   aria-label="Clear conversation"
                   title="Clear conversation"
                 >
@@ -211,7 +212,7 @@ export function AIAssistant() {
                 </button>
                 <button
                   onClick={() => setOpen(false)}
-                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-white/[0.08] hover:text-foreground transition-colors"
+                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer"
                   aria-label="Close"
                 >
                   <X size={15} />
@@ -226,10 +227,10 @@ export function AIAssistant() {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="overflow-hidden border-b border-amber-500/20 bg-amber-500/5 px-4 py-2.5 text-xs text-amber-200/90"
+                  className="overflow-hidden border-b border-primary/20 bg-primary/5 px-4 py-2.5 text-xs text-foreground/90"
                 >
                   <div className="flex items-start gap-2">
-                    <Info size={14} className="mt-0.5 text-amber-400 shrink-0" />
+                    <Info size={14} className="mt-0.5 text-primary shrink-0" />
                     <p className="leading-relaxed">
                       <strong>AI/ML Architecture:</strong> Uses vector BM25/Cosine similarity
                       retrieval across a structured knowledge corpus with zero-hallucination source
@@ -255,22 +256,22 @@ export function AIAssistant() {
                   <div
                     className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 leading-relaxed text-[13px] ${
                       m.role === "user"
-                        ? "bg-gradient-primary text-primary-foreground shadow-md font-medium"
-                        : "bg-white/[0.05] border border-white/[0.1] text-foreground shadow-sm"
+                        ? "bg-primary text-white shadow-md font-medium"
+                        : "bg-secondary/60 dark:bg-card/60 border border-border text-foreground shadow-sm"
                     }`}
                   >
                     <div className="whitespace-pre-wrap">{m.text}</div>
 
                     {/* Sources Badge */}
                     {m.sources && m.sources.length > 0 && (
-                      <div className="mt-2.5 pt-2 border-t border-white/[0.08] flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground">
-                        <span className="flex items-center gap-1 text-accent-cyan/90 font-medium">
+                      <div className="mt-2.5 pt-2 border-t border-border flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground">
+                        <span className="flex items-center gap-1 text-primary font-medium">
                           <Layers size={10} /> Sources:
                         </span>
                         {m.sources.map((src, sIdx) => (
                           <span
                             key={sIdx}
-                            className="rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] text-foreground/80 border border-white/[0.05]"
+                            className="rounded bg-background/80 px-1.5 py-0.5 text-[10px] text-foreground border border-border"
                           >
                             {src}
                           </span>
@@ -285,7 +286,7 @@ export function AIAssistant() {
                           <button
                             key={aIdx}
                             onClick={() => handleActionClick(act)}
-                            className="inline-flex items-center gap-1 rounded-lg border border-amber-500/30 bg-amber-500/10 px-2 py-1 text-[11px] font-medium text-amber-300 hover:bg-amber-500/25 active:scale-95 transition-all"
+                            className="inline-flex items-center gap-1 rounded-lg border border-primary/30 bg-primary/10 px-2 py-1 text-[11px] font-medium text-primary hover:bg-primary/20 active:scale-95 transition-all cursor-pointer"
                           >
                             {act.actionType === "resume" && <FileText size={11} />}
                             {act.actionType === "mail" && <Mail size={11} />}
@@ -305,8 +306,8 @@ export function AIAssistant() {
                   animate={{ opacity: 1, y: 0 }}
                   className="flex justify-start"
                 >
-                  <div className="inline-flex items-center gap-1.5 rounded-2xl border border-white/[0.1] bg-white/[0.05] px-3.5 py-2.5 text-xs text-muted-foreground">
-                    <Sparkles size={12} className="text-amber-400 animate-spin" />
+                  <div className="inline-flex items-center gap-1.5 rounded-2xl border border-border bg-secondary/60 dark:bg-card/60 px-3.5 py-2.5 text-xs text-muted-foreground">
+                    <Sparkles size={12} className="text-primary animate-spin" />
                     <span>Searching knowledge corpus…</span>
                     <Dot delay={0} />
                     <Dot delay={0.2} />
@@ -317,14 +318,14 @@ export function AIAssistant() {
             </div>
 
             {/* Suggestions & Input Area */}
-            <div className="border-t border-white/[0.08] bg-white/[0.02] p-3">
+            <div className="border-t border-border bg-secondary/20 p-3">
               <div className="mb-2 flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s}
                     onClick={() => send(s)}
                     disabled={typing}
-                    className="shrink-0 rounded-full border border-white/[0.1] bg-white/[0.04] px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:bg-white/[0.08] hover:border-amber-400/40 transition-colors disabled:opacity-50"
+                    className="shrink-0 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors disabled:opacity-50 cursor-pointer"
                   >
                     {s}
                   </button>
@@ -344,12 +345,12 @@ export function AIAssistant() {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask about JARVIS, AI/ML skills, resume…"
                   aria-label="Ask the AI assistant"
-                  className="flex-1 rounded-xl border border-white/[0.1] bg-white/[0.04] px-3.5 py-2 text-xs outline-none transition-all focus:border-amber-400/60 focus:bg-white/[0.07] placeholder:text-muted-foreground/60"
+                  className="flex-1 rounded-xl border border-border bg-background px-3.5 py-2 text-xs text-foreground outline-none transition-all focus:border-primary placeholder:text-muted-foreground"
                 />
                 <button
                   type="submit"
                   disabled={typing || !input.trim()}
-                  className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-sm transition-all hover:scale-105 active:scale-95 disabled:opacity-40 disabled:hover:scale-100"
+                  className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary text-white shadow-sm transition-all hover:scale-105 active:scale-95 disabled:opacity-40 disabled:hover:scale-100 cursor-pointer"
                   aria-label="Send query"
                 >
                   <Send size={14} />

@@ -42,7 +42,11 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!isWebGLAvailable() || prefersReducedMotion) {
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+    // Disable heavy WebGL loop on mobile (<768px) and for users with reduced motion preferences.
+    // Provides an ultra-smooth, battery-friendly ambient grid backdrop without GPU overhead.
+    if (!isWebGLAvailable() || prefersReducedMotion || isMobile) {
       setHasWebGL(false);
       return;
     }
@@ -53,7 +57,8 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x08090c, 0.022);
+    const initialIsDark = document.documentElement.classList.contains("dark");
+    scene.fog = new THREE.FogExp2(initialIsDark ? 0x0f172a : 0xf8fafc, 0.022);
 
     const camera = new THREE.PerspectiveCamera(
       48,
@@ -70,7 +75,6 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
       powerPreference: "high-performance",
     });
 
-    const isMobile = window.innerWidth < 768;
     const pixelRatio = Math.min(window.devicePixelRatio || 1, isMobile ? 1.2 : 1.5);
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -89,10 +93,9 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
     const originalPositions = new Float32Array(totalPoints * 3);
     const colors = new Float32Array(totalPoints * 3);
 
-    const colorGraphite = new THREE.Color("#11131a");
-    const colorChalk = new THREE.Color("#f5f5f7");
-    const colorViolet = new THREE.Color("#8b5cf6");
-    const colorIce = new THREE.Color("#38bdf8");
+    const colorGraphite = new THREE.Color("#0d1322");
+    const colorChalk = new THREE.Color("#eff6ff");
+    const colorViolet = new THREE.Color("#3b82f6");
 
     let idx = 0;
     const startX = -((gridX - 1) * spacingX) / 2;
@@ -262,14 +265,26 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
     };
     window.addEventListener("resize", onResize);
 
-    // 7. Render Animation Loop
+    const onContextLost = (e: Event) => {
+      e.preventDefault();
+    };
+    renderer.domElement.addEventListener("webglcontextlost", onContextLost, false);
+
+    // 7. Render Animation Loop (performance.now — zero per-frame allocations)
     let animId = 0;
-    const clock = new THREE.Clock();
+    const startTimeMs = performance.now();
     let currentModeLerp = 0;
+    const mouseNdc = new THREE.Vector2();
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      const elapsedTime = (performance.now() - startTimeMs) / 1000;
+
+      // Dynamic theme sync
+      const isDark = document.documentElement.classList.contains("dark");
+      if (scene.fog) {
+        scene.fog.color.setHex(isDark ? 0x0f172a : 0xf8fafc);
+      }
 
       // Interpolations
       mouse.x += (mouse.targetX - mouse.x) * 0.04;
@@ -277,22 +292,13 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
       currentScrollRatio += (targetScrollRatio - currentScrollRatio) * 0.05;
       currentModeLerp += (activeMode - currentModeLerp) * 0.04;
 
-      // Dynamic camera choreographies across sections:
-      // Hero: monumental expansive perspective with organic neural wave
-      // Transition Hero -> About: camera swoops down, geometry surges into foreground
-      // About: deep quiet architectural perspective
-      // Projects: close-up computational perspective with dynamic filament brightness
-      // Skills: directional oblique perspective
-      // Contact: deep receding celestial horizon
-
-      // Calculate smooth transition spikes between chapters to bring geometry into foreground (Section 8)
       const distToTransition = Math.min(
         Math.abs(currentModeLerp - 0.5),
         Math.abs(currentModeLerp - 1.5),
         Math.abs(currentModeLerp - 2.5),
         Math.abs(currentModeLerp - 3.5),
       );
-      const takeoverFactor = Math.max(0, 1 - distToTransition * 2.5); // Spikes at .5, 1.5, 2.5, 3.5
+      const takeoverFactor = Math.max(0, 1 - distToTransition * 2.5);
 
       const baseCameraY = 4.2 - currentModeLerp * 0.45 - takeoverFactor * 1.8;
       const baseCameraZ = 13 - currentModeLerp * 1.2 - takeoverFactor * 3.5;
@@ -303,7 +309,8 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
       camera.lookAt(mouse.x * 0.3, -0.6 - currentModeLerp * 0.15 + takeoverFactor * 0.4, 0);
 
       // Raycast pointer intersection on floor plane
-      raycaster.setFromCamera(new THREE.Vector2(mouse.x, mouse.y), camera);
+      mouseNdc.set(mouse.x, mouse.y);
+      raycaster.setFromCamera(mouseNdc, camera);
       raycaster.ray.intersectPlane(plane, planeIntersect);
 
       // Deform positions depending on section mode
@@ -378,6 +385,7 @@ export function WorldCanvas({ className = "" }: WorldCanvasProps) {
       window.removeEventListener("mousemove", onPointerMove);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      renderer.domElement.removeEventListener("webglcontextlost", onContextLost);
 
       geometry.dispose();
       linesGeometry.dispose();

@@ -2,8 +2,9 @@ const profileImg = new URL("../assets/profile.jpg", import.meta.url).href;
 
 export const PROFILE = {
   name: "Prince Chauhan",
-  role: "B.Tech CSE (AI & ML) Student",
-  headline: "Aspiring Software Developer & AI Enthusiast",
+  role: "Aspiring Application Developer | CSE (AI & ML) Student",
+  headline: "Building Apps. Exploring Possibilities.",
+  tagline: "Building Apps. Exploring Possibilities.",
   location: "Ghaziabad, Uttar Pradesh, India",
   email: "ps06222005@gmail.com",
   phone: "+91 70424 81850",

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite dev --host 0.0.0.0 --port 3000",
     "prebuild": "node scripts/generate-resume-pdf.mjs",
-    "build": "vite build",
+    "build": "vite build && node scripts/generate-static-html.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview --host 0.0.0.0 --port 3000",
     "lint": "eslint .",

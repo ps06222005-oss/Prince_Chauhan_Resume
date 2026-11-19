@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 
 interface MagneticButtonProps {
   children: React.ReactNode;
@@ -18,10 +17,9 @@ interface MagneticButtonProps {
 }
 
 /**
- * MagneticButton — Framer Motion tactile spring magnet
+ * MagneticButton — Deterministic SSR-safe tactile spring magnet
  *
- * Pulls subtly toward cursor position on hover with organic mass and damping.
- * Automatically respects `prefers-reduced-motion`.
+ * Pulls subtly toward cursor position on hover without SSR/client hydration branching.
  */
 export function MagneticButton({
   children,
@@ -32,7 +30,7 @@ export function MagneticButton({
   target,
   rel,
   title,
-  strength = 0.35,
+  strength = 0.32,
   type = "button",
   disabled = false,
   "aria-label": ariaLabel,
@@ -40,10 +38,15 @@ export function MagneticButton({
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const shouldReduceMotion = useReducedMotion();
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (shouldReduceMotion || disabled || !ref.current) return;
+    if (disabled || !ref.current) return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
     const { clientX, clientY } = e;
     const { left, top, width, height } = ref.current.getBoundingClientRect();
     const centerX = left + width / 2;
@@ -57,17 +60,23 @@ export function MagneticButton({
     setPosition({ x: 0, y: 0 });
   };
 
-  const motionProps = {
-    animate: shouldReduceMotion ? { x: 0, y: 0 } : { x: position.x, y: position.y },
-    transition: { type: "spring" as const, stiffness: 220, damping: 18, mass: 0.1 },
-    onMouseMove: handleMouseMove,
-    onMouseLeave: handleMouseLeave,
-    className: "inline-block",
+  const wrapperStyle: React.CSSProperties = {
+    transform:
+      position.x === 0 && position.y === 0
+        ? undefined
+        : `translate3d(${position.x.toFixed(2)}px, ${position.y.toFixed(2)}px, 0)`,
+    transition: "transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)",
   };
 
   if (href) {
     return (
-      <motion.div ref={ref} {...motionProps}>
+      <div
+        ref={ref}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={wrapperStyle}
+        className="inline-block"
+      >
         <a
           href={href}
           download={download}
@@ -81,12 +90,18 @@ export function MagneticButton({
         >
           {children}
         </a>
-      </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.div ref={ref} {...motionProps}>
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={wrapperStyle}
+      className="inline-block"
+    >
       <button
         type={type}
         title={title}
@@ -98,6 +113,6 @@ export function MagneticButton({
       >
         {children}
       </button>
-    </motion.div>
+    </div>
   );
 }

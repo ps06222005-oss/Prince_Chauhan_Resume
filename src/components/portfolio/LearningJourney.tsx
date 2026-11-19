@@ -361,7 +361,7 @@ export function LearningJourney() {
                   <ActiveIcon size={14} className={style.text} />
                   STAGE SIGNALS
                 </span>
-                <span>STATUS: VERIFIED</span>
+                <span>PHASE {activeStage.phaseNumber}</span>
               </div>
 
               <div className="space-y-3">

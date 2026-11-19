@@ -105,6 +105,28 @@ export const REPO_CASE_STUDIES: Record<string, ProjectCaseStudy> = {
     learned:
       "Adhering to professional software engineering standards, peer review processes, and production Git workflows.",
   },
+  "project---gridshield-": {
+    category: "AI/ML",
+    displayName: "GRIDSHIELD AI — Hackathon Platform",
+    positioning:
+      "Eco-friendly habit-tracking and gamification platform with sustainability tasks, points, and leaderboard mechanics built for a hackathon.",
+    what: "An eco-friendly habit-tracking and gamification platform that encourages sustainable daily actions through tasks, points, rewards, badges, learning quizzes, and leaderboards.",
+    why: "Built for a competitive hackathon to make environmental awareness actionable, engaging, and measurable through clean mobile-first design.",
+    how: "Mobile-first responsive architecture with real-time gamification logic, state tracking, and accessible interaction components.",
+    engineering:
+      "Engineered point tallying engines, quiz evaluation states, and dynamic leaderboard rendering with zero layout shifts on mobile screens.",
+    enhancedOverview:
+      "GRIDSHIELD AI is an eco-friendly habit-tracking and gamification platform encouraging sustainable daily actions through tasks, points, rewards, badges, quizzes, and leaderboards.",
+    technologies: ["TypeScript", "React", "Tailwind CSS", "Gamification"],
+    features: [
+      "Daily eco-habit tracking & verification",
+      "Dynamic points, rewards, and badge unlocking",
+      "Interactive learning quizzes & climate trivia",
+      "Real-time competitive leaderboard interface",
+    ],
+    learned:
+      "Rapid hackathon prototyping, mobile-first responsive mechanics, and gamification state engines.",
+  },
   prince_chauhan_resume: {
     category: "Web",
     displayName: "Interactive Portfolio & Resume Hub",
@@ -243,6 +265,41 @@ export const FALLBACK_PROJECTS: EngineeringProject[] = [
       "Algorithmic problem solutions",
       "Data handling scripts",
       "Internship milestone deliveries",
+    ],
+    source: "curated-fallback",
+  },
+  {
+    id: 1295500888,
+    name: "Project---Gridshield-",
+    displayName: "GRIDSHIELD AI — Hackathon Platform",
+    overview:
+      "GRIDSHIELD AI is an eco-friendly habit-tracking and gamification platform that encourages sustainable daily actions through tasks, points, rewards, badges, quizzes, and leaderboards.",
+    category: "AI/ML",
+    primaryLanguage: "TypeScript",
+    technologies: ["TypeScript", "React", "Tailwind CSS", "Gamification"],
+    stars: 0,
+    forks: 0,
+    sizeKb: 420,
+    pushedAt: "2026-08-10T14:20:00Z",
+    createdAt: "2026-08-08T09:15:00Z",
+    githubUrl: "https://github.com/ps06222005-oss/Project---Gridshield-",
+    demoUrl: null,
+    status: "Active",
+    isPriority: true,
+    isFeatured: true,
+    score: 78,
+    positioning:
+      "Eco-friendly habit-tracking and gamification platform with sustainability tasks, points, and leaderboard mechanics built for a hackathon.",
+    what: "An eco-friendly habit-tracking and gamification platform that encourages sustainable daily actions through tasks, points, rewards, badges, learning quizzes, and leaderboards.",
+    why: "Built for a competitive hackathon to make environmental awareness actionable, engaging, and measurable through clean mobile-first design.",
+    how: "Mobile-first responsive architecture with real-time gamification logic, state tracking, and accessible interaction components.",
+    engineering:
+      "Engineered point tallying engines, quiz evaluation states, and dynamic leaderboard rendering with zero layout shifts on mobile screens.",
+    features: [
+      "Daily eco-habit tracking & verification",
+      "Dynamic points, rewards, and badge unlocking",
+      "Interactive learning quizzes & climate trivia",
+      "Real-time competitive leaderboard interface",
     ],
     source: "curated-fallback",
   },

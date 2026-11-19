@@ -13,6 +13,13 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  nitro: {
+    output: {
+      dir: "dist",
+      publicDir: "dist",
+      serverDir: "dist/server",
+    },
+  },
   vite: {
     server: {
       host: "0.0.0.0",

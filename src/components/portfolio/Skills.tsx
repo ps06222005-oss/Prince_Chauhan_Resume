@@ -1,261 +1,330 @@
 import { useState } from "react";
-import { Cpu, Code2, Wrench, BookOpen, Layers, CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Cpu, Code2, Network } from "lucide-react";
+import { ScrollReveal, StaggerRevealGroup, StaggerRevealItem } from "./ScrollReveal";
 
 /**
- * Skills — Verified Technology Ecosystem
- * Styled on the clean soft-white surface (#f8fafc):
- * - Grouped by domain (Programming, Libraries & AI, Developer Tools, Computer Science Concepts)
- * - Grounded in real codebase evidence (No fake percentage meters)
- * - High contrast, accessible WCAG AA badges
+ * Skills — Interactive Technology Ecosystem (Arctic Minimal Design System)
+ *
+ * Supports Light and Dark Liquid Glass design systems.
+ * - 3 interconnected streams of real engineering capability
+ * - Clicking or inspecting a node reveals exact codebase evidence and implementation scope
+ * - Strict factual accuracy with zero fake meters or arbitrary ratings
  */
 
-interface SkillCategory {
+type LineageNode = {
+  id: string;
+  name: string;
+  role: string;
+  evidence: string;
+  details: string;
+};
+
+type LineageStream = {
+  id: string;
   title: string;
   discipline: string;
-  icon: typeof Code2;
-  items: Array<{
-    name: string;
-    level?: string;
-    evidence: string;
-    scope: string;
-  }>;
-}
+  icon: typeof Cpu;
+  nodes: LineageNode[];
+};
 
-const SKILL_CATEGORIES: SkillCategory[] = [
+const LINEAGE_STREAMS: LineageStream[] = [
   {
-    title: "Programming Languages",
-    discipline: "Core Runtimes & Syntax",
-    icon: Code2,
-    items: [
-      {
-        name: "Python 3.x",
-        level: "Primary Core",
-        evidence: "JARVIS & DecodeLabs",
-        scope: "Subprocesses, real-time voice pipeline, algorithmic logic, and automation scripts.",
-      },
-      {
-        name: "JavaScript & TypeScript",
-        level: "Web Development",
-        evidence: "OnlineStream & Portfolio",
-        scope: "Modern ES6+ syntax, React component state, asynchronous event loops.",
-      },
-      {
-        name: "C Language",
-        level: "Foundations",
-        evidence: "University Lab Coursework",
-        scope:
-          "Memory addressing, pointers, procedural programming, and low-level data structures.",
-      },
-      {
-        name: "HTML5 & Modern CSS",
-        level: "Frontend UI",
-        evidence: "Multiple Web Projects",
-        scope: "Semantic document tree, responsive CSS Grid / Flexbox, accessible layouts.",
-      },
-    ],
-  },
-  {
-    title: "Libraries & AI Tooling",
-    discipline: "Audio & Machine Intelligence",
+    id: "autonomous-ai",
+    title: "Machine Intelligence & Voice",
+    discipline: "Core Architecture & Python",
     icon: Cpu,
-    items: [
+    nodes: [
       {
+        id: "python",
+        name: "Python 3.x",
+        role: "Primary Core Runtime",
+        evidence: "JARVIS & DecodeLabs Codebases",
+        details:
+          "System automation scripts, algorithmic logic, subprocess invocations, and real-time audio pipeline orchestration.",
+      },
+      {
+        id: "speech",
         name: "SpeechRecognition",
-        level: "Acoustic Audio",
-        evidence: "JARVIS Voice Engine",
-        scope: "Microphone stream capture, dynamic 1.0s noise floor energy threshold calibration.",
+        role: "Audio Buffer & Energy Normalization",
+        evidence: "JARVIS Ambient Calibration",
+        details:
+          "Microphone audio acquisition with 1.0s dynamic noise-floor energy threshold calibration and speech decoding.",
       },
       {
-        name: "pyttsx3",
-        level: "Voice Synthesis",
-        evidence: "JARVIS Voice Engine",
-        scope: "Offline text-to-speech audio rendering with zero external cloud latency.",
+        id: "automation",
+        name: "Intent Routing & OS Automation",
+        role: "Desktop Dispatch Engine",
+        evidence: "JARVIS Command Subsystems",
+        details:
+          "Pattern-matched intent tokenization directing system actions: process spawning, browser automation, audio muting.",
       },
       {
-        name: "Pandas",
-        level: "Data Handling",
-        evidence: "AI Automation Scripts",
-        scope: "Tabular data ingestion, filtering, series manipulation, and CSV automation.",
-      },
-      {
-        name: "React & Tailwind CSS",
-        level: "Frontend Architecture",
-        evidence: "OnlineStream & Portfolio",
-        scope: "Component-driven design systems, custom utility tokens, zero-layout-shift UI.",
-      },
-    ],
-  },
-  {
-    title: "Developer Tools",
-    discipline: "Workflow & Version Control",
-    icon: Wrench,
-    items: [
-      {
-        name: "Git & GitHub",
-        level: "Version Control",
-        evidence: "Public ps06222005-oss repos",
-        scope: "Branching strategies, conventional commits, remote repositories, pull requests.",
-      },
-      {
-        name: "VS Code",
-        level: "Primary IDE",
-        evidence: "Daily Development",
-        scope: "Extension ecosystem, debugger configurations, linting, terminal integrations.",
-      },
-      {
-        name: "Google Colab & Jupyter",
-        level: "Interactive Notebooks",
-        evidence: "AI/ML Explorations",
-        scope: "Rapid prototyping, data visualization, exploratory Python analysis.",
+        id: "agents",
+        name: "Autonomous Agent Architectures",
+        role: "Emerging Systems",
+        evidence: "Active 2026 Exploration",
+        details:
+          "Investigating local Small Language Model (SLM) tool-use, multi-agent orchestration, and reactive feedback loops.",
       },
     ],
   },
   {
-    title: "Computer Science Concepts",
-    discipline: "Academic Rigor & Algorithms",
-    icon: BookOpen,
-    items: [
+    id: "creative-interfaces",
+    title: "Modern Interfaces & Creative Tech",
+    discipline: "Frontend & Spatial Systems",
+    icon: Code2,
+    nodes: [
       {
-        name: "Data Structures & Algorithms",
-        level: "University Core",
-        evidence: "DecodeLabs Internship",
-        scope: "Time and space complexity (Big-O), arrays, linked lists, stacks, queues, trees.",
+        id: "typescript",
+        name: "TypeScript",
+        role: "Strict Typing Foundation",
+        evidence: "OnlineStream & Web Systems",
+        details:
+          "Static contracts, strict structural types, custom hooks, and safe data flow across production web applications.",
       },
       {
-        name: "Object-Oriented Programming (OOP)",
-        level: "Architecture",
-        evidence: "Python Systems",
-        scope: "Encapsulation, inheritance, polymorphism, modular system design.",
+        id: "react",
+        name: "React & Modern Web Architecture",
+        role: "Reactive UI Runtime",
+        evidence: "OnlineStream & Portfolio Ecosystem",
+        details:
+          "Component lifecycle design, responsive UI state management, and optimized render cycles.",
       },
       {
-        name: "DBMS & Computer Networks",
-        level: "Systems Foundations",
-        evidence: "B.Tech Coursework",
-        scope: "Relational database concepts, SQL queries, OSI model, TCP/IP fundamentals.",
+        id: "tailwind-spatial",
+        name: "Tailwind CSS & Spatial Design",
+        role: "Design System & Typography",
+        evidence: "Mathematical Spacing Scales",
+        details:
+          "Fluid viewport typography, arctic minimal palettes, mathematical padding ratios, and tactile micro-interactions.",
+      },
+      {
+        id: "webgl",
+        name: "Three.js & WebGL Real-time Graphics",
+        role: "Generative Backgrounds",
+        evidence: "Portfolio 3D Stage",
+        details:
+          "Particle lattice deformation, camera deflection, responsive GPU canvas buffers, and reduced-motion fallback.",
+      },
+    ],
+  },
+  {
+    id: "systems-foundations",
+    title: "Systems, Tools & Infrastructure",
+    discipline: "Engineering Foundation",
+    icon: Network,
+    nodes: [
+      {
+        id: "c-lang",
+        name: "C Programming & Memory Basics",
+        role: "Systems Computing",
+        evidence: "University CS Core",
+        details:
+          "Pointer arithmetic, manual memory paradigms, stack/heap lifecycles, and low-level algorithmic problem sets.",
+      },
+      {
+        id: "git",
+        name: "Git & Version Provenance",
+        role: "Source History & Review",
+        evidence: "Daily GitHub Commits",
+        details:
+          "Deterministic git hygiene, branching workflows, clean commit lineages, and open-source documentation.",
+      },
+      {
+        id: "pandas",
+        name: "Data Analysis & Pandas",
+        role: "Data Engineering Basics",
+        evidence: "Python Data Scripting",
+        details:
+          "Tabular dataset ingestion, CSV transformation pipelines, and analytical data aggregation scripts.",
+      },
+      {
+        id: "edge",
+        name: "Edge CDN & Vercel Infrastructure",
+        role: "Global Distribution",
+        evidence: "OnlineStream Deployment",
+        details:
+          "Zero-config continuous integration, edge caching headers, and global low-latency content delivery.",
       },
     ],
   },
 ];
 
 export function Skills() {
-  const [selectedItem, setSelectedItem] = useState<{
-    name: string;
-    evidence: string;
-    scope: string;
-  } | null>(null);
+  const [activeNode, setActiveNode] = useState<LineageNode>(LINEAGE_STREAMS[0].nodes[0]);
 
   return (
     <section
       id="skills"
-      aria-label="Technical Capabilities and Skills"
-      className="relative w-full overflow-hidden bg-[#f8fafc] text-slate-900 py-20 sm:py-28 border-t border-slate-200"
+      aria-label="Capabilities and Technology Ecosystem"
+      className="relative w-full overflow-hidden bg-background text-foreground py-20 sm:py-28 lg:py-36 border-t border-border"
     >
-      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
         {/* Section Header */}
-        <div className="space-y-3 max-w-3xl">
-          <div className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-blue-600 tracking-wider uppercase">
-            <span className="text-blue-500">◆</span>
-            <span>CAPABILITIES &amp; EVIDENCE</span>
+        <ScrollReveal direction="up" distance={24} className="space-y-3 max-w-3xl">
+          <div className="space-y-1">
+            <div className="font-mono text-xs text-primary tracking-widest uppercase">
+              CAPABILITIES &amp; ECOSYSTEM
+            </div>
+            <p className="font-sans text-xs text-muted-foreground">
+              Technical Arsenal, Programming Languages, Frameworks &amp; Systems Architecture
+            </p>
           </div>
 
-          <h2 className="font-display font-black text-3xl sm:text-5xl tracking-tight text-slate-950">
-            Skills Grounded in Code.
+          <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl tracking-[-0.035em] text-foreground">
+            Technology Lineage. <br />
+            <span className="text-gradient-chrome">Grounded in Practice.</span>
           </h2>
 
-          <p className="font-sans text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-            No arbitrary percentage bars or vanity meters. Every skill is directly backed by
-            functioning codebase implementations.
+          <p className="font-sans text-base sm:text-lg text-muted-foreground leading-relaxed font-light">
+            Skills are not arbitrary percentage meters. They represent living software capabilities
+            where foundational languages flow directly into deployed systems and autonomous tools.
           </p>
-        </div>
+        </ScrollReveal>
 
-        {/* 4-Column Category Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {SKILL_CATEGORIES.map((cat, idx) => {
-            const Icon = cat.icon;
-            return (
-              <div
-                key={idx}
-                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-6"
-              >
-                <div className="space-y-4">
-                  {/* Category Header */}
-                  <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
-                      <Icon size={18} />
-                    </div>
-                    <div>
-                      <h3 className="font-display font-bold text-sm text-slate-900 leading-tight">
-                        {cat.title}
-                      </h3>
-                      <div className="font-mono text-[10px] text-slate-400">{cat.discipline}</div>
-                    </div>
-                  </div>
-
-                  {/* Skills List with Evidence */}
-                  <div className="space-y-3">
-                    {cat.items.map((item, itemIdx) => (
-                      <div
-                        key={itemIdx}
-                        onClick={() => setSelectedItem(item)}
-                        className="group/item p-2.5 rounded-xl border border-slate-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all cursor-pointer"
-                      >
-                        <div className="flex items-center justify-between text-xs font-semibold text-slate-900 group-hover/item:text-blue-600 transition-colors">
-                          <span>{item.name}</span>
-                          {item.level && (
-                            <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-normal">
-                              {item.level}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-1 font-mono text-[10px] text-slate-500 mt-1">
-                          <CheckCircle2 size={10} className="text-emerald-500" />
-                          <span className="truncate">{item.evidence}</span>
-                        </div>
+        {/* 3 Flowing Streams + Deep Specimen Inspector */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* Left Column (8 cols): 3 Lineage Streams */}
+          <div className="lg:col-span-8 space-y-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              {LINEAGE_STREAMS.map((stream, sIdx) => {
+                const Icon = stream.icon;
+                return (
+                  <ScrollReveal
+                    key={stream.id}
+                    direction="up"
+                    distance={28}
+                    delay={sIdx * 0.1}
+                    className="space-y-5"
+                  >
+                    {/* Stream Title */}
+                    <div className="space-y-1 border-b border-border pb-3">
+                      <div className="flex items-center gap-1.5 font-mono text-[10px] text-primary uppercase tracking-wider">
+                        <Icon size={12} />
+                        <span>{stream.discipline}</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
+                      <h3 className="font-display font-semibold text-sm sm:text-base text-foreground">
+                        {stream.title}
+                      </h3>
+                    </div>
 
-                <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100">
-                  Click any item to inspect scope
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                    {/* Nodes */}
+                    <StaggerRevealGroup
+                      staggerChildren={0.08}
+                      delayChildren={sIdx * 0.08 + 0.05}
+                      className="space-y-3 relative"
+                    >
+                      {stream.nodes.map((node, nIdx) => {
+                        const isSelected = activeNode.id === node.id;
+                        const isLast = nIdx === stream.nodes.length - 1;
 
-        {/* Selected Skill Detail Modal */}
-        {selectedItem && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-            onClick={() => setSelectedItem(null)}
-          >
-            <div
-              className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 space-y-4 shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
+                        return (
+                          <StaggerRevealItem key={node.id} className="relative">
+                            <button
+                              type="button"
+                              onClick={() => setActiveNode(node)}
+                              aria-pressed={isSelected}
+                              aria-label={`Inspect ${node.name} capability, ${node.role}`}
+                              className={`min-h-[44px] w-full text-left p-4 rounded-xl border transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none ${
+                                isSelected
+                                  ? "bg-primary/10 border-primary text-foreground shadow-sm"
+                                  : "bg-card border-border text-foreground/80 hover:border-primary/50 hover:text-foreground"
+                              }`}
+                            >
+                              <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground mb-1">
+                                <span>0{nIdx + 1}</span>
+                                {isSelected ? (
+                                  <span className="inline-flex items-center gap-1 text-primary font-medium text-[9px] uppercase tracking-wider">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                                    <span>Active</span>
+                                  </span>
+                                ) : (
+                                  <span className="text-muted-foreground/60 text-[9px] uppercase tracking-wider">
+                                    Capability
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="font-mono text-xs sm:text-sm font-semibold text-foreground">
+                                {node.name}
+                              </div>
+
+                              <div className="font-sans text-xs text-muted-foreground mt-0.5">
+                                {node.role}
+                              </div>
+                            </button>
+
+                            {/* Conduit connector */}
+                            {!isLast && (
+                              <div className="h-3 w-full flex items-center justify-center my-0.5">
+                                <div className="h-full w-px bg-gradient-to-b from-primary/30 to-primary/5" />
+                              </div>
+                            )}
+                          </StaggerRevealItem>
+                        );
+                      })}
+                    </StaggerRevealGroup>
+                  </ScrollReveal>
+                );
+              })}
+            </div>
+
+            <ScrollReveal
+              direction="up"
+              distance={16}
+              delay={0.2}
+              className="font-mono text-xs text-muted-foreground flex items-center gap-2 pt-2"
             >
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <div className="font-display font-bold text-lg text-slate-900">
-                  {selectedItem.name}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedItem(null)}
-                  className="rounded-lg p-1 text-slate-400 hover:text-slate-800"
-                >
-                  ✕
-                </button>
-              </div>
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              <span>Select any capability above to inspect its real-world implementation</span>
+            </ScrollReveal>
+          </div>
 
-              <div className="space-y-2 text-xs sm:text-sm text-slate-600">
-                <div className="font-mono text-[11px] text-blue-600 font-semibold">
-                  Verified Evidence: {selectedItem.evidence}
-                </div>
-                <p className="leading-relaxed">{selectedItem.scope}</p>
+          {/* Right Column (4 cols): Active Specimen Inspector */}
+          <ScrollReveal
+            direction="left"
+            distance={26}
+            delay={0.18}
+            className="lg:col-span-4 rounded-2xl border border-border bg-card p-6 sm:p-8 space-y-6 sticky top-28 shadow-md"
+          >
+            <div className="flex items-center justify-between border-b border-border pb-3 font-mono text-xs">
+              <span className="text-accent font-semibold uppercase tracking-wider">
+                CAPABILITY DETAILS
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full border border-primary/35 bg-primary/10 text-primary text-[10px] font-semibold">
+                AUTHENTIC
+              </span>
+            </div>
+
+            <div className="space-y-1.5">
+              <h4 className="font-display font-bold text-2xl text-foreground">{activeNode.name}</h4>
+              <div className="font-mono text-xs text-primary">{activeNode.role}</div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="font-mono text-[11px] text-muted-foreground uppercase">
+                Technical Scope
+              </div>
+              <p className="font-sans text-sm text-foreground/80 leading-relaxed font-light">
+                {activeNode.details}
+              </p>
+            </div>
+
+            <div className="space-y-2 border-t border-border pt-4">
+              <div className="font-mono text-[11px] text-muted-foreground uppercase">
+                Verified Codebase Citation
+              </div>
+              <div className="flex items-start gap-2 text-xs font-mono text-accent">
+                <CheckCircle2 size={15} className="text-primary mt-0.5 shrink-0" />
+                <span>{activeNode.evidence}</span>
               </div>
             </div>
-          </div>
-        )}
+
+            <div className="pt-2 border-t border-border font-mono text-[10px] text-muted-foreground">
+              PRINCE CHAUHAN // TECHNICAL REPERTOIRE
+            </div>
+          </ScrollReveal>
+        </div>
       </div>
     </section>
   );

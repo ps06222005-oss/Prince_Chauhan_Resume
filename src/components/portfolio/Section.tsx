@@ -32,7 +32,7 @@ export function Section({
         className="relative mb-14 max-w-4xl border-t border-white/[0.08] pt-8 sm:pt-10"
       >
         <div className="flex items-center gap-3 font-mono text-xs text-muted-foreground/80">
-          {index && <span className="font-bold text-amber-400">[{index}]</span>}
+          {index && <span className="font-bold text-blue-400">[{index}]</span>}
           {eyebrow && (
             <span className="uppercase tracking-[0.2em] font-semibold text-foreground/80">
               {eyebrow}

@@ -1,25 +1,22 @@
-import React from "react";
-
 interface PCLogoProps {
   className?: string;
   glow?: boolean;
 }
 
 /**
- * Luxury PC brand monogram matching the new design identity:
- * Black + Chrome + Ivory + Ultraviolet.
- * Dual-tone metallic platinum/chrome 'P' with deep electric ultraviolet 'C'.
+ * Stitch Blue PC brand monogram:
+ * Deep Midnight Navy (#070B14) + Ice Chrome 'P' + Electric Blue & Sky Cyan 'C'.
  * Fully vector-based, responsive, and razor-sharp on all displays.
  */
 export function PCLogo({ className = "h-8 w-auto", glow = true }: PCLogoProps) {
   return (
     <div className={`relative inline-flex items-center select-none ${className}`}>
-      {glow && (
-        <div
+      {glow ? (
+        <span
           aria-hidden="true"
-          className="pointer-events-none absolute -inset-1.5 opacity-40 blur-md bg-[radial-gradient(ellipse_at_70%_50%,rgba(139,92,246,0.5),rgba(56,189,248,0.2),transparent_75%)]"
+          className="pointer-events-none absolute -inset-1.5 opacity-45 blur-md bg-[radial-gradient(ellipse_at_70%_50%,rgba(59,130,246,0.55),rgba(56,189,248,0.3),transparent_75%)]"
         />
-      )}
+      ) : null}
       <svg
         viewBox="0 0 110 52"
         fill="none"
@@ -28,20 +25,20 @@ export function PCLogo({ className = "h-8 w-auto", glow = true }: PCLogoProps) {
         aria-label="Prince Chauhan Monogram"
       >
         <defs>
-          {/* Metallic Chrome / Platinum gradient for 'P' */}
+          {/* Metallic Ice Chrome gradient for 'P' */}
           <linearGradient id="pc-p-chrome" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="35%" stopColor="#E2E8F0" />
-            <stop offset="70%" stopColor="#94A3B8" />
-            <stop offset="100%" stopColor="#64748B" />
+            <stop offset="40%" stopColor="#DBEAFE" />
+            <stop offset="75%" stopColor="#93C5FD" />
+            <stop offset="100%" stopColor="#60A5FA" />
           </linearGradient>
 
-          {/* Electric Ultraviolet / Deep Violet gradient for 'C' */}
-          <linearGradient id="pc-c-violet" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#C4B5FD" />
-            <stop offset="35%" stopColor="#8B5CF6" />
-            <stop offset="75%" stopColor="#6D28D9" />
-            <stop offset="100%" stopColor="#4C1D95" />
+          {/* Stitch Electric Blue & Sky Cyan gradient for 'C' */}
+          <linearGradient id="pc-c-stitch" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#38BDF8" />
+            <stop offset="45%" stopColor="#3B82F6" />
+            <stop offset="85%" stopColor="#2563EB" />
+            <stop offset="100%" stopColor="#1D4ED8" />
           </linearGradient>
 
           {/* Subtle inner highlight / bevel depth */}
@@ -50,14 +47,14 @@ export function PCLogo({ className = "h-8 w-auto", glow = true }: PCLogoProps) {
             <stop offset="100%" stopColor="#000000" stopOpacity="0.35" />
           </linearGradient>
 
-          {/* Soft ultraviolet glow */}
-          <filter id="pc-violet-glow" x="-20%" y="-20%" width="140%" height="140%">
+          {/* Soft electric blue glow */}
+          <filter id="pc-stitch-glow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="2" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
 
-        {/* --- LETTER 'P' (Bold geometric sans stem & loop in polished chrome) --- */}
+        {/* --- LETTER 'P' (Bold geometric sans stem & loop in ice chrome) --- */}
         <path
           d="M 6 6 L 36 6 C 45 6 50 11 50 20 C 50 29 44 34 35 34 L 20 34 L 20 46 L 6 46 Z"
           fill="url(#pc-p-chrome)"
@@ -65,7 +62,7 @@ export function PCLogo({ className = "h-8 w-auto", glow = true }: PCLogoProps) {
         {/* 'P' inner cutout */}
         <path
           d="M 20 16 L 33 16 C 36 16 38 18 38 20 C 38 22 36 24 33 24 L 20 24 Z"
-          fill="#08090c"
+          fill="#070B14"
         />
         {/* 'P' metallic highlight facet */}
         <path
@@ -74,16 +71,16 @@ export function PCLogo({ className = "h-8 w-auto", glow = true }: PCLogoProps) {
           opacity="0.75"
         />
 
-        {/* --- LETTER 'C' (Interlocking glowing electric ultraviolet arc) --- */}
-        <g filter="url(#pc-violet-glow)">
+        {/* --- LETTER 'C' (Interlocking glowing Electric Blue / Sky Cyan arc) --- */}
+        <g filter="url(#pc-stitch-glow)">
           <path
             d="M 96 15 L 83 23 C 80 18 73 16 67 16 C 55 16 48 24 48 31 C 48 38 55 46 67 46 C 74 46 81 43 85 37 L 98 44 C 91 53 80 52 67 52 C 47 52 34 39 34 31 C 34 19 47 10 67 10 C 79 10 90 14 96 15 Z"
-            fill="url(#pc-c-violet)"
+            fill="url(#pc-c-stitch)"
           />
           {/* 'C' upper rim highlight */}
           <path
             d="M 96 15 L 83 23 C 80 18 73 16 67 16 C 55 16 48 24 48 25 C 49 19 56 12 67 12 C 79 12 90 15 96 15 Z"
-            fill="#DDD6FE"
+            fill="#BAE6FD"
             opacity="0.9"
           />
         </g>

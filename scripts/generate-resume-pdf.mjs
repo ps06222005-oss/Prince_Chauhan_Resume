@@ -412,6 +412,13 @@ async function createResume() {
     fs.writeFileSync(outputPath, pdfBytes);
     console.log(`Copied to ${outputPath}`);
   }
+
+  // If dist exists, also copy it there
+  const distPath = path.resolve("dist/resume.pdf");
+  if (fs.existsSync(path.dirname(distPath))) {
+    fs.writeFileSync(distPath, pdfBytes);
+    console.log(`Copied to ${distPath}`);
+  }
 }
 
 createResume().catch((err) => {

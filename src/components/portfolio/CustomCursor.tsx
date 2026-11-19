@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Luxury Minimal Spatial Cursor
+ * Stitch Blue Spatial Cursor
  *
  * Designed strictly for fine-pointer desktop devices:
- * - Idle: 4px ivory dot with lagging metallic ring
- * - Interactive (links/buttons): subtle expansion with soft ultraviolet ring
- * - Viewing stages: subtle pill displaying "EXPLORE" or "INSPECT"
+ * - Idle: 4px ice-white dot with lagging electric blue ring
+ * - Interactive (links/buttons): subtle expansion with Electric Blue / Sky Cyan ring
+ * - Viewing stages: subtle badge displaying "EXPLORE" or "INSPECT"
  * - Completely disabled on mobile and touch devices
- * - Zero impact on clicks or interaction flow
  */
 export function CustomCursor() {
   const dot = useRef<HTMLDivElement | null>(null);
@@ -99,8 +98,8 @@ export function CustomCursor() {
           cursorMode === "view" || cursorMode === "inspect" || cursorMode === "open"
             ? "h-0 w-0 opacity-0"
             : cursorMode === "link"
-              ? "h-1.5 w-1.5 bg-violet-400 opacity-90 shadow-[0_0_8px_rgba(139,92,246,0.8)]"
-              : "h-1 w-1 bg-white/80 opacity-80"
+              ? "h-1.5 w-1.5 bg-primary opacity-95 shadow-[0_0_8px_rgba(37,99,235,0.9)]"
+              : "h-1 w-1 bg-slate-900 dark:bg-white/85 opacity-85"
         }`}
         style={{ opacity: pressed ? 0.3 : undefined }}
       />
@@ -108,7 +107,7 @@ export function CustomCursor() {
       {/* Lagging Contextual Outer Shell */}
       <div
         ref={ring}
-        className="fixed left-0 top-0 flex items-center justify-center transition-all duration-200 ease-out will-change-transform"
+        className="fixed left-0 top-0 flex items-center justify-center transition-all duration-200 ease-out will-change-transform bg-card/90 text-foreground border border-primary/40 dark:border-primary/50"
         style={{
           width:
             cursorMode === "view"
@@ -131,23 +130,8 @@ export function CustomCursor() {
                     ? 42
                     : 22,
           borderRadius: 9999,
-          border:
-            cursorMode === "view"
-              ? "1px solid rgba(139, 92, 246, 0.45)"
-              : cursorMode === "inspect"
-                ? "1px solid rgba(56, 189, 248, 0.4)"
-                : cursorMode === "open"
-                  ? "1px solid rgba(167, 139, 250, 0.45)"
-                  : cursorMode === "link"
-                    ? "1.5px solid rgba(167, 139, 250, 0.6)"
-                    : "1px solid rgba(255, 255, 255, 0.18)",
-          backgroundColor:
-            cursorMode === "view" || cursorMode === "inspect" || cursorMode === "open"
-              ? "rgba(10, 12, 18, 0.92)"
-              : cursorMode === "link"
-                ? "rgba(139, 92, 246, 0.08)"
-                : "transparent",
-          boxShadow: cursorMode === "link" ? "0 0 18px rgba(139, 92, 246, 0.3)" : "none",
+          backgroundColor: cursorMode === "default" ? "transparent" : undefined,
+          boxShadow: cursorMode === "link" ? "0 0 16px rgba(37, 99, 235, 0.25)" : "none",
           backdropFilter:
             cursorMode === "view" || cursorMode === "inspect" || cursorMode === "open"
               ? "blur(12px)"
@@ -159,17 +143,17 @@ export function CustomCursor() {
         }}
       >
         {cursorMode === "view" && (
-          <span className="font-mono text-[9px] font-semibold tracking-widest text-violet-300 uppercase select-none">
+          <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase select-none">
             EXPLORE
           </span>
         )}
         {cursorMode === "inspect" && (
-          <span className="font-mono text-[9px] font-semibold tracking-wider text-sky-300 uppercase select-none">
+          <span className="font-mono text-[9px] font-semibold tracking-wider text-accent uppercase select-none">
             INSPECT
           </span>
         )}
         {cursorMode === "open" && (
-          <span className="font-mono text-[9px] font-semibold tracking-widest text-violet-200 uppercase select-none flex items-center gap-1">
+          <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase select-none flex items-center gap-1">
             OPEN ↗
           </span>
         )}
